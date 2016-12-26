@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Bar Bro</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="error_message">Error</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search">Refresh</string>
+    <string name="search_drink_string">Search for a Drink</string>
+    <string name="view_drink">View Drink</string>
+    <string name="liquor_prompt">Pick a Liquor</string>
+    <string-array name="liquor_array">
+        <item>Vodka</item>
+        <item>Gin</item>
+        <item>Tequila</item>
+        <item>Bourbon</item>
+        <item>Scotch</item>
+        <item>Brandy</item>
+    </string-array>
+</resources>
