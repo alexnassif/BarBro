@@ -165,6 +165,7 @@ public class TestBarBroContentProvider {
         ContentValues testTaskValues = new ContentValues();
         testTaskValues.put(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME, "Alex Test Drink");
         testTaskValues.put(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS, "A whole lotta love");
+        testTaskValues.put(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC, "Alex_Test_pic");
 
         /* TestContentObserver allows us to test if notifyChange was called appropriately */
         TestUtilities.TestContentObserver taskObserver = TestUtilities.getTestContentObserver();

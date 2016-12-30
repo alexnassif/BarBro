@@ -108,7 +108,7 @@ public class DatabaseTest {
         ContentValues testValues = new ContentValues();
         testValues.put(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME, "test name");
         testValues.put(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS, "test ingredients");
-
+        testValues.put(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC, "test_pic");
         /* Insert ContentValues into database and get first row ID back */
         long firstRowId = database.insert(
                 BarBroContract.BarBroEntry.TABLE_NAME,
@@ -170,6 +170,7 @@ public class DatabaseTest {
         ContentValues testValues = new ContentValues();
         testValues.put(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME, "test name");
         testValues.put(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS, "test ingredients");
+        testValues.put(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC, "Test_pic");
 
         /* Insert ContentValues into database and get first row ID back */
         long firstRowId = database.insert(
@@ -211,6 +212,7 @@ public class DatabaseTest {
         ContentValues testValues = new ContentValues();
         testValues.put(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME, "test name");
         testValues.put(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS, "test ingredients");
+        testValues.put(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC, "test_pic");
 
         /* Insert ContentValues into database and get first row ID back */
         long firstRowId = database.insert(

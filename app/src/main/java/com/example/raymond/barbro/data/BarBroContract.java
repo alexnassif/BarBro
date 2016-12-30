@@ -20,6 +20,7 @@ public class BarBroContract {
         public static final String TABLE_NAME = "drinks";
         public static final String COLUMN_DRINK_NAME = "drinkName";
         public static final String COLUMN_INGREDIENTS = "ingredients";
+        public static final String COLUMN_DRINK_PIC = "pic";
 
     }
 }

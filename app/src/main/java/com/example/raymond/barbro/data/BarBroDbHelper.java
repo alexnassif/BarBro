@@ -22,7 +22,8 @@ public class BarBroDbHelper extends SQLiteOpenHelper {
                 BarBroContract.BarBroEntry.TABLE_NAME + " (" +
                 BarBroContract.BarBroEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 BarBroContract.BarBroEntry.COLUMN_DRINK_NAME + " TEXT NOT NULL, " +
-                BarBroContract.BarBroEntry.COLUMN_INGREDIENTS + " TEXT NOT NULL" +
+                BarBroContract.BarBroEntry.COLUMN_INGREDIENTS + " TEXT NOT NULL, " +
+                BarBroContract.BarBroEntry.COLUMN_DRINK_PIC + " TEXT" +
                 ");";
 
         db.execSQL(SQL_CREATE_BARBRO_TABLE);
