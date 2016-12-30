@@ -22,6 +22,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".DrinkDetailActivity"></activity>
+        <provider
+            android:authorities="com.example.raymond.barbro"
+            android:name="com.example.raymond.barbro.data.BarBroContentProvider"
+            android:exported="false"/>
+
     </application>
 
 </manifest>
