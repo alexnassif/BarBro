@@ -1,10 +1,13 @@
 package com.example.raymond.barbro.data;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 
@@ -36,7 +39,27 @@ public class BarBroContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        return null;
+
+        final SQLiteDatabase db = dbHelper.getReadableDatabase();
+        int match = sUriMatcher.match(uri);
+        Cursor retCursor;
+
+        switch (match){
+            case DRINKS:
+                retCursor = db.query(BarBroContract.BarBroEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder);
+                break;
+            default:
+                throw new UnsupportedOperationException("Uri doesn't match " + uri);
+
+        }
+        retCursor.setNotificationUri(getContext().getContentResolver(), uri);
+        return retCursor;
     }
 
     @Nullable
@@ -48,7 +71,24 @@ public class BarBroContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        return null;
+        final SQLiteDatabase db = dbHelper.getWritableDatabase();
+        int match = sUriMatcher.match(uri);
+        Uri retUri;
+
+        switch (match){
+            case DRINKS:
+                long id = db.insert(BarBroContract.BarBroEntry.TABLE_NAME, null, values);
+                if(id > 0)
+                    retUri = ContentUris.withAppendedId(uri, id);
+                else
+                    throw new SQLException("Failed to insert row into " + uri);
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri " + uri);
+
+        }
+        getContext().getContentResolver().notifyChange(uri, null);
+        return retUri;
     }
 
     @Override
