@@ -23,4 +23,8 @@ public class BarBroContract {
         public static final String COLUMN_DRINK_PIC = "pic";
 
     }
+
+    public static final class FavoritesEntry implements BaseColumns {
+
+    }
 }
