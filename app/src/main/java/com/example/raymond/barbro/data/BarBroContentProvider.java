@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 /**
@@ -99,5 +100,40 @@ public class BarBroContentProvider extends ContentProvider {
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         return 0;
+    }
+
+    public int bulkInsert(@NonNull Uri uri, @NonNull ContentValues[] values){
+        final SQLiteDatabase db = dbHelper.getWritableDatabase();
+        int match = sUriMatcher.match(uri);
+        int retInt;
+
+        switch(match){
+            case DRINKS:
+                db.beginTransaction();
+                int rowsInserted = 0;
+
+                try{
+
+                    for(ContentValues value: values){
+                        long _id = db.insert(BarBroContract.BarBroEntry.TABLE_NAME, null, value);
+                        if(_id != -1){
+                            rowsInserted++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+
+                }
+                finally {
+                    db.endTransaction();
+                }
+                if(rowsInserted > 0){
+                    getContext().getContentResolver().notifyChange(uri, null);
+                }
+                return rowsInserted;
+            default:
+                return super.bulkInsert(uri, values);
+
+        }
+
     }
 }

@@ -2,11 +2,14 @@ package com.example.raymond.barbro;
 
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +22,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.raymond.barbro.data.BarBroContract;
 import com.example.raymond.barbro.data.Drink;
 import com.example.raymond.barbro.utilities.BarJsonUtils;
 import com.example.raymond.barbro.utilities.NetworkUtils;
@@ -29,7 +33,7 @@ import java.net.URL;
  */
 
 public class ResultsFragment extends Fragment implements
-        LoaderCallbacks<Drink[]>, DrinkAdapter.DrinkAdapterOnClickHandler {
+        LoaderCallbacks<Cursor>, DrinkAdapter.DrinkAdapterOnClickHandler {
 
     /* A constant to save and restore the URL that is being displayed */
     private static final String SEARCH_QUERY_URL_EXTRA = "query";
@@ -135,71 +139,41 @@ public class ResultsFragment extends Fragment implements
     }
 
     @Override
-    public Loader<Drink[]> onCreateLoader(int id, final Bundle args) {
-        return new AsyncTaskLoader<Drink[]>(getContext()) {
+    public Loader<Cursor> onCreateLoader(int id, final Bundle args) {
 
-            Drink[] mDrinksJson = null;
-            @Override
-            protected void onStartLoading() {
+        switch (id){
+            case GITHUB_SEARCH_LOADER:
+                Uri uriAllDrinks = BarBroContract.BarBroEntry.CONTENT_URI;
+                return new CursorLoader(getContext(),
+                        uriAllDrinks,
+                        null,
+                        null,
+                        null,
+                        null);
+            default:
+                throw new RuntimeException("Loader Not Implemented: " + id);
 
-                /*
-                 * When we initially begin loading in the background, we want to display the
-                 * loading indicator to the user
-                 */
+        }
 
 
-                // COMPLETED (2) If mGithubJson is not null, deliver that result. Otherwise, force a load
-                /*
-                 * If we already have cached results, just deliver them now. If we don't have any
-                 * cached results, force a load.
-                 */
-                if (mDrinksJson != null) {
-                    deliverResult(mDrinksJson);
-                } else {
-                    mLoadingIndicator.setVisibility(View.VISIBLE);
-                    forceLoad();
-                }
-            }
 
-            @Override
-            public Drink[] loadInBackground() {
-
-                try {
-                    URL drinkUrl = NetworkUtils.buildAllDrinksUrl();
-                    String drinkSearchResults = NetworkUtils.getResponseFromHttpUrl(drinkUrl);
-                    Drink[] drinksJson = BarJsonUtils.getSimpleDrinkStringsFromJson(drinkSearchResults);
-                    return drinksJson;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return null;
-                }
-            }
-
-            // COMPLETED (3) Override deliverResult and store the data in mGithubJson
-            // COMPLETED (4) Call super.deliverResult after storing the data
-            @Override
-            public void deliverResult(Drink[] drinksJson) {
-                mDrinksJson = drinksJson;
-                super.deliverResult(drinksJson);
-            }
-        };
     }
 
     @Override
-    public void onLoadFinished(Loader<Drink[]> loader, Drink[] data) {
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
         /* When we finish loading, we want to hide the loading indicator from the user. */
         mLoadingIndicator.setVisibility(View.INVISIBLE);
         if(data != null) {
-            mDrinkAdapter.setDrinkData(data);
-            ArrayAdapter<Drink> adapter = new ArrayAdapter(getContext(), android.R.layout.simple_dropdown_item_1line, data);
+            mDrinkAdapter.swapCursor(data);
+            ArrayAdapter<Drink> adapter = new ArrayAdapter(getContext(), android.R.layout.simple_dropdown_item_1line, new String[]{"vodka", "gin"});
             acDrinkTextView.setAdapter(adapter);
             acDrinkTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Drink drink = (Drink) adapterView.getAdapter().getItem(i);
+                    String drink = (String) adapterView.getAdapter().getItem(i);
 
-                    drinkDetail(drink);
+                    drinkDetail(i);
                     acDrinkTextView.setText("");
                 }
             });
@@ -220,7 +194,7 @@ public class ResultsFragment extends Fragment implements
     }
 
     @Override
-    public void onLoaderReset(Loader<Drink[]> loader) {
+    public void onLoaderReset(Loader<Cursor> loader) {
         /*
          * We aren't using this method in our example application, but we are required to Override
          * it to implement the LoaderCallbacks<String> interface
@@ -229,14 +203,14 @@ public class ResultsFragment extends Fragment implements
     }
 
     @Override
-    public void onClick(Drink drink) {
+    public void onClick(int id) {
 
-        drinkDetail(drink);
+        drinkDetail(id);
 
     }
-    public void drinkDetail(Drink drink){
+    public void drinkDetail(int id){
         Intent intent = new Intent(getContext(), DrinkDetailActivity.class);
-        intent.putExtra("drink", drink);
+        intent.putExtra("drink", id);
         startActivity(intent);
     }
 

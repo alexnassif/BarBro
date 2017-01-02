@@ -1,6 +1,7 @@
 package com.example.raymond.barbro;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +11,7 @@ import android.widget.TextView;
 import android.view.View.OnClickListener;
 
 import com.bumptech.glide.Glide;
-import com.example.raymond.barbro.data.Drink;
+import com.example.raymond.barbro.data.BarBroContract;
 
 /**
  * Created by raymond on 12/12/16.
@@ -18,7 +19,7 @@ import com.example.raymond.barbro.data.Drink;
 
 public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapterViewHolder> {
 
-    private Drink[] mDrinkData;
+    private Cursor mDrinkData;
 
     private final DrinkAdapterOnClickHandler mClickHandler;
 
@@ -27,7 +28,7 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
     }
 
     public interface DrinkAdapterOnClickHandler{
-        void onClick(Drink drink);
+        void onClick(int id);
     }
 
     @Override
@@ -42,9 +43,21 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
 
     @Override
     public void onBindViewHolder(DrinkAdapterViewHolder holder, int position) {
-        Drink drink = mDrinkData[position];
-        Glide.with(holder.mDrinkImageView.getContext()).load("http://assets.absolutdrinks.com/drinks/300x400/" + drink.getId() +".png").into(holder.mDrinkImageView);
-        holder.mDrinkTextView.setText(drink.toString());
+        int drinkId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry._ID);
+        int drinkName = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
+        int ingredients = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS);
+        int drinkPicId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC);
+
+        mDrinkData.moveToPosition(position);
+
+        final int id = mDrinkData.getInt(drinkId);
+        String _drinkName = mDrinkData.getString(drinkName);
+        String drinkIngredients = mDrinkData.getString(ingredients);
+        String drinkPic = mDrinkData.getString(drinkPicId);
+        holder.itemView.setTag(id);
+
+        Glide.with(holder.mDrinkImageView.getContext()).load("http://assets.absolutdrinks.com/drinks/300x400/" + drinkPic +".png").into(holder.mDrinkImageView);
+        holder.mDrinkTextView.setText(_drinkName);
 
     }
 
@@ -52,10 +65,10 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
     public int getItemCount() {
         if(mDrinkData == null)
             return 0;
-        return mDrinkData.length;
+        return mDrinkData.getCount();
     }
 
-    public void setDrinkData(Drink[] drinkData) {
+    void swapCursor(Cursor drinkData) {
         mDrinkData = drinkData;
         notifyDataSetChanged();
     }
@@ -73,8 +86,10 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
         @Override
         public void onClick(View view) {
             int adapterPosition = getAdapterPosition();
-            Drink drink = mDrinkData[adapterPosition];
-            mClickHandler.onClick(drink);
+            mDrinkData.moveToPosition(adapterPosition);
+            int drinkId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry._ID);
+            int id = mDrinkData.getInt(drinkId);
+            mClickHandler.onClick(id);
         }
     }
 }
