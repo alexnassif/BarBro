@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 
 import com.bumptech.glide.Glide;
 import com.example.raymond.barbro.data.BarBroContract;
+import com.example.raymond.barbro.data.Drink;
 
 /**
  * Created by raymond on 12/12/16.
@@ -28,7 +29,7 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
     }
 
     public interface DrinkAdapterOnClickHandler{
-        void onClick(int id);
+        void onClick(Drink drink);
     }
 
     @Override
@@ -88,8 +89,18 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
             int adapterPosition = getAdapterPosition();
             mDrinkData.moveToPosition(adapterPosition);
             int drinkId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry._ID);
+            int drinkName = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
+            int ingredients = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS);
+            int drinkPicId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC);
+
             int id = mDrinkData.getInt(drinkId);
-            mClickHandler.onClick(id);
+            String _drinkName = mDrinkData.getString(drinkName);
+            String drinkIngredients = mDrinkData.getString(ingredients);
+            String drinkPic = mDrinkData.getString(drinkPicId);
+
+            Drink drink = new Drink(_drinkName, drinkIngredients, drinkPic);
+
+            mClickHandler.onClick(drink);
         }
     }
 }

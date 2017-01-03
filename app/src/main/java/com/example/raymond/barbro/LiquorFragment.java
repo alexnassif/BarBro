@@ -28,7 +28,7 @@ import java.net.URL;
  * Created by raymond on 12/22/16.
  */
 
-public class LiquorFragment extends Fragment implements
+/*public class LiquorFragment extends Fragment implements
         LoaderManager.LoaderCallbacks<Drink[]>, DrinkAdapter.DrinkAdapterOnClickHandler {
 
     private static final int GITHUB_SEARCH_LOADER = 22;
@@ -90,24 +90,24 @@ public class LiquorFragment extends Fragment implements
         return myView;
     }
     private void showJsonDataView() {
-        /* First, make sure the error is invisible */
+        *//* First, make sure the error is invisible *//*
         mErrorMessageDisplay.setVisibility(View.INVISIBLE);
         mRecyclerView.setVisibility(View.VISIBLE);
-        /* Then, make sure the JSON data is visible */
+        *//* Then, make sure the JSON data is visible *//*
 
     }
 
-    /**
+    *//**
      * This method will make the error message visible and hide the JSON
      * View.
      * <p>
      * Since it is okay to redundantly set the visibility of a View, we don't
      * need to check whether each view is currently visible or invisible.
-     */
+     *//*
     private void showErrorMessage() {
-        /* First, hide the currently visible data */
+        *//* First, hide the currently visible data *//*
 
-        /* Then, show the error */
+        *//* Then, show the error *//*
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
     }
 
@@ -119,17 +119,17 @@ public class LiquorFragment extends Fragment implements
             @Override
             protected void onStartLoading() {
 
-                /*
+                *//*
                  * When we initially begin loading in the background, we want to display the
                  * loading indicator to the user
-                 */
+                 *//*
 
 
                 // COMPLETED (2) If mGithubJson is not null, deliver that result. Otherwise, force a load
-                /*
+                *//*
                  * If we already have cached results, just deliver them now. If we don't have any
                  * cached results, force a load.
-                 */
+                 *//*
                 if (mDrinksJson != null) {
                     deliverResult(mDrinksJson);
                 } else {
@@ -165,16 +165,16 @@ public class LiquorFragment extends Fragment implements
     @Override
     public void onLoadFinished(Loader<Drink[]> loader, Drink[] data) {
 
-        /* When we finish loading, we want to hide the loading indicator from the user. */
+        *//* When we finish loading, we want to hide the loading indicator from the user. *//*
         mLoadingIndicator.setVisibility(View.INVISIBLE);
         if(data != null) {
             mDrinkAdapter.setDrinkData(data);
         }
 
-        /*
+        *//*
          * If the results are null, we assume an error has occurred. There are much more robust
          * methods for checking errors, but we wanted to keep this particular example simple.
-         */
+         *//*
 
 
         if (null == data) {
@@ -187,10 +187,10 @@ public class LiquorFragment extends Fragment implements
 
     @Override
     public void onLoaderReset(Loader<Drink[]> loader) {
-        /*
+        *//*
          * We aren't using this method in our example application, but we are required to Override
          * it to implement the LoaderCallbacks<String> interface
-         */
+         *//*
         mLoadingIndicator.setVisibility(View.INVISIBLE);
     }
 
@@ -205,4 +205,4 @@ public class LiquorFragment extends Fragment implements
         intent.putExtra("drink", drink);
         startActivity(intent);
     }
-}
+}*/

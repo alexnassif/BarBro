@@ -11,12 +11,12 @@ public class Drink implements Serializable {
 
     private String drinkName;
     private String id;
-    private ArrayList<String> ingredients;
+    private String ingredients;
 
     public Drink(){
 
     }
-    public Drink(String drinkName, ArrayList<String> ingredients, String id){
+    public Drink(String drinkName, String ingredients, String id){
         this.drinkName = drinkName;
         this.ingredients = ingredients;
         this.id = id;
@@ -25,13 +25,13 @@ public class Drink implements Serializable {
     public String getDrinkName(){
         return drinkName;
     }
-    public ArrayList<String> getIngredients(){
+    public String getIngredients(){
         return ingredients;
     }
     public void setDrinkName(String drinkName){
         this.drinkName = drinkName;
     }
-    public void setIngredients(ArrayList<String> ingredients){
+    public void setIngredients(String ingredients){
         this.ingredients = ingredients;
     }
     @Override

@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.example.raymond.barbro.data.BarBroContract;
 import com.example.raymond.barbro.data.Drink;
 import com.example.raymond.barbro.utilities.BarJsonUtils;
+import com.example.raymond.barbro.utilities.FakeDataUtils;
 import com.example.raymond.barbro.utilities.NetworkUtils;
 
 import java.net.URL;
@@ -58,7 +59,7 @@ public class ResultsFragment extends Fragment implements
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        FakeDataUtils.insertFakeData(getContext());
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
@@ -173,7 +174,7 @@ public class ResultsFragment extends Fragment implements
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     String drink = (String) adapterView.getAdapter().getItem(i);
 
-                    drinkDetail(i);
+                    //drinkDetail(i);
                     acDrinkTextView.setText("");
                 }
             });
@@ -203,14 +204,14 @@ public class ResultsFragment extends Fragment implements
     }
 
     @Override
-    public void onClick(int id) {
+    public void onClick(Drink drink) {
 
-        drinkDetail(id);
+        drinkDetail(drink);
 
     }
-    public void drinkDetail(int id){
+    public void drinkDetail(Drink drink){
         Intent intent = new Intent(getContext(), DrinkDetailActivity.class);
-        intent.putExtra("drink", id);
+        intent.putExtra("drink", drink);
         startActivity(intent);
     }
 

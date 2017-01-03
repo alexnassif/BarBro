@@ -44,8 +44,8 @@ public final class BarJsonUtils {
             }
             String drinkName = drinkObject.getString(NAME);
             String id = drinkObject.getString(ID);
-            Drink drink = new Drink(drinkName, ingList, id);
-            parsedDrinkData[i] = drink;
+            //Drink drink = new Drink(drinkName, ingList, id);
+            //parsedDrinkData[i] = drink;
         }
 
         return parsedDrinkData;

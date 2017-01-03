@@ -94,10 +94,10 @@ public class MainActivity extends AppCompatActivity
                     .replace(R.id.content_frame, new ResultsFragment())
                     .commit();
         } else if (id == R.id.nav_liquor_type) {
-            fragmentManager
+            /*fragmentManager
                     .beginTransaction()
                     .replace(R.id.content_frame, new LiquorFragment())
-                    .commit();
+                    .commit();*/
 
         } else if (id == R.id.nav_share) {
 

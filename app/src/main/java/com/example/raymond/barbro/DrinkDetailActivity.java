@@ -27,12 +27,9 @@ public class DrinkDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         drink = (Drink) intent.getSerializableExtra("drink");
 
-        mDrinkTitle.setText(drink.getDrinkName());
-        String indredients = "";
-        ArrayList<String> dIngredients = drink.getIngredients();
-        for(int i = 0; i < dIngredients.size(); i++)
-            indredients += dIngredients.get(i) + "\n";
-        mIngredients.setText(indredients);
+        mDrinkTitle.setText(drink.getDrinkName());;
+        String ingredients = drink.getIngredients();
+        mIngredients.setText(ingredients);
         Glide.with(this).load("http://assets.absolutdrinks.com/drinks/300x400/" + drink.getId() +".png").into(mDrinkImageView);
 
 
