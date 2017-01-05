@@ -26,6 +26,10 @@
             android:authorities="com.example.raymond.barbro"
             android:name="com.example.raymond.barbro.data.BarBroContentProvider"
             android:exported="false"/>
+        <service
+            android:name=".sync.BarBroSyncIntentService"
+            android:exported="false" />
+
 
     </application>
 

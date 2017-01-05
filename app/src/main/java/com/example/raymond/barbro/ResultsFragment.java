@@ -21,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.raymond.barbro.data.BarBroContract;
 import com.example.raymond.barbro.data.Drink;
@@ -59,7 +60,7 @@ public class ResultsFragment extends Fragment implements
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        FakeDataUtils.insertFakeData(getContext());
+       // FakeDataUtils.insertFakeData(getContext());
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
@@ -167,6 +168,7 @@ public class ResultsFragment extends Fragment implements
         mLoadingIndicator.setVisibility(View.INVISIBLE);
         if(data != null) {
             mDrinkAdapter.swapCursor(data);
+            Toast.makeText(getContext(), "cursor length " + data.getCount(), Toast.LENGTH_LONG).show();
             ArrayAdapter<Drink> adapter = new ArrayAdapter(getContext(), android.R.layout.simple_dropdown_item_1line, new String[]{"vodka", "gin"});
             acDrinkTextView.setAdapter(adapter);
             acDrinkTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

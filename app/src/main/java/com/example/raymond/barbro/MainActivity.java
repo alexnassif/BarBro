@@ -14,6 +14,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.example.raymond.barbro.sync.BarBroSyncUtils;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -46,6 +49,7 @@ public class MainActivity extends AppCompatActivity
                 .beginTransaction()
                 .replace(R.id.content_frame, new ResultsFragment())
                 .commit();
+        BarBroSyncUtils.initialize(this);
     }
 
     @Override
