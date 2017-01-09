@@ -70,7 +70,7 @@ public class DatabaseTest {
         /* This Cursor will contain the names of each table in our database */
         Cursor tableNameCursor = database.rawQuery(
                 "SELECT name FROM sqlite_master WHERE type='table' AND name='" +
-                        BarBroContract.BarBroEntry.TABLE_NAME + "'",
+                        BarBroContract.FavoritesEntry.TABLE_NAME + "'",
                 null);
 
         /*
@@ -84,7 +84,7 @@ public class DatabaseTest {
 
         /* If this fails, it means that your database doesn't contain the expected table(s) */
         assertEquals("Error: Your database was created without the expected tables.",
-                BarBroContract.BarBroEntry.TABLE_NAME, tableNameCursor.getString(0));
+                BarBroContract.FavoritesEntry.TABLE_NAME, tableNameCursor.getString(0));
 
         /* Always close a cursor when you are done with it */
         tableNameCursor.close();
@@ -106,12 +106,12 @@ public class DatabaseTest {
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
         ContentValues testValues = new ContentValues();
-        testValues.put(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME, "test name");
-        testValues.put(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS, "test ingredients");
-        testValues.put(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC, "test_pic");
+        testValues.put(BarBroContract.FavoritesEntry.COLUMN_DRINK_ID, 3);
+//        testValues.put(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS, "test ingredients");
+//        testValues.put(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC, "test_pic");
         /* Insert ContentValues into database and get first row ID back */
         long firstRowId = database.insert(
-                BarBroContract.BarBroEntry.TABLE_NAME,
+                BarBroContract.FavoritesEntry.TABLE_NAME,
                 null,
                 testValues);
 
@@ -124,7 +124,7 @@ public class DatabaseTest {
          */
         Cursor wCursor = database.query(
                 /* Name of table on which to perform the query */
-                BarBroContract.BarBroEntry.TABLE_NAME,
+                BarBroContract.FavoritesEntry.TABLE_NAME,
                 /* Columns; leaving this null returns every column in the table */
                 null,
                 /* Optional specification for columns in the "where" clause above */
@@ -168,19 +168,19 @@ public class DatabaseTest {
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
         ContentValues testValues = new ContentValues();
-        testValues.put(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME, "test name");
-        testValues.put(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS, "test ingredients");
-        testValues.put(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC, "Test_pic");
+        testValues.put(BarBroContract.FavoritesEntry.COLUMN_DRINK_ID, 3);
+//        testValues.put(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS, "test ingredients");
+//        testValues.put(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC, "Test_pic");
 
         /* Insert ContentValues into database and get first row ID back */
         long firstRowId = database.insert(
-                BarBroContract.BarBroEntry.TABLE_NAME,
+                BarBroContract.FavoritesEntry.TABLE_NAME,
                 null,
                 testValues);
 
         /* Insert ContentValues into database and get another row ID back */
         long secondRowId = database.insert(
-                BarBroContract.BarBroEntry.TABLE_NAME,
+                BarBroContract.FavoritesEntry.TABLE_NAME,
                 null,
                 testValues);
 
@@ -198,78 +198,78 @@ public class DatabaseTest {
      * @throws Exception in case the constructor hasn't been implemented yet
      */
     @Test
-    public void upgrade_database_test() throws Exception{
-
-        /* Insert 2 rows before we upgrade to check that we dropped the database correctly */
-
-        /* Use reflection to try to run the correct constructor whenever implemented */
-        SQLiteOpenHelper dbHelper =
-                (SQLiteOpenHelper) mDbHelperClass.getConstructor(Context.class).newInstance(mContext);
-
-        /* Use WaitlistDbHelper to get access to a writable database */
-        SQLiteDatabase database = dbHelper.getWritableDatabase();
-
-        ContentValues testValues = new ContentValues();
-        testValues.put(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME, "test name");
-        testValues.put(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS, "test ingredients");
-        testValues.put(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC, "test_pic");
-
-        /* Insert ContentValues into database and get first row ID back */
-        long firstRowId = database.insert(
-                BarBroContract.BarBroEntry.TABLE_NAME,
-                null,
-                testValues);
-
-        /* Insert ContentValues into database and get another row ID back */
-        long secondRowId = database.insert(
-                BarBroContract.BarBroEntry.TABLE_NAME,
-                null,
-                testValues);
-
-        dbHelper.onUpgrade(database, 0, 1);
-        database = dbHelper.getReadableDatabase();
-
-        /* This Cursor will contain the names of each table in our database */
-        Cursor tableNameCursor = database.rawQuery(
-                "SELECT name FROM sqlite_master WHERE type='table' AND name='" +
-                        BarBroContract.BarBroEntry.TABLE_NAME + "'",
-                null);
-
-        assertTrue(tableNameCursor.getCount() == 1);
-
-        /*
-         * Query the database and receive a Cursor. A Cursor is the primary way to interact with
-         * a database in Android.
-         */
-        Cursor wCursor = database.query(
-                /* Name of table on which to perform the query */
-                BarBroContract.BarBroEntry.TABLE_NAME,
-                /* Columns; leaving this null returns every column in the table */
-                null,
-                /* Optional specification for columns in the "where" clause above */
-                null,
-                /* Values for "where" clause */
-                null,
-                /* Columns to group by */
-                null,
-                /* Columns to filter by row groups */
-                null,
-                /* Sort order to return in Cursor */
-                null);
-
-        /* Cursor.moveToFirst will return false if there are no records returned from your query */
-
-        assertFalse("Database doesn't seem to have been dropped successfully when upgrading",
-                wCursor.moveToFirst());
-
-        tableNameCursor.close();
-        database.close();
-    }
+//    public void upgrade_database_test() throws Exception{
+//
+//        /* Insert 2 rows before we upgrade to check that we dropped the database correctly */
+//
+//        /* Use reflection to try to run the correct constructor whenever implemented */
+//        SQLiteOpenHelper dbHelper =
+//                (SQLiteOpenHelper) mDbHelperClass.getConstructor(Context.class).newInstance(mContext);
+//
+//        /* Use WaitlistDbHelper to get access to a writable database */
+//        SQLiteDatabase database = dbHelper.getWritableDatabase();
+//
+//        ContentValues testValues = new ContentValues();
+//        testValues.put(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME, "test name");
+//        testValues.put(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS, "test ingredients");
+//        testValues.put(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC, "test_pic");
+//
+//        /* Insert ContentValues into database and get first row ID back */
+//        long firstRowId = database.insert(
+//                BarBroContract.BarBroEntry.TABLE_NAME,
+//                null,
+//                testValues);
+//
+//        /* Insert ContentValues into database and get another row ID back */
+//        long secondRowId = database.insert(
+//                BarBroContract.BarBroEntry.TABLE_NAME,
+//                null,
+//                testValues);
+//
+//        dbHelper.onUpgrade(database, 0, 1);
+//        database = dbHelper.getReadableDatabase();
+//
+//        /* This Cursor will contain the names of each table in our database */
+//        Cursor tableNameCursor = database.rawQuery(
+//                "SELECT name FROM sqlite_master WHERE type='table' AND name='" +
+//                        BarBroContract.BarBroEntry.TABLE_NAME + "'",
+//                null);
+//
+//        assertTrue(tableNameCursor.getCount() == 1);
+//
+//        /*
+//         * Query the database and receive a Cursor. A Cursor is the primary way to interact with
+//         * a database in Android.
+//         */
+//        Cursor wCursor = database.query(
+//                /* Name of table on which to perform the query */
+//                BarBroContract.BarBroEntry.TABLE_NAME,
+//                /* Columns; leaving this null returns every column in the table */
+//                null,
+//                /* Optional specification for columns in the "where" clause above */
+//                null,
+//                /* Values for "where" clause */
+//                null,
+//                /* Columns to group by */
+//                null,
+//                /* Columns to filter by row groups */
+//                null,
+//                /* Sort order to return in Cursor */
+//                null);
+//
+//        /* Cursor.moveToFirst will return false if there are no records returned from your query */
+//
+//        assertFalse("Database doesn't seem to have been dropped successfully when upgrading",
+//                wCursor.moveToFirst());
+//
+//        tableNameCursor.close();
+//        database.close();
+//    }
 
     /**
      * Deletes the entire database.
      */
-    void deleteTheDatabase(){
+    public void deleteTheDatabase(){
         try {
             /* Use reflection to get the database name from the db helper class */
             Field f = mDbHelperClass.getDeclaredField("DATABASE_NAME");

@@ -20,12 +20,14 @@ public class BarBroContentProvider extends ContentProvider {
 
     private BarBroDbHelper dbHelper;
     public static final int DRINKS = 100;
+    public static final int FAVORITES = 200;
     public static final int DRINKS_WITH_ID = 101;
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
     public static UriMatcher buildUriMatcher(){
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(BarBroContract.AUTHORITY, BarBroContract.PATH_DRINKS, DRINKS);
+        uriMatcher.addURI(BarBroContract.AUTHORITY, BarBroContract.PATH_FAVES, FAVORITES);
         uriMatcher.addURI(BarBroContract.AUTHORITY, BarBroContract.PATH_DRINKS + "/#", DRINKS_WITH_ID);
 
         return uriMatcher;
@@ -55,6 +57,15 @@ public class BarBroContentProvider extends ContentProvider {
                         null,
                         sortOrder);
                 break;
+            case FAVORITES:
+                retCursor = db.query(BarBroContract.FavoritesEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder);
+                break;
             default:
                 throw new UnsupportedOperationException("Uri doesn't match " + uri);
 
@@ -77,13 +88,20 @@ public class BarBroContentProvider extends ContentProvider {
         Uri retUri;
 
         switch (match){
-            case DRINKS:
+            case DRINKS:{
                 long id = db.insert(BarBroContract.BarBroEntry.TABLE_NAME, null, values);
                 if(id > 0)
                     retUri = ContentUris.withAppendedId(uri, id);
                 else
                     throw new SQLException("Failed to insert row into " + uri);
-                break;
+                break;}
+            case FAVORITES:{
+                long id = db.insert(BarBroContract.FavoritesEntry.TABLE_NAME, null, values);
+                if(id > 0)
+                    retUri = ContentUris.withAppendedId(uri, id);
+                else
+                    throw new SQLException("Failed to insert row into " + uri);
+                break;}
             default:
                 throw new UnsupportedOperationException("Unknown uri " + uri);
 

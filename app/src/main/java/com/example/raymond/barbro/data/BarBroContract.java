@@ -13,6 +13,7 @@ public class BarBroContract {
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
     public static final String PATH_DRINKS = "drinks";
+    public static final String PATH_FAVES = "favorites";
 
     public static final class BarBroEntry implements BaseColumns {
         public static final Uri CONTENT_URI =
@@ -25,6 +26,10 @@ public class BarBroContract {
     }
 
     public static final class FavoritesEntry implements BaseColumns {
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_FAVES).build();
+        public static final String TABLE_NAME = "favorites";
+        public static final String COLUMN_DRINK_ID = "drink_id";
 
     }
 }

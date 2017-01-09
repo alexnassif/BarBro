@@ -13,6 +13,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,7 @@ public class ResultsFragment extends Fragment implements
      * to any number you like, as long as you use the same variable name.
      */
     private static final int GITHUB_SEARCH_LOADER = 22;
+    private static final int FAVE_LOADER = 23;
 
     private RecyclerView mRecyclerView;
 
@@ -67,6 +69,35 @@ public class ResultsFragment extends Fragment implements
         mRecyclerView.setHasFixedSize(true);
         mDrinkAdapter = new DrinkAdapter(this);
         mRecyclerView.setAdapter(mDrinkAdapter);
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            // Called when a user swipes left or right on a ViewHolder
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                // Here is where you'll implement swipe to delete
+
+                // COMPLETED (1) Construct the URI for the item to delete
+                //[Hint] Use getTag (from the adapter code) to get the id of the swiped item
+                // Retrieve the id of the task to delete
+                int id = (int) viewHolder.itemView.getTag();
+
+                // Build appropriate uri with String row id appended
+                String stringId = Integer.toString(id);
+                Uri uri = BarBroContract.FavoritesEntry.CONTENT_URI;
+                uri = uri.buildUpon().appendPath(stringId).build();
+
+                // COMPLETED (2) Delete a single row of data using a ContentResolver
+                getContext().getContentResolver().delete(uri, null, null);
+
+                // COMPLETED (3) Restart the loader to re-query for all tasks after a deletion
+                //getLoaderManager().restartLoader(TASK_LOADER_ID, null, this);
+
+            }
+        }).attachToRecyclerView(mRecyclerView);
         getLoaderManager().initLoader(GITHUB_SEARCH_LOADER, null, this);
 
     }
@@ -144,14 +175,23 @@ public class ResultsFragment extends Fragment implements
     public Loader<Cursor> onCreateLoader(int id, final Bundle args) {
 
         switch (id){
-            case GITHUB_SEARCH_LOADER:
+            case GITHUB_SEARCH_LOADER:{
                 Uri uriAllDrinks = BarBroContract.BarBroEntry.CONTENT_URI;
                 return new CursorLoader(getContext(),
                         uriAllDrinks,
                         null,
                         null,
                         null,
+                        null);}
+            case FAVE_LOADER:{
+                Uri uriAllDrinks = BarBroContract.FavoritesEntry.CONTENT_URI;
+                return new CursorLoader(getContext(),
+                        uriAllDrinks,
+                        null,
+                        null,
+                        null,
                         null);
+            }
             default:
                 throw new RuntimeException("Loader Not Implemented: " + id);
 

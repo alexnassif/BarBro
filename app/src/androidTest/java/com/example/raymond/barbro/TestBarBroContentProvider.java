@@ -117,9 +117,9 @@ public class TestBarBroContentProvider {
     //================================================================================
 
 
-    private static final Uri TEST_TASKS = BarBroContract.BarBroEntry.CONTENT_URI;
+    private static final Uri TEST_TASKS = BarBroContract.FavoritesEntry.CONTENT_URI;
     // Content URI for a single task with id = 1
-    private static final Uri TEST_TASK_WITH_ID = TEST_TASKS.buildUpon().appendPath("1").build();
+    //private static final Uri TEST_TASK_WITH_ID = TEST_TASKS.buildUpon().appendPath("1").build();
 
 
     /**
@@ -136,19 +136,19 @@ public class TestBarBroContentProvider {
         /* Test that the code returned from our matcher matches the expected TASKS int */
         String tasksUriDoesNotMatch = "Error: The DRINKS URI was matched incorrectly.";
         int actualTasksMatchCode = testMatcher.match(TEST_TASKS);
-        int expectedTasksMatchCode = BarBroContentProvider.DRINKS;
+        int expectedTasksMatchCode = BarBroContentProvider.FAVORITES;
         assertEquals(tasksUriDoesNotMatch,
                 actualTasksMatchCode,
                 expectedTasksMatchCode);
 
         /* Test that the code returned from our matcher matches the expected TASK_WITH_ID */
-        String taskWithIdDoesNotMatch =
-                "Error: The DRINKS_WITH_ID URI was matched incorrectly.";
-        int actualTaskWithIdCode = testMatcher.match(TEST_TASK_WITH_ID);
-        int expectedTaskWithIdCode = BarBroContentProvider.DRINKS_WITH_ID;
-        assertEquals(taskWithIdDoesNotMatch,
-                actualTaskWithIdCode,
-                expectedTaskWithIdCode);
+//        String taskWithIdDoesNotMatch =
+//                "Error: The DRINKS_WITH_ID URI was matched incorrectly.";
+//        int actualTaskWithIdCode = testMatcher.match(TEST_TASK_WITH_ID);
+//        int expectedTaskWithIdCode = BarBroContentProvider.DRINKS_WITH_ID;
+//        assertEquals(taskWithIdDoesNotMatch,
+//                actualTaskWithIdCode,
+//                expectedTaskWithIdCode);
     }
 
 
@@ -161,49 +161,49 @@ public class TestBarBroContentProvider {
      * Tests inserting a single row of data via a ContentResolver
      */
 //    @Test
-//    public void testInsert() {
-//
-//        /* Create values to insert */
-//        ContentValues testTaskValues = new ContentValues();
-//        testTaskValues.put(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME, "Alex Test Drink");
+    public void testInsert() {
+
+        /* Create values to insert */
+        ContentValues testTaskValues = new ContentValues();
+        testTaskValues.put(BarBroContract.FavoritesEntry.COLUMN_DRINK_ID, 3);
 //        testTaskValues.put(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS, "A whole lotta love");
 //        testTaskValues.put(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC, "Alex_Test_pic");
-//
-//        /* TestContentObserver allows us to test if notifyChange was called appropriately */
-//        TestUtilities.TestContentObserver taskObserver = TestUtilities.getTestContentObserver();
-//
-//        ContentResolver contentResolver = mContext.getContentResolver();
-//
-//        /* Register a content observer to be notified of changes to data at a given URI (tasks) */
-//        contentResolver.registerContentObserver(
-//                /* URI that we would like to observe changes to */
-//                BarBroContract.BarBroEntry.CONTENT_URI,
-//                /* Whether or not to notify us if descendants of this URI change */
-//                true,
-//                /* The observer to register (that will receive notifyChange callbacks) */
-//                taskObserver);
-//
-//
-//        Uri uri = contentResolver.insert(BarBroContract.BarBroEntry.CONTENT_URI, testTaskValues);
-//
-//
-//        Uri expectedUri = ContentUris.withAppendedId(BarBroContract.BarBroEntry.CONTENT_URI, 1);
-//
-//        String insertProviderFailed = "Unable to insert item through Provider";
-//        assertEquals(insertProviderFailed, uri, expectedUri);
-//
-//        /*
-//         * If this fails, it's likely you didn't call notifyChange in your insert method from
-//         * your ContentProvider.
-//         */
-//        taskObserver.waitForNotificationOrFail();
-//
-//        /*
-//         * waitForNotificationOrFail is synchronous, so after that call, we are done observing
-//         * changes to content and should therefore unregister this observer.
-//         */
-//        contentResolver.unregisterContentObserver(taskObserver);
-//    }
+
+        /* TestContentObserver allows us to test if notifyChange was called appropriately */
+        TestUtilities.TestContentObserver taskObserver = TestUtilities.getTestContentObserver();
+
+        ContentResolver contentResolver = mContext.getContentResolver();
+
+        /* Register a content observer to be notified of changes to data at a given URI (tasks) */
+        contentResolver.registerContentObserver(
+                /* URI that we would like to observe changes to */
+                BarBroContract.FavoritesEntry.CONTENT_URI,
+                /* Whether or not to notify us if descendants of this URI change */
+                true,
+                /* The observer to register (that will receive notifyChange callbacks) */
+                taskObserver);
+
+
+        Uri uri = contentResolver.insert(BarBroContract.FavoritesEntry.CONTENT_URI, testTaskValues);
+
+
+        Uri expectedUri = ContentUris.withAppendedId(BarBroContract.FavoritesEntry.CONTENT_URI, 1);
+
+        String insertProviderFailed = "Unable to insert item through Provider";
+        assertEquals(insertProviderFailed, uri, expectedUri);
+
+        /*
+         * If this fails, it's likely you didn't call notifyChange in your insert method from
+         * your ContentProvider.
+         */
+        taskObserver.waitForNotificationOrFail();
+
+        /*
+         * waitForNotificationOrFail is synchronous, so after that call, we are done observing
+         * changes to content and should therefore unregister this observer.
+         */
+        contentResolver.unregisterContentObserver(taskObserver);
+    }
 
 
     //================================================================================
@@ -223,14 +223,14 @@ public class TestBarBroContentProvider {
 
         /* Create values to insert */
         ContentValues testTaskValues = new ContentValues();
-        testTaskValues.put(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME, "Alex Test Drink");
-        testTaskValues.put(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS, "A whole lotta love");
-        testTaskValues.put(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC, "Alex_Test_pic");
+        testTaskValues.put(BarBroContract.FavoritesEntry.COLUMN_DRINK_ID, 3);
+//        testTaskValues.put(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS, "A whole lotta love");
+//        testTaskValues.put(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC, "Alex_Test_pic");
 
         /* Insert ContentValues into database and get a row ID back */
         long taskRowId = database.insert(
                 /* Table to insert values into */
-                BarBroContract.BarBroEntry.TABLE_NAME,
+                BarBroContract.FavoritesEntry.TABLE_NAME,
                 null,
                 /* Values to insert into table */
                 testTaskValues);
@@ -243,7 +243,7 @@ public class TestBarBroContentProvider {
 
         /* Perform the ContentProvider query */
         Cursor taskCursor = mContext.getContentResolver().query(
-                BarBroContract.BarBroEntry.CONTENT_URI,
+                BarBroContract.FavoritesEntry.CONTENT_URI,
                 /* Columns; leaving this null returns every column in the table */
                 null,
                 /* Optional specification for columns in the "where" clause above */
