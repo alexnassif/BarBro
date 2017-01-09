@@ -40,7 +40,8 @@ public class ResultsFragment extends Fragment implements
 
     /* A constant to save and restore the URL that is being displayed */
     private static final String SEARCH_QUERY_URL_EXTRA = "query";
-
+    private static final String ARG_PARAM1 = "param1";
+    private boolean mParam1 = false;
     /*
      * This number will uniquely identify our Loader and is chosen arbitrarily. You can change this
      * to any number you like, as long as you use the same variable name.
@@ -58,7 +59,21 @@ public class ResultsFragment extends Fragment implements
     private View myView;
     private AutoCompleteTextView acDrinkTextView;
 
+    public static ResultsFragment newInstance(boolean param1) {
+        ResultsFragment fragment = new ResultsFragment();
+        Bundle args = new Bundle();
+        args.putBoolean(ARG_PARAM1, param1);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getBoolean(ARG_PARAM1);
+        }
+    }
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -69,36 +84,42 @@ public class ResultsFragment extends Fragment implements
         mRecyclerView.setHasFixedSize(true);
         mDrinkAdapter = new DrinkAdapter(this);
         mRecyclerView.setAdapter(mDrinkAdapter);
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return false;
-            }
 
-            // Called when a user swipes left or right on a ViewHolder
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                // Here is where you'll implement swipe to delete
+        if(!mParam1) {
+            new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+                @Override
+                public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                    return false;
+                }
 
-                // COMPLETED (1) Construct the URI for the item to delete
-                //[Hint] Use getTag (from the adapter code) to get the id of the swiped item
-                // Retrieve the id of the task to delete
-                int id = (int) viewHolder.itemView.getTag();
+                // Called when a user swipes left or right on a ViewHolder
+                @Override
+                public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                    // Here is where you'll implement swipe to delete
 
-                // Build appropriate uri with String row id appended
-                String stringId = Integer.toString(id);
-                Uri uri = BarBroContract.FavoritesEntry.CONTENT_URI;
-                uri = uri.buildUpon().appendPath(stringId).build();
+                    // COMPLETED (1) Construct the URI for the item to delete
+                    //[Hint] Use getTag (from the adapter code) to get the id of the swiped item
+                    // Retrieve the id of the task to delete
+                    int id = (int) viewHolder.itemView.getTag();
 
-                // COMPLETED (2) Delete a single row of data using a ContentResolver
-                getContext().getContentResolver().delete(uri, null, null);
+                    // Build appropriate uri with String row id appended
+                    String stringId = Integer.toString(id);
+                    Uri uri = BarBroContract.FavoritesEntry.CONTENT_URI;
+                    uri = uri.buildUpon().appendPath(stringId).build();
 
-                // COMPLETED (3) Restart the loader to re-query for all tasks after a deletion
-                //getLoaderManager().restartLoader(TASK_LOADER_ID, null, this);
+                    // COMPLETED (2) Delete a single row of data using a ContentResolver
+                    getContext().getContentResolver().delete(uri, null, null);
 
-            }
-        }).attachToRecyclerView(mRecyclerView);
-        getLoaderManager().initLoader(GITHUB_SEARCH_LOADER, null, this);
+                    // COMPLETED (3) Restart the loader to re-query for all tasks after a deletion
+                    //getLoaderManager().restartLoader(TASK_LOADER_ID, null, this);
+
+                }
+            }).attachToRecyclerView(mRecyclerView);
+        }
+        if(mParam1 == false)
+            getLoaderManager().initLoader(GITHUB_SEARCH_LOADER, null, this);
+        else
+            getLoaderManager().initLoader(FAVE_LOADER, null, this);
 
     }
 

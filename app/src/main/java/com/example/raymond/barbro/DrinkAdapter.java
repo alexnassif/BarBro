@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
@@ -48,6 +49,7 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
         int drinkName = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
         int ingredients = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS);
         int drinkPicId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC);
+        int faveId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_FAVORITE);
 
         mDrinkData.moveToPosition(position);
 
@@ -55,10 +57,13 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
         String _drinkName = mDrinkData.getString(drinkName);
         String drinkIngredients = mDrinkData.getString(ingredients);
         String drinkPic = mDrinkData.getString(drinkPicId);
+        int fave = mDrinkData.getInt(faveId);
         holder.itemView.setTag(id);
 
         Glide.with(holder.mDrinkImageView.getContext()).load("http://assets.absolutdrinks.com/drinks/300x400/" + drinkPic +".png").into(holder.mDrinkImageView);
         holder.mDrinkTextView.setText(_drinkName);
+        if(fave == 1)
+            holder.mFaveButtonView.setImageResource(R.drawable.ic_fave_drink);
 
     }
 
@@ -77,15 +82,18 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
     public class DrinkAdapterViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
         public final TextView mDrinkTextView;
         public final ImageView mDrinkImageView;
+        public final ImageButton mFaveButtonView;
         public DrinkAdapterViewHolder(View itemView) {
             super(itemView);
             mDrinkImageView = (ImageView) itemView.findViewById(R.id.drink_image);
             mDrinkTextView = (TextView) itemView.findViewById(R.id.drink_data);
+            mFaveButtonView = (ImageButton) itemView.findViewById(R.id.fave_button);
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
+
             int adapterPosition = getAdapterPosition();
             mDrinkData.moveToPosition(adapterPosition);
             int drinkId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry._ID);
