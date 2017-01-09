@@ -57,7 +57,8 @@ public class BarBroContentProvider extends ContentProvider {
                         null,
                         sortOrder);
                 break;
-            case FAVORITES:
+            case DRINKS_WITH_ID:
+                String id = uri.getPathSegments().get(1);
                 retCursor = db.query(BarBroContract.FavoritesEntry.TABLE_NAME,
                         projection,
                         selection,
@@ -117,7 +118,24 @@ public class BarBroContentProvider extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        return 0;
+        final SQLiteDatabase db = dbHelper.getWritableDatabase();
+        int match = sUriMatcher.match(uri);
+        int retInt;
+
+        switch (match){
+            case DRINKS_WITH_ID:
+                String id = uri.getPathSegments().get(1);
+                retInt = db.update(BarBroContract.BarBroEntry.TABLE_NAME, values, "_id=?", new String[]{id});
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+
+        }
+        if (retInt != 0) {
+            //set notifications if a task was updated
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return retInt;
     }
 
     public int bulkInsert(@NonNull Uri uri, @NonNull ContentValues[] values){

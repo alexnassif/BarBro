@@ -1,7 +1,10 @@
 package com.example.raymond.barbro;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,11 +25,12 @@ import com.example.raymond.barbro.data.Drink;
 public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapterViewHolder> {
 
     private Cursor mDrinkData;
-
+    private Context context;
     private final DrinkAdapterOnClickHandler mClickHandler;
 
-    public DrinkAdapter(DrinkAdapterOnClickHandler handler) {
+    public DrinkAdapter(Context context, DrinkAdapterOnClickHandler handler) {
         mClickHandler = handler;
+        this.context = context;
     }
 
     public interface DrinkAdapterOnClickHandler{
@@ -54,6 +58,7 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
         mDrinkData.moveToPosition(position);
 
         final int id = mDrinkData.getInt(drinkId);
+        final String stringID = Integer.toString(id);
         String _drinkName = mDrinkData.getString(drinkName);
         String drinkIngredients = mDrinkData.getString(ingredients);
         String drinkPic = mDrinkData.getString(drinkPicId);
@@ -62,8 +67,46 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
 
         Glide.with(holder.mDrinkImageView.getContext()).load("http://assets.absolutdrinks.com/drinks/300x400/" + drinkPic +".png").into(holder.mDrinkImageView);
         holder.mDrinkTextView.setText(_drinkName);
-        if(fave == 1)
+        if(fave == 1) {
             holder.mFaveButtonView.setImageResource(R.drawable.ic_fave_drink);
+            holder.mFaveButtonView.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    new AsyncTask<Void, Void, Void>() {
+                        @Override
+                        protected Void doInBackground(Void... voids) {
+                            ContentValues mUpdateValues = new ContentValues();
+                            mUpdateValues.put(BarBroContract.BarBroEntry.COLUMN_FAVORITE, 0);
+                            Uri uri = BarBroContract.BarBroEntry.CONTENT_URI;
+                            uri = uri.buildUpon().appendPath(stringID).build();
+                            context.getContentResolver().update(uri, mUpdateValues, null, null);
+                            return null;
+                        }
+                    }.execute();
+
+                }
+            });
+
+        }
+        else{
+            holder.mFaveButtonView.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    new AsyncTask<Void, Void, Void>() {
+                        @Override
+                        protected Void doInBackground(Void... voids) {
+                            ContentValues mUpdateValues = new ContentValues();
+                            mUpdateValues.put(BarBroContract.BarBroEntry.COLUMN_FAVORITE, 1);
+                            Uri uri = BarBroContract.BarBroEntry.CONTENT_URI;
+                            uri = uri.buildUpon().appendPath(stringID).build();
+                            context.getContentResolver().update(uri, mUpdateValues, null, null);
+                            return null;
+                        }
+                    }.execute();
+
+                }
+            });
+        }
 
     }
 

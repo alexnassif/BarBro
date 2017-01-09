@@ -82,10 +82,10 @@ public class ResultsFragment extends Fragment implements
                 = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
-        mDrinkAdapter = new DrinkAdapter(this);
+        mDrinkAdapter = new DrinkAdapter(getContext(), this);
         mRecyclerView.setAdapter(mDrinkAdapter);
 
-        if(!mParam1) {
+        if(mParam1) {
             new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
                 @Override
                 public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
@@ -205,12 +205,12 @@ public class ResultsFragment extends Fragment implements
                         null,
                         null);}
             case FAVE_LOADER:{
-                Uri uriAllDrinks = BarBroContract.FavoritesEntry.CONTENT_URI;
+                Uri uriAllDrinks = BarBroContract.BarBroEntry.CONTENT_URI;
                 return new CursorLoader(getContext(),
                         uriAllDrinks,
                         null,
-                        null,
-                        null,
+                        BarBroContract.BarBroEntry.COLUMN_FAVORITE + "=?",
+                        new String[]{"1"},
                         null);
             }
             default:

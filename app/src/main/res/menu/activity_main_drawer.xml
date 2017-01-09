@@ -6,8 +6,8 @@
             android:id="@+id/nav_results_layout"
             android:title="All Drinks" />
         <item
-            android:id="@+id/nav_liquor_type"
-            android:title="Liquor Type" />
+            android:id="@+id/nav_favorite_type"
+            android:title="Favorites" />
     </group>
 
     <item android:title="Communicate">

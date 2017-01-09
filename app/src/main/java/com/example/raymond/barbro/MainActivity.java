@@ -97,7 +97,11 @@ public class MainActivity extends AppCompatActivity
                     .beginTransaction()
                     .replace(R.id.content_frame, new ResultsFragment())
                     .commit();
-        } else if (id == R.id.nav_liquor_type) {
+        } else if (id == R.id.nav_favorite_type) {
+            fragmentManager
+                    .beginTransaction()
+                    .replace(R.id.content_frame, ResultsFragment.newInstance(true))
+                    .commit();
             /*fragmentManager
                     .beginTransaction()
                     .replace(R.id.content_frame, new LiquorFragment())
