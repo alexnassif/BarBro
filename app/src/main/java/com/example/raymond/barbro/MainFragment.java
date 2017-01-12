@@ -1,52 +1,58 @@
 package com.example.raymond.barbro;
 
 import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
+import com.example.raymond.barbro.data.BarBroContract;
+import com.example.raymond.barbro.data.Drink;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link MainFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link MainFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class MainFragment extends Fragment {
+
+
+public class MainFragment extends Fragment implements
+        LoaderManager.LoaderCallbacks<Cursor>, SmallDrinkAdapter.SmallDrinkAdapterOnClickHandler, View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private boolean mParam1 = false;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
+    //private OnFragmentInteractionListener mListener;
+    private static final int RANDOM_DRINKS_LOADER = 22;
+    private static final int FAVE_DRINK_LOADER = 23;
+
+    private RecyclerView mRecyclerView_Faves;
+    private RecyclerView mRecyclerView_Randoms;
+
+    private SmallDrinkAdapter mDrinkAdapter_Faves;
+    private SmallDrinkAdapter mDrinkAdapter_Randoms;
+    private Button faves_button;
+    private Button randoms_button;
+    private View myView;
 
     public MainFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MainFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MainFragment newInstance(String param1, String param2) {
+    public static MainFragment newInstance(boolean param1) {
         MainFragment fragment = new MainFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putBoolean(ARG_PARAM1, param1);
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,40 +61,143 @@ public class MainFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mParam1 = getArguments().getBoolean(ARG_PARAM1);
         }
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        LinearLayoutManager layoutManager_faves
+                = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        mRecyclerView_Faves.setLayoutManager(layoutManager_faves);
+        mRecyclerView_Faves.setHasFixedSize(true);
+        mDrinkAdapter_Faves = new SmallDrinkAdapter(getContext(), this);
+        mRecyclerView_Faves.setAdapter(mDrinkAdapter_Faves);
+
+        LinearLayoutManager layoutManager_randoms
+                = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        mRecyclerView_Randoms.setLayoutManager(layoutManager_randoms);
+        mRecyclerView_Randoms.setHasFixedSize(true);
+        mDrinkAdapter_Randoms = new SmallDrinkAdapter(getContext(), this);
+        mRecyclerView_Randoms.setAdapter(mDrinkAdapter_Randoms);
+
+        faves_button.setOnClickListener(this);
+        randoms_button.setOnClickListener(this);
+
+        getLoaderManager().initLoader(FAVE_DRINK_LOADER, null, this);
+        getLoaderManager().initLoader(RANDOM_DRINKS_LOADER, null, this);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main, container, false);
+        myView = inflater.inflate(R.layout.fragment_main, container, false);
+
+        mRecyclerView_Randoms = (RecyclerView) myView.findViewById(R.id.random_recyclerView);
+        mRecyclerView_Faves =  (RecyclerView) myView.findViewById(R.id.fave_recyclerView);
+        faves_button = (Button) myView.findViewById(R.id.more_fave_button);
+        randoms_button = (Button) myView.findViewById(R.id.random_button);
+
+        return myView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+//    public void onButtonPressed(Uri uri) {
+//        if (mListener != null) {
+//            mListener.onFragmentInteraction(uri);
+//        }
+//    }
+//
+//    @Override
+//    public void onAttach(Context context) {
+//        super.onAttach(context);
+//        if (context instanceof OnFragmentInteractionListener) {
+//            mListener = (OnFragmentInteractionListener) context;
+//        } else {
+//            throw new RuntimeException(context.toString()
+//                    + " must implement OnFragmentInteractionListener");
+//        }
+//    }
+
+//    @Override
+//    public void onDetach() {
+//        super.onDetach();
+//        mListener = null;
+//    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        switch (id){
+            case RANDOM_DRINKS_LOADER:{
+                Uri uriAllDrinks = BarBroContract.BarBroEntry.CONTENT_URI;
+                return new CursorLoader(getContext(),
+                        uriAllDrinks,
+                        null,
+                        null,
+                        null,
+                        null);}
+            case FAVE_DRINK_LOADER:{
+                Uri uriAllDrinks = BarBroContract.BarBroEntry.CONTENT_URI;
+                return new CursorLoader(getContext(),
+                        uriAllDrinks,
+                        null,
+                        BarBroContract.BarBroEntry.COLUMN_FAVORITE + "=?",
+                        new String[]{"1"},
+                        null);
+            }
+            default:
+                throw new RuntimeException("Loader Not Implemented: " + id);
+
         }
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+        if(data != null) {
+            if(loader.getId() == FAVE_DRINK_LOADER)
+                mDrinkAdapter_Faves.swapCursor(data);
+            else
+                mDrinkAdapter_Randoms.swapCursor(data);
         }
+
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+    public void onLoaderReset(Loader<Cursor> loader) {
+
+    }
+
+    @Override
+    public void onClick(Drink drink) {
+        drinkDetail(drink);
+    }
+
+    public void drinkDetail(Drink drink){
+        Intent intent = new Intent(getContext(), DrinkDetailActivity.class);
+        intent.putExtra("drink", drink);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onClick(View view) {
+        FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
+        if(view.getId() == R.id.random_button) {
+            fragmentManager
+                    .replace(R.id.content_frame, new ResultsFragment())
+                    .commit();
+        }
+        else if(view.getId() == R.id.more_fave_button){
+            fragmentManager
+                    .replace(R.id.content_frame, ResultsFragment.newInstance(true))
+                    .commit();
+        }
+
+        fragmentManager.addToBackStack(null);
     }
 
     /**
@@ -101,8 +210,8 @@ public class MainFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
+//    public interface OnFragmentInteractionListener {
+//        // TODO: Update argument type and name
+//        void onFragmentInteraction(Uri uri);
+//    }
 }

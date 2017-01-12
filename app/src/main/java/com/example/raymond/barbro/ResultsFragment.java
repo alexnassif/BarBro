@@ -38,8 +38,6 @@ import java.net.URL;
 public class ResultsFragment extends Fragment implements
         LoaderCallbacks<Cursor>, DrinkAdapter.DrinkAdapterOnClickHandler {
 
-    /* A constant to save and restore the URL that is being displayed */
-    private static final String SEARCH_QUERY_URL_EXTRA = "query";
     private static final String ARG_PARAM1 = "param1";
     private boolean mParam1 = false;
     /*
@@ -77,7 +75,7 @@ public class ResultsFragment extends Fragment implements
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-       // FakeDataUtils.insertFakeData(getContext());
+
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
@@ -85,37 +83,6 @@ public class ResultsFragment extends Fragment implements
         mDrinkAdapter = new DrinkAdapter(getContext(), this);
         mRecyclerView.setAdapter(mDrinkAdapter);
 
-        if(mParam1) {
-            new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-                @Override
-                public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                    return false;
-                }
-
-                // Called when a user swipes left or right on a ViewHolder
-                @Override
-                public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                    // Here is where you'll implement swipe to delete
-
-                    // COMPLETED (1) Construct the URI for the item to delete
-                    //[Hint] Use getTag (from the adapter code) to get the id of the swiped item
-                    // Retrieve the id of the task to delete
-                    int id = (int) viewHolder.itemView.getTag();
-
-                    // Build appropriate uri with String row id appended
-                    String stringId = Integer.toString(id);
-                    Uri uri = BarBroContract.FavoritesEntry.CONTENT_URI;
-                    uri = uri.buildUpon().appendPath(stringId).build();
-
-                    // COMPLETED (2) Delete a single row of data using a ContentResolver
-                    getContext().getContentResolver().delete(uri, null, null);
-
-                    // COMPLETED (3) Restart the loader to re-query for all tasks after a deletion
-                    //getLoaderManager().restartLoader(TASK_LOADER_ID, null, this);
-
-                }
-            }).attachToRecyclerView(mRecyclerView);
-        }
         if(mParam1 == false)
             getLoaderManager().initLoader(GITHUB_SEARCH_LOADER, null, this);
         else
@@ -134,35 +101,6 @@ public class ResultsFragment extends Fragment implements
         return myView;
     }
 
-    private void makeGithubSearchQuery(View view) {
-
-        URL drinkSearchUrl = NetworkUtils.buildUrl("vodka");
-
-        Bundle queryBundle = new Bundle();
-        queryBundle.putString(SEARCH_QUERY_URL_EXTRA, drinkSearchUrl.toString());
-
-        /*
-         * Now that we've created our bundle that we will pass to our Loader, we need to decide
-         * if we should restart the loader (if the loader already existed) or if we need to
-         * initialize the loader (if the loader did NOT already exist).
-         *
-         * We do this by first store the support loader manager in the variable loaderManager.
-         * All things related to the Loader go through through the LoaderManager. Once we have a
-         * hold on the support loader manager, (loaderManager) we can attempt to access our
-         * githubSearchLoader. To do this, we use LoaderManager's method, "getLoader", and pass in
-         * the ID we assigned in its creation. You can think of this process similar to finding a
-         * View by ID. We give the LoaderManager an ID and it returns a loader (if one exists). If
-         * one doesn't exist, we tell the LoaderManager to create one. If one does exist, we tell
-         * the LoaderManager to restart it.
-         */
-        //LoaderManager loaderManager = getLoaderManager();
-        Loader<String> githubSearchLoader = getLoaderManager().getLoader(GITHUB_SEARCH_LOADER);
-        if (githubSearchLoader == null) {
-            getLoaderManager().initLoader(GITHUB_SEARCH_LOADER, queryBundle, this);
-        } else {
-            getLoaderManager().restartLoader(GITHUB_SEARCH_LOADER, queryBundle, this);
-        }
-    }
 
     /**
      * This method will make the View for the JSON data visible and
@@ -225,19 +163,29 @@ public class ResultsFragment extends Fragment implements
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
-        /* When we finish loading, we want to hide the loading indicator from the user. */
+        int drinkName = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
+        int ingredients = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS);
+        int drinkPicId = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC);
+        Drink[] array = new Drink[data.getCount()];
+        int i = 0;
+        data.moveToFirst();
+        while(!data.isAfterLast()){
+
+            array[i] = new Drink(data.getString(drinkName), data.getString(ingredients), data.getString(drinkPicId));
+            i++;
+            data.moveToNext();
+        }
         mLoadingIndicator.setVisibility(View.INVISIBLE);
         if(data != null) {
             mDrinkAdapter.swapCursor(data);
-            Toast.makeText(getContext(), "cursor length " + data.getCount(), Toast.LENGTH_LONG).show();
-            ArrayAdapter<Drink> adapter = new ArrayAdapter(getContext(), android.R.layout.simple_dropdown_item_1line, new String[]{"vodka", "gin"});
+            ArrayAdapter<Drink> adapter = new ArrayAdapter(getContext(), android.R.layout.simple_dropdown_item_1line, array);
             acDrinkTextView.setAdapter(adapter);
             acDrinkTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    String drink = (String) adapterView.getAdapter().getItem(i);
+                    Drink drink = (Drink) adapterView.getAdapter().getItem(i);
 
-                    //drinkDetail(i);
+                    drinkDetail(drink);
                     acDrinkTextView.setText("");
                 }
             });

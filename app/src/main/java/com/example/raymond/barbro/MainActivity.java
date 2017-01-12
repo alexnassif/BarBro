@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager
                 .beginTransaction()
-                .replace(R.id.content_frame, new ResultsFragment())
+                .replace(R.id.content_frame, new MainFragment())
                 .commit();
         BarBroSyncUtils.initialize(this);
     }
