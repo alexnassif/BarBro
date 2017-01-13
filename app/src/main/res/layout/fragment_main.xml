@@ -14,7 +14,9 @@
         app:layout_constraintBottom_toTopOf="@+id/fave_recyclerView"
         app:layout_constraintLeft_toLeftOf="@+id/fave_recyclerView"
         android:background="@android:drawable/editbox_background_normal"
-        android:backgroundTint="@android:color/holo_blue_bright" />
+        android:backgroundTint="@android:color/holo_blue_light"
+        android:layout_marginStart="104dp"
+        android:layout_marginLeft="104dp" />
 
     <Button
         android:text="More"
@@ -24,7 +26,9 @@
         app:layout_constraintBottom_toTopOf="@+id/random_recyclerView"
         app:layout_constraintLeft_toLeftOf="@+id/random_recyclerView"
         android:background="@android:drawable/editbox_background_normal"
-        android:backgroundTint="@android:color/holo_blue_bright" />
+        android:backgroundTint="@android:color/holo_blue_light"
+        android:layout_marginStart="104dp"
+        android:layout_marginLeft="104dp" />
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="353dp"
@@ -49,4 +53,22 @@
         app:layout_constraintTop_toTopOf="parent"
         android:orientation="horizontal"
         android:scrollbars="horizontal" />
+
+    <TextView
+        android:text="Favorites"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/fave_textview"
+        app:layout_constraintLeft_toLeftOf="@+id/fave_recyclerView"
+        app:layout_constraintBottom_toTopOf="@+id/fave_recyclerView"
+        android:textColor="@color/colorPrimaryDark" />
+
+    <TextView
+        android:text="All Drinks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/allDrinks_textview"
+        app:layout_constraintBottom_toTopOf="@+id/random_recyclerView"
+        app:layout_constraintLeft_toLeftOf="@+id/random_recyclerView"
+        android:textColor="@color/colorPrimaryDark" />
 </android.support.constraint.ConstraintLayout>
