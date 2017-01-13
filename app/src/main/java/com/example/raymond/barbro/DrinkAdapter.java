@@ -68,45 +68,11 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
         Glide.with(holder.mDrinkImageView.getContext()).load("http://assets.absolutdrinks.com/drinks/300x400/" + drinkPic +".png").into(holder.mDrinkImageView);
         holder.mDrinkTextView.setText(_drinkName);
         if(fave == 1) {
-            holder.mFaveButtonView.setImageResource(R.drawable.ic_fave_drink);
-            holder.mFaveButtonView.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    new AsyncTask<Void, Void, Void>() {
-                        @Override
-                        protected Void doInBackground(Void... voids) {
-                            ContentValues mUpdateValues = new ContentValues();
-                            mUpdateValues.put(BarBroContract.BarBroEntry.COLUMN_FAVORITE, 0);
-                            Uri uri = BarBroContract.BarBroEntry.CONTENT_URI;
-                            uri = uri.buildUpon().appendPath(stringID).build();
-                            context.getContentResolver().update(uri, mUpdateValues, null, null);
-                            return null;
-                        }
-                    }.execute();
-
-                }
-            });
+            holder.mFaveButtonView.setImageResource(R.drawable.ic_fave);
 
         }
-        else{
-            holder.mFaveButtonView.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    new AsyncTask<Void, Void, Void>() {
-                        @Override
-                        protected Void doInBackground(Void... voids) {
-                            ContentValues mUpdateValues = new ContentValues();
-                            mUpdateValues.put(BarBroContract.BarBroEntry.COLUMN_FAVORITE, 1);
-                            Uri uri = BarBroContract.BarBroEntry.CONTENT_URI;
-                            uri = uri.buildUpon().appendPath(stringID).build();
-                            context.getContentResolver().update(uri, mUpdateValues, null, null);
-                            return null;
-                        }
-                    }.execute();
-
-                }
-            });
-        }
+        else
+            holder.mFaveButtonView.setImageResource(R.drawable.ic_non_fave);
 
     }
 
@@ -132,6 +98,7 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
             mDrinkTextView = (TextView) itemView.findViewById(R.id.drink_data);
             mFaveButtonView = (ImageButton) itemView.findViewById(R.id.fave_button);
             itemView.setOnClickListener(this);
+            mFaveButtonView.setOnClickListener(this);
         }
 
         @Override
@@ -143,15 +110,39 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
             int drinkName = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
             int ingredients = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS);
             int drinkPicId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC);
+            int faveId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_FAVORITE);
 
             int id = mDrinkData.getInt(drinkId);
             String _drinkName = mDrinkData.getString(drinkName);
             String drinkIngredients = mDrinkData.getString(ingredients);
             String drinkPic = mDrinkData.getString(drinkPicId);
+            int fave = mDrinkData.getInt(faveId);
+            final String stringID = Integer.toString(id);
 
-            Drink drink = new Drink(_drinkName, drinkIngredients, drinkPic);
+            if (view.getId() == mFaveButtonView.getId()) {
+                new AsyncTask<Integer, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Integer... params) {
+                        ContentValues mUpdateValues = new ContentValues();
+                        Uri uri = BarBroContract.BarBroEntry.CONTENT_URI;
+                        uri = uri.buildUpon().appendPath(stringID).build();
+                        if (params[0] == 1) {
+                            mUpdateValues.put(BarBroContract.BarBroEntry.COLUMN_FAVORITE, 0);
 
-            mClickHandler.onClick(drink);
+                        } else {
+                            mUpdateValues.put(BarBroContract.BarBroEntry.COLUMN_FAVORITE, 1);
+
+                        }
+                        context.getContentResolver().update(uri, mUpdateValues, null, null);
+                        return null;
+                    }
+                }.execute(fave);
+
+            } else {
+                Drink drink = new Drink(_drinkName, drinkIngredients, drinkPic);
+
+                mClickHandler.onClick(drink);
+            }
         }
     }
 }
