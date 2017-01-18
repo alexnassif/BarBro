@@ -13,13 +13,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
 
 /**
  * Created by raymond on 12/11/16.
  */
 
 public final class BarJsonUtils {
-
+    public static Map<String, ContentValues> drinkMap = new Hashtable<String, ContentValues>();
     public static Drink[] getSimpleDrinkStringsFromJson(String drinkJsonStr)
             throws JSONException {
         final String RESULT = "result";
@@ -71,21 +74,24 @@ public final class BarJsonUtils {
         for(int i = 0; i < drinkArray.length(); i++){
 
             JSONObject drinkObject = drinkArray.getJSONObject(i);
-            JSONArray ingredientsArray = drinkObject.getJSONArray(INGREDIENTS);
-            String ingList = "";
-            for(int j = 0; j < ingredientsArray.length(); j++){
-                JSONObject ingObject = ingredientsArray.getJSONObject(j);
-                ingList += ingObject.getString("textPlain") + "\n";
-
-            }
             String drinkName = drinkObject.getString(NAME);
-            String id = drinkObject.getString(ID);
+            if(!drinkMap.containsKey(drinkName)){
+                JSONArray ingredientsArray = drinkObject.getJSONArray(INGREDIENTS);
+                String ingList = "";
+                for(int j = 0; j < ingredientsArray.length(); j++){
+                    JSONObject ingObject = ingredientsArray.getJSONObject(j);
+                    ingList += ingObject.getString("textPlain") + "\n";
 
-            ContentValues drinkValue = new ContentValues();
-            drinkValue.put(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME, drinkName);
-            drinkValue.put(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS, ingList);
-            drinkValue.put(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC, id);
-            parsedDrinkData[i] = drinkValue;
+                }
+                String id = drinkObject.getString(ID);
+
+                ContentValues drinkValue = new ContentValues();
+                drinkValue.put(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME, drinkName);
+                drinkValue.put(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS, ingList);
+                drinkValue.put(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC, id);
+                parsedDrinkData[i] = drinkValue;
+                drinkMap.put(drinkName, drinkValue);
+            }
         }
 
         return parsedDrinkData;

@@ -48,15 +48,18 @@ public class NetworkUtils {
     /**
      * Builds the URL used to query Github.
      *
-     * @param githubSearchQuery The keyword that will be queried for.
+     * @param drinkType The keyword that will be queried for.
      * @return The URL to use to query the weather server.
      */
-    public static URL buildUrl(String githubSearchQuery) {
+    public static URL buildUrl(String drinkType) {
         Uri builtUri = Uri.parse(GITHUB_BASE_URL).buildUpon()
                 .appendPath(drinks)
                 .appendPath(withType)
-                .appendPath(githubSearchQuery)
-                .appendPath("").appendQueryParameter(PARAM_QUERY, API_KEY)
+                .appendPath(drinkType)
+                .appendPath("")
+                .appendQueryParameter(PARAM_QUERY, API_KEY)
+                .appendQueryParameter("start", "0")
+                .appendQueryParameter("pageSize", "4000")
                 .build();
 
         URL url = null;

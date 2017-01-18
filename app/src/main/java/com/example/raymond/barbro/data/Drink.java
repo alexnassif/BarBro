@@ -2,6 +2,7 @@ package com.example.raymond.barbro.data;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Created by raymond on 12/11/16.
