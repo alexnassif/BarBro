@@ -151,9 +151,11 @@ public class BarBroContentProvider extends ContentProvider {
                 try{
 
                     for(ContentValues value: values){
-                        long _id = db.insert(BarBroContract.BarBroEntry.TABLE_NAME, null, value);
-                        if(_id != -1){
-                            rowsInserted++;
+                        if(value != null) {
+                            long _id = db.insert(BarBroContract.BarBroEntry.TABLE_NAME, null, value);
+                            if (_id != -1) {
+                                rowsInserted++;
+                            }
                         }
                     }
                     db.setTransactionSuccessful();
