@@ -97,17 +97,14 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_results_layout) {
             // Handle the camera action
             fragmentManager
-                    .replace(R.id.content_frame, new ResultsFragment())
-                    .commit();
+                    .replace(R.id.content_frame, new ResultsFragment());
         } else if (id == R.id.nav_favorite_type) {
             fragmentManager
-                    .replace(R.id.content_frame, ResultsFragment.newInstance(true))
-                    .commit();
+                    .replace(R.id.content_frame, ResultsFragment.newInstance(true));
 
         } else if (id == R.id.nav_liquor_type){
             fragmentManager
-                    .replace(R.id.content_frame, new LiquorFragment())
-                    .commit();
+                    .replace(R.id.content_frame, new LiquorFragment());
         }
 
         else if (id == R.id.nav_share) {
@@ -116,6 +113,7 @@ public class MainActivity extends AppCompatActivity
 
         }
         fragmentManager.addToBackStack(null);
+        fragmentManager.commit();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
