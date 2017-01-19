@@ -23,7 +23,12 @@ public class BarBroContract {
         public static final String COLUMN_INGREDIENTS = "ingredients";
         public static final String COLUMN_DRINK_PIC = "pic";
         public static final String COLUMN_FAVORITE = "favorite";
-
+        public static final String COLUMN_VODKA = "vodka";
+        public static final String COLUMN_GIN = "gin";
+        public static final String COLUMN_RUM = "rum";
+        public static final String COLUMN_TEQUILA = "tequila";
+        public static final String COLUMN_WHISKY = "whisky";
+        public static final String COLUMN_BRANDY = "brandy";
     }
 
     public static final class FavoritesEntry implements BaseColumns {

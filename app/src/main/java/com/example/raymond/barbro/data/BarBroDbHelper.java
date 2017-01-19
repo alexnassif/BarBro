@@ -24,7 +24,13 @@ public class BarBroDbHelper extends SQLiteOpenHelper {
                 BarBroContract.BarBroEntry.COLUMN_DRINK_NAME + " TEXT NOT NULL, " +
                 BarBroContract.BarBroEntry.COLUMN_INGREDIENTS + " TEXT NOT NULL, " +
                 BarBroContract.BarBroEntry.COLUMN_DRINK_PIC + " TEXT, " +
-                BarBroContract.BarBroEntry.COLUMN_FAVORITE + " INTEGER DEFAULT 0" +
+                BarBroContract.BarBroEntry.COLUMN_FAVORITE + " INTEGER DEFAULT 0, " +
+                BarBroContract.BarBroEntry.COLUMN_VODKA + " INTEGER DEFAULT 0, " +
+                BarBroContract.BarBroEntry.COLUMN_GIN + " INTEGER DEFAULT 0, " +
+                BarBroContract.BarBroEntry.COLUMN_RUM + " INTEGER DEFAULT 0, " +
+                BarBroContract.BarBroEntry.COLUMN_TEQUILA + " INTEGER DEFAULT 0, " +
+                BarBroContract.BarBroEntry.COLUMN_WHISKY + " INTEGER DEFAULT 0, " +
+                BarBroContract.BarBroEntry.COLUMN_BRANDY + " INTEGER DEFAULT 0" +
                 ");";
         final String SQL_CREATE_BARBRO_FAVE_TABLE = "CREATE TABLE " +
                 BarBroContract.FavoritesEntry.TABLE_NAME + " (" +

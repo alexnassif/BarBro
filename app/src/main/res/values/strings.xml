@@ -14,11 +14,11 @@
     <string name="view_drink">View Drink</string>
     <string name="liquor_prompt">Pick a Liquor</string>
     <string-array name="liquor_array">
-        <item>Vodka</item>
-        <item>Gin</item>
-        <item>Tequila</item>
-        <item>Bourbon</item>
-        <item>Scotch</item>
-        <item>Brandy</item>
+        <item>vodka</item>
+        <item>gin</item>
+        <item>tequila</item>
+        <item>whisky</item>
+        <item>rum</item>
+        <item>brandy</item>
     </string-array>
 </resources>

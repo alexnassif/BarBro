@@ -102,12 +102,15 @@ public class MainActivity extends AppCompatActivity
                     .beginTransaction()
                     .replace(R.id.content_frame, ResultsFragment.newInstance(true))
                     .commit();
-            /*fragmentManager
+
+        } else if (id == R.id.nav_liquor_type){
+            fragmentManager
                     .beginTransaction()
                     .replace(R.id.content_frame, new LiquorFragment())
-                    .commit();*/
+                    .commit();
+        }
 
-        } else if (id == R.id.nav_share) {
+        else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
 

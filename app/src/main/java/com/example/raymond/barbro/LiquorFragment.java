@@ -1,11 +1,14 @@
 package com.example.raymond.barbro;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.raymond.barbro.data.BarBroContract;
 import com.example.raymond.barbro.data.Drink;
 import com.example.raymond.barbro.utilities.BarJsonUtils;
 import com.example.raymond.barbro.utilities.NetworkUtils;
@@ -28,8 +32,8 @@ import java.net.URL;
  * Created by raymond on 12/22/16.
  */
 
-/*public class LiquorFragment extends Fragment implements
-        LoaderManager.LoaderCallbacks<Drink[]>, DrinkAdapter.DrinkAdapterOnClickHandler {
+public class LiquorFragment extends Fragment implements
+        LoaderManager.LoaderCallbacks<Cursor>, DrinkAdapter.DrinkAdapterOnClickHandler {
 
     private static final int GITHUB_SEARCH_LOADER = 22;
 
@@ -52,7 +56,7 @@ import java.net.URL;
                 = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
-        mDrinkAdapter = new DrinkAdapter(this);
+        mDrinkAdapter = new DrinkAdapter(getContext(), this);
         mRecyclerView.setAdapter(mDrinkAdapter);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.liquor_array, android.R.layout.simple_spinner_item);
@@ -90,91 +94,59 @@ import java.net.URL;
         return myView;
     }
     private void showJsonDataView() {
-        *//* First, make sure the error is invisible *//*
+         //First, make sure the error is invisible
         mErrorMessageDisplay.setVisibility(View.INVISIBLE);
         mRecyclerView.setVisibility(View.VISIBLE);
-        *//* Then, make sure the JSON data is visible *//*
+         //Then, make sure the JSON data is visible
 
     }
 
-    *//**
-     * This method will make the error message visible and hide the JSON
-     * View.
-     * <p>
-     * Since it is okay to redundantly set the visibility of a View, we don't
-     * need to check whether each view is currently visible or invisible.
-     *//*
-    private void showErrorMessage() {
-        *//* First, hide the currently visible data *//*
+//    *
+//     * This method will make the error message visible and hide the JSON
+//     * View.
+//     * <p>
+//     * Since it is okay to redundantly set the visibility of a View, we don't
+//     * need to check whether each view is currently visible or invisible.
 
-        *//* Then, show the error *//*
+    private void showErrorMessage() {
+//         First, hide the currently visible data
+//
+//         Then, show the error
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public Loader<Drink[]> onCreateLoader(int id, final Bundle args) {
-        return new AsyncTaskLoader<Drink[]>(getContext()) {
-
-            Drink[] mDrinksJson = null;
-            @Override
-            protected void onStartLoading() {
-
-                *//*
-                 * When we initially begin loading in the background, we want to display the
-                 * loading indicator to the user
-                 *//*
-
-
-                // COMPLETED (2) If mGithubJson is not null, deliver that result. Otherwise, force a load
-                *//*
-                 * If we already have cached results, just deliver them now. If we don't have any
-                 * cached results, force a load.
-                 *//*
-                if (mDrinksJson != null) {
-                    deliverResult(mDrinksJson);
-                } else {
-                    mLoadingIndicator.setVisibility(View.VISIBLE);
-                    forceLoad();
-                }
+    public Loader<Cursor> onCreateLoader(int id, final Bundle args) {
+        switch (id){
+            case GITHUB_SEARCH_LOADER: {
+                Uri uriAllDrinks = BarBroContract.BarBroEntry.CONTENT_URI;
+                return new CursorLoader(getContext(),
+                        uriAllDrinks,
+                        null,
+                        liqType + "=?",
+                        new String[]{"1"},
+                        null);
             }
+            default:
+                throw new RuntimeException("Loader Not Implemented: " + id);
 
-            @Override
-            public Drink[] loadInBackground() {
-
-                try {
-                    URL drinkUrl = NetworkUtils.buildUrl(liqType);
-                    String drinkSearchResults = NetworkUtils.getResponseFromHttpUrl(drinkUrl);
-                    Drink[] drinksJson = BarJsonUtils.getSimpleDrinkStringsFromJson(drinkSearchResults);
-                    return drinksJson;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return null;
-                }
-            }
-
-            // COMPLETED (3) Override deliverResult and store the data in mGithubJson
-            // COMPLETED (4) Call super.deliverResult after storing the data
-            @Override
-            public void deliverResult(Drink[] drinksJson) {
-                mDrinksJson = drinksJson;
-                super.deliverResult(drinksJson);
-            }
-        };
+        }
     }
 
-    @Override
-    public void onLoadFinished(Loader<Drink[]> loader, Drink[] data) {
 
-        *//* When we finish loading, we want to hide the loading indicator from the user. *//*
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+         //When we finish loading, we want to hide the loading indicator from the user.
         mLoadingIndicator.setVisibility(View.INVISIBLE);
         if(data != null) {
-            mDrinkAdapter.setDrinkData(data);
+            mDrinkAdapter.swapCursor(data);
         }
 
-        *//*
-         * If the results are null, we assume an error has occurred. There are much more robust
-         * methods for checking errors, but we wanted to keep this particular example simple.
-         *//*
+
+//         * If the results are null, we assume an error has occurred. There are much more robust
+//         * methods for checking errors, but we wanted to keep this particular example simple.
+
 
 
         if (null == data) {
@@ -186,11 +158,11 @@ import java.net.URL;
     }
 
     @Override
-    public void onLoaderReset(Loader<Drink[]> loader) {
-        *//*
-         * We aren't using this method in our example application, but we are required to Override
-         * it to implement the LoaderCallbacks<String> interface
-         *//*
+    public void onLoaderReset(Loader<Cursor> loader) {
+
+//         * We aren't using this method in our example application, but we are required to Override
+//         * it to implement the LoaderCallbacks<String> interface
+
         mLoadingIndicator.setVisibility(View.INVISIBLE);
     }
 
@@ -205,4 +177,4 @@ import java.net.URL;
         intent.putExtra("drink", drink);
         startActivity(intent);
     }
-}*/
+}

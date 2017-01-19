@@ -26,7 +26,6 @@ public class BarBroSyncTask {
 
             URL vodkaDrinkUrl = NetworkUtils.buildUrl("vodka");
             URL rumDrinkUrl = NetworkUtils.buildUrl("rum");
-            URL berriesDrinkUrl = NetworkUtils.buildUrl("berries");
             URL brandyDrinkUrl = NetworkUtils.buildUrl("brandy");
             URL ginDrinkUrl = NetworkUtils.buildUrl("gin");
             URL tequilaDrinkUrl = NetworkUtils.buildUrl("tequila");
@@ -35,7 +34,6 @@ public class BarBroSyncTask {
             String jsonDrinkVal = NetworkUtils.getResponseFromHttpUrl(allDrinkUrl);
             String vodkaJsonDrinkVal = NetworkUtils.getResponseFromHttpUrl(vodkaDrinkUrl);
             String rumJsonDrinkVal = NetworkUtils.getResponseFromHttpUrl(rumDrinkUrl);
-            String berriesJsonDrinkVal = NetworkUtils.getResponseFromHttpUrl(berriesDrinkUrl);
             String brandyJsonDrinkVal = NetworkUtils.getResponseFromHttpUrl(brandyDrinkUrl);
             String ginJsonDrinkVal = NetworkUtils.getResponseFromHttpUrl(ginDrinkUrl);
             String tequilaJsonDrinkVal = NetworkUtils.getResponseFromHttpUrl(tequilaDrinkUrl);
@@ -44,7 +42,6 @@ public class BarBroSyncTask {
             ContentValues[] drinkValues = BarJsonUtils.getDrinkContentValuesFromJson(context, jsonDrinkVal);
             ContentValues[] vodkaValues = BarJsonUtils.getDrinkContentValuesFromJson(context, vodkaJsonDrinkVal);
             ContentValues[] rumValues = BarJsonUtils.getDrinkContentValuesFromJson(context, rumJsonDrinkVal);
-            ContentValues[] berriesValues = BarJsonUtils.getDrinkContentValuesFromJson(context, berriesJsonDrinkVal);
             ContentValues[] brandyValues = BarJsonUtils.getDrinkContentValuesFromJson(context, brandyJsonDrinkVal);
             ContentValues[] ginValues = BarJsonUtils.getDrinkContentValuesFromJson(context, ginJsonDrinkVal);
             ContentValues[] tequilaValues = BarJsonUtils.getDrinkContentValuesFromJson(context, tequilaJsonDrinkVal);
@@ -61,10 +58,6 @@ public class BarBroSyncTask {
             if(rumValues != null && rumValues.length != 0){
                 ContentResolver BarBroResolver = context.getContentResolver();
                 BarBroResolver.bulkInsert(BarBroContract.BarBroEntry.CONTENT_URI, rumValues);
-            }
-            if(berriesValues != null && berriesValues.length != 0){
-                ContentResolver BarBroResolver = context.getContentResolver();
-                BarBroResolver.bulkInsert(BarBroContract.BarBroEntry.CONTENT_URI, berriesValues);
             }
             if(brandyValues != null && brandyValues.length != 0){
                 ContentResolver BarBroResolver = context.getContentResolver();

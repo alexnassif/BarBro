@@ -78,14 +78,37 @@ public final class BarJsonUtils {
             if(!drinkMap.containsKey(drinkName)){
                 JSONArray ingredientsArray = drinkObject.getJSONArray(INGREDIENTS);
                 String ingList = "";
+                ContentValues drinkValue = new ContentValues();
                 for(int j = 0; j < ingredientsArray.length(); j++){
                     JSONObject ingObject = ingredientsArray.getJSONObject(j);
                     ingList += ingObject.getString("textPlain") + "\n";
+                    String typeL = ingObject.getString("type");
+                    switch (typeL){
+                        case "vodka":
+                            drinkValue.put(BarBroContract.BarBroEntry.COLUMN_VODKA, 1);
+                            break;
+                        case "gin":
+                            drinkValue.put(BarBroContract.BarBroEntry.COLUMN_GIN, 1);
+                            break;
+                        case "rum":
+                            drinkValue.put(BarBroContract.BarBroEntry.COLUMN_RUM, 1);
+                            break;
+                        case "tequila":
+                            drinkValue.put(BarBroContract.BarBroEntry.COLUMN_TEQUILA, 1);
+                            break;
+                        case "brandy":
+                            drinkValue.put(BarBroContract.BarBroEntry.COLUMN_BRANDY, 1);
+                            break;
+                        case "whisky":
+                            drinkValue.put(BarBroContract.BarBroEntry.COLUMN_WHISKY, 1);
+                            break;
+                        default:
+                            break;
+
+                    }
 
                 }
                 String id = drinkObject.getString(ID);
-
-                ContentValues drinkValue = new ContentValues();
                 drinkValue.put(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME, drinkName);
                 drinkValue.put(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS, ingList);
                 drinkValue.put(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC, id);
