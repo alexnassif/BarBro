@@ -31,7 +31,7 @@
         android:layout_marginLeft="104dp" />
 
     <android.support.v7.widget.RecyclerView
-        android:layout_width="353dp"
+        android:layout_width="350dp"
         android:layout_height="150dp"
         android:id="@+id/random_recyclerView"
         android:layout_marginStart="16dp"
@@ -43,7 +43,7 @@
         android:scrollbars="horizontal" />
 
     <android.support.v7.widget.RecyclerView
-        android:layout_width="353dp"
+        android:layout_width="350dp"
         android:layout_height="150dp"
         android:id="@+id/fave_recyclerView"
         android:layout_marginStart="16dp"
