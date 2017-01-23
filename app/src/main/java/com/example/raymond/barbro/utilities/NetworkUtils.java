@@ -16,6 +16,8 @@
 package com.example.raymond.barbro.utilities;
 
 import android.net.Uri;
+import android.os.Build;
+import android.support.compat.BuildConfig;
 import android.util.Log;
 
 import java.io.IOException;
@@ -34,10 +36,9 @@ public class NetworkUtils {
             "http://addb.absolutdrinks.com";
 
     //http://addb.absolutdrinks.com/drinks/withtype/vodka/?apiKey=c7ca8a9924d84d159a4f1e864456be9c
-    final static String API_KEY = "c7ca8a9924d84d159a4f1e864456be9c";
+    static String API_KEY = com.example.raymond.barbro.BuildConfig.DRINK_API_KEY;
 
     final static String PARAM_QUERY = "apiKey";
-
     /*
      * The sort field. One of stars, forks, or updated.
      * Default: results are sorted by best match if no field is specified.
