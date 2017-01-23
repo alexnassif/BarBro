@@ -35,8 +35,8 @@ public class NetworkUtils {
     final static String GITHUB_BASE_URL =
             "http://addb.absolutdrinks.com";
 
-    //http://addb.absolutdrinks.com/drinks/withtype/vodka/?apiKey=c7ca8a9924d84d159a4f1e864456be9c
-    static String API_KEY = com.example.raymond.barbro.BuildConfig.DRINK_API_KEY;
+
+    final static String API_KEY = com.example.raymond.barbro.BuildConfig.DRINK_API_KEY;
 
     final static String PARAM_QUERY = "apiKey";
     /*
@@ -77,7 +77,7 @@ public class NetworkUtils {
 
         URL url = null;
         try {
-            url = new URL("http://addb.absolutdrinks.com/drinks/?apiKey=c7ca8a9924d84d159a4f1e864456be9c&start=0&pageSize=3637");
+            url = new URL("http://addb.absolutdrinks.com/drinks/?apiKey=" + API_KEY + "&start=0&pageSize=3637");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
