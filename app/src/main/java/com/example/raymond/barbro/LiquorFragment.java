@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -41,12 +42,13 @@ public class LiquorFragment extends Fragment implements
 
     private DrinkAdapter mDrinkAdapter;
 
-    private TextView mErrorMessageDisplay;
+    //private TextView mErrorMessageDisplay;
 
-    private ProgressBar mLoadingIndicator;
+    //private ProgressBar mLoadingIndicator;
     private View myView;
     private Spinner mLiquorSpinner;
     private String liqType;
+    private AutoCompleteTextView mAutoCompleteTextView;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -88,14 +90,15 @@ public class LiquorFragment extends Fragment implements
         myView = inflater.inflate(R.layout.liq_layout, container, false);
         mRecyclerView = (RecyclerView) myView.findViewById(R.id.recyclerview_drinks);
         mRecyclerView.setVisibility(View.INVISIBLE);
-        mErrorMessageDisplay = (TextView) myView.findViewById(R.id.tv_error_message_display);
+        mAutoCompleteTextView = (AutoCompleteTextView) myView.findViewById(R.id.drink_autoCompleteTextView);
+        //mErrorMessageDisplay = (TextView) myView.findViewById(R.id.tv_error_message_display);
         mLiquorSpinner = (Spinner) myView.findViewById(R.id.liquor_spinner);
-        mLoadingIndicator = (ProgressBar) myView.findViewById(R.id.pb_loading_indicator);
+        //mLoadingIndicator = (ProgressBar) myView.findViewById(R.id.pb_loading_indicator);
         return myView;
     }
     private void showJsonDataView() {
          //First, make sure the error is invisible
-        mErrorMessageDisplay.setVisibility(View.INVISIBLE);
+        //mErrorMessageDisplay.setVisibility(View.INVISIBLE);
         mRecyclerView.setVisibility(View.VISIBLE);
          //Then, make sure the JSON data is visible
 
@@ -112,7 +115,7 @@ public class LiquorFragment extends Fragment implements
 //         First, hide the currently visible data
 //
 //         Then, show the error
-        mErrorMessageDisplay.setVisibility(View.VISIBLE);
+        //mErrorMessageDisplay.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -138,9 +141,34 @@ public class LiquorFragment extends Fragment implements
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
          //When we finish loading, we want to hide the loading indicator from the user.
-        mLoadingIndicator.setVisibility(View.INVISIBLE);
+        //mLoadingIndicator.setVisibility(View.INVISIBLE);
+        int drinkName = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
+        int ingredients = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS);
+        int drinkPicId = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC);
+        Drink[] array = new Drink[data.getCount()];
+        int i = 0;
+        data.moveToFirst();
+        while(!data.isAfterLast()){
+
+            array[i] = new Drink(data.getString(drinkName), data.getString(ingredients), data.getString(drinkPicId));
+            i++;
+            data.moveToNext();
+        }
+        //mLoadingIndicator.setVisibility(View.INVISIBLE);
         if(data != null) {
             mDrinkAdapter.swapCursor(data);
+            ArrayAdapter<Drink> adapter = new ArrayAdapter(getContext(), android.R.layout.simple_dropdown_item_1line, array);
+            mAutoCompleteTextView.setAdapter(adapter);
+            mRecyclerView.scrollToPosition(0);
+            mAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Drink drink = (Drink) adapterView.getAdapter().getItem(i);
+
+                    drinkDetail(drink);
+                    mAutoCompleteTextView.setText("");
+                }
+            });
         }
 
 
@@ -163,7 +191,7 @@ public class LiquorFragment extends Fragment implements
 //         * We aren't using this method in our example application, but we are required to Override
 //         * it to implement the LoaderCallbacks<String> interface
 
-        mLoadingIndicator.setVisibility(View.INVISIBLE);
+       // mLoadingIndicator.setVisibility(View.INVISIBLE);
     }
 
     @Override
