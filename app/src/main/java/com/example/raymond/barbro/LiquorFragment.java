@@ -68,7 +68,7 @@ public class LiquorFragment extends Fragment implements
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 liqType = (String) adapterView.getItemAtPosition(i);
-                Loader<String> githubSearchLoader = getLoaderManager().getLoader(GITHUB_SEARCH_LOADER);
+                Loader<Cursor> githubSearchLoader = getLoaderManager().getLoader(GITHUB_SEARCH_LOADER);
                 if (githubSearchLoader == null) {
                     getLoaderManager().initLoader(GITHUB_SEARCH_LOADER, null, LiquorFragment.this);
                 } else {

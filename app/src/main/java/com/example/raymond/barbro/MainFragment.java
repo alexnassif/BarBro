@@ -85,8 +85,12 @@ public class MainFragment extends Fragment implements
 
         faves_button.setOnClickListener(this);
         randoms_button.setOnClickListener(this);
+        Loader<Cursor> loaderM = getLoaderManager().getLoader(FAVE_DRINK_LOADER);
+        if(loaderM == null)
+            getLoaderManager().initLoader(FAVE_DRINK_LOADER, null, this);
+        else
+            getLoaderManager().restartLoader(FAVE_DRINK_LOADER, null, this);
 
-        getLoaderManager().initLoader(FAVE_DRINK_LOADER, null, this);
         getLoaderManager().initLoader(RANDOM_DRINKS_LOADER, null, this);
 
     }
