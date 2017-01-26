@@ -13,6 +13,8 @@
     <string name="search_drink_string">Search List</string>
     <string name="view_drink">View Drink</string>
     <string name="liquor_prompt">Pick a Liquor</string>
+    <string name="new_drink_hint">Enter New Drink Name</string>
+    <string name="new_ingredient_hint">Enter Ingredients</string>
     <string-array name="liquor_array">
         <item>Vodka</item>
         <item>Gin</item>
