@@ -8,12 +8,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,18 +20,10 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.raymond.barbro.data.BarBroContract;
 import com.example.raymond.barbro.data.Drink;
-import com.example.raymond.barbro.utilities.BarJsonUtils;
-import com.example.raymond.barbro.utilities.FakeDataUtils;
-import com.example.raymond.barbro.utilities.NetworkUtils;
 
-import java.net.URL;
-/**
- * Created by raymond on 12/9/16.
- */
 
 public class ResultsFragment extends Fragment implements
         LoaderCallbacks<Cursor>, DrinkAdapter.DrinkAdapterOnClickHandler {
@@ -95,9 +85,9 @@ public class ResultsFragment extends Fragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.results_layout, container, false);
         mRecyclerView = (RecyclerView) myView.findViewById(R.id.recyclerview_drinks);
-        mErrorMessageDisplay = (TextView) myView.findViewById(R.id.tv_error_message_display);
+        //mErrorMessageDisplay = (TextView) myView.findViewById(R.id.tv_error_message_display);
         acDrinkTextView = (AutoCompleteTextView) myView.findViewById(R.id.search_drinks);
-        mLoadingIndicator = (ProgressBar) myView.findViewById(R.id.pb_loading_indicator);
+        //mLoadingIndicator = (ProgressBar) myView.findViewById(R.id.pb_loading_indicator);
         return myView;
     }
 
@@ -111,7 +101,7 @@ public class ResultsFragment extends Fragment implements
      */
     private void showJsonDataView() {
         /* First, make sure the error is invisible */
-        mErrorMessageDisplay.setVisibility(View.INVISIBLE);
+       // mErrorMessageDisplay.setVisibility(View.INVISIBLE);
         /* Then, make sure the JSON data is visible */
 
     }
@@ -127,7 +117,7 @@ public class ResultsFragment extends Fragment implements
         /* First, hide the currently visible data */
 
         /* Then, show the error */
-        mErrorMessageDisplay.setVisibility(View.VISIBLE);
+        //mErrorMessageDisplay.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -175,10 +165,10 @@ public class ResultsFragment extends Fragment implements
             i++;
             data.moveToNext();
         }
-        mLoadingIndicator.setVisibility(View.INVISIBLE);
+       // mLoadingIndicator.setVisibility(View.INVISIBLE);
         if(data != null) {
             mDrinkAdapter.swapCursor(data);
-            ArrayAdapter<Drink> adapter = new ArrayAdapter(getContext(), android.R.layout.simple_dropdown_item_1line, array);
+            ArrayAdapter<Drink> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, array);
             acDrinkTextView.setAdapter(adapter);
             acDrinkTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -211,7 +201,7 @@ public class ResultsFragment extends Fragment implements
          * We aren't using this method in our example application, but we are required to Override
          * it to implement the LoaderCallbacks<String> interface
          */
-        mLoadingIndicator.setVisibility(View.INVISIBLE);
+        //mLoadingIndicator.setVisibility(View.INVISIBLE);
     }
 
     @Override

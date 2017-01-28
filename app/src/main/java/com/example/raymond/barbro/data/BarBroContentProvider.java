@@ -59,7 +59,7 @@ public class BarBroContentProvider extends ContentProvider {
                 break;
             case DRINKS_WITH_ID:
                 String id = uri.getPathSegments().get(1);
-                retCursor = db.query(BarBroContract.FavoritesEntry.TABLE_NAME,
+                retCursor = db.query(BarBroContract.BarBroEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,

@@ -143,7 +143,7 @@ public class MainFragment extends Fragment implements
                         null,
                         null,
                         null,
-                        null);}
+                        " RANDOM() LIMIT 3");}
             case FAVE_DRINK_LOADER:{
                 Uri uriAllDrinks = BarBroContract.BarBroEntry.CONTENT_URI;
                 return new CursorLoader(getContext(),
@@ -191,9 +191,7 @@ public class MainFragment extends Fragment implements
     public void onClick(View view) {
         FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
         if(view.getId() == R.id.random_button) {
-            fragmentManager
-                    .replace(R.id.content_frame, new ResultsFragment())
-                    .commit();
+            getLoaderManager().restartLoader(RANDOM_DRINKS_LOADER, null, this);
         }
         else if(view.getId() == R.id.more_fave_button){
             fragmentManager

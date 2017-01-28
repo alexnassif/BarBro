@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,20 +17,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.example.raymond.barbro.data.BarBroContract;
 import com.example.raymond.barbro.data.Drink;
-import com.example.raymond.barbro.utilities.BarJsonUtils;
-import com.example.raymond.barbro.utilities.NetworkUtils;
 
-import java.net.URL;
 
-/**
- * Created by raymond on 12/22/16.
- */
+
 
 public class LiquorFragment extends Fragment implements
         LoaderManager.LoaderCallbacks<Cursor>, DrinkAdapter.DrinkAdapterOnClickHandler {
@@ -157,7 +149,7 @@ public class LiquorFragment extends Fragment implements
         //mLoadingIndicator.setVisibility(View.INVISIBLE);
         if(data != null) {
             mDrinkAdapter.swapCursor(data);
-            ArrayAdapter<Drink> adapter = new ArrayAdapter(getContext(), android.R.layout.simple_dropdown_item_1line, array);
+            ArrayAdapter<Drink> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, array);
             mAutoCompleteTextView.setAdapter(adapter);
             mRecyclerView.scrollToPosition(0);
             mAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
