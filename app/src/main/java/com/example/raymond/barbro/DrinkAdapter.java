@@ -111,12 +111,14 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
             int ingredients = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS);
             int drinkPicId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC);
             int faveId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_FAVORITE);
+            int videoId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_VIDEO);
 
             int id = mDrinkData.getInt(drinkId);
             String _drinkName = mDrinkData.getString(drinkName);
             String drinkIngredients = mDrinkData.getString(ingredients);
             String drinkPic = mDrinkData.getString(drinkPicId);
             int fave = mDrinkData.getInt(faveId);
+            String video = mDrinkData.getString(videoId);
             final String stringID = Integer.toString(id);
 
             if (view.getId() == mFaveButtonView.getId()) {
@@ -140,7 +142,7 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
 
             } else {
                 Drink drink = new Drink(_drinkName, drinkIngredients, drinkPic);
-
+                drink.setVideo(video);
                 mClickHandler.onClick(drink);
             }
         }

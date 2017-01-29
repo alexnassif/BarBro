@@ -137,12 +137,14 @@ public class LiquorFragment extends Fragment implements
         int drinkName = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
         int ingredients = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS);
         int drinkPicId = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC);
+        int videoId = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_VIDEO);
         Drink[] array = new Drink[data.getCount()];
         int i = 0;
         data.moveToFirst();
         while(!data.isAfterLast()){
-
-            array[i] = new Drink(data.getString(drinkName), data.getString(ingredients), data.getString(drinkPicId));
+            Drink drink = new Drink(data.getString(drinkName), data.getString(ingredients), data.getString(drinkPicId));
+            drink.setVideo(data.getString(videoId));
+            array[i] = drink;
             i++;
             data.moveToNext();
         }

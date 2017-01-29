@@ -64,6 +64,7 @@ public final class BarJsonUtils {
         final String INGREDIENTS = "ingredients";
         final String NAME = "name";
         final String ID = "id";
+        final String VIDEO = "videos";
 
         JSONObject drinkJson = new JSONObject(drinkJsonStr);
 
@@ -105,6 +106,16 @@ public final class BarJsonUtils {
                         default:
                             break;
 
+                    }
+
+                }
+                JSONArray videoArray = drinkObject.getJSONArray(VIDEO);
+                for(int k = 0; k < videoArray.length(); k++){
+                    JSONObject vidObject = videoArray.getJSONObject(k);
+                    String vid = vidObject.getString("type");
+                    if (vid.equals("assets")) {
+                        String videoType = vidObject.getString("video");
+                        drinkValue.put(BarBroContract.BarBroEntry.COLUMN_VIDEO, videoType);
                     }
 
                 }

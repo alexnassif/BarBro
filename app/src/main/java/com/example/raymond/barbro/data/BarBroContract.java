@@ -22,6 +22,7 @@ public class BarBroContract {
         public static final String COLUMN_DRINK_NAME = "drinkName";
         public static final String COLUMN_INGREDIENTS = "ingredients";
         public static final String COLUMN_DRINK_PIC = "pic";
+        public static final String COLUMN_VIDEO = "video";
         public static final String COLUMN_FAVORITE = "favorite";
         public static final String COLUMN_VODKA = "vodka";
         public static final String COLUMN_GIN = "gin";

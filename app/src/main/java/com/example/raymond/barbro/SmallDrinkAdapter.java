@@ -91,14 +91,15 @@ public class SmallDrinkAdapter extends RecyclerView.Adapter<SmallDrinkAdapter.Sm
             int drinkName = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
             int ingredients = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS);
             int drinkPicId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC);
+            int videoId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_VIDEO);
 
             int id = mDrinkData.getInt(drinkId);
             String _drinkName = mDrinkData.getString(drinkName);
             String drinkIngredients = mDrinkData.getString(ingredients);
             String drinkPic = mDrinkData.getString(drinkPicId);
-
+            String drinkVideo = mDrinkData.getString(videoId);
             Drink drink = new Drink(_drinkName, drinkIngredients, drinkPic);
-
+            drink.setVideo(drinkVideo);
             mClickHandler.onClick(drink);
         }
     }
