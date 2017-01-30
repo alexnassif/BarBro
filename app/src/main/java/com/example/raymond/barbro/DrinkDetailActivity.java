@@ -38,7 +38,6 @@ public class DrinkDetailActivity extends AppCompatActivity {
                 MediaController(this);
         mediaController.setAnchorView(mDrinkVideo);
         mDrinkVideo.setMediaController(mediaController);
-
         //mDrinkVideo.start();
 
 
