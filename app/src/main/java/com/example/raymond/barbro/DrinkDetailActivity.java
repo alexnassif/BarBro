@@ -1,11 +1,17 @@
 package com.example.raymond.barbro;
 
+import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
@@ -32,7 +38,28 @@ public class DrinkDetailActivity extends AppCompatActivity {
         mDrinkTitle.setText(drink.getDrinkName());;
         String ingredients = drink.getIngredients();
         mIngredients.setText(ingredients);
-        mDrinkVideo.setVideoPath(videoUrl + drink.getVideo());
+        String videoURL = videoUrl + drink.getVideo();
+        if(drink.getVideo() != null)
+            mDrinkVideo.setVideoPath(videoUrl + drink.getVideo());
+        else {
+            Toast.makeText(this, "No Video Available for this Drink", Toast.LENGTH_LONG).show();
+            mDrinkVideo.setVisibility(View.GONE);
+        }
+        ConnectivityManager cm =
+                (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        final boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+
+        mDrinkVideo.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+            @Override
+            public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
+                if(!isConnected)
+                    Toast.makeText(getBaseContext(), "No Network Connectivity. Cannot Play Video", Toast.LENGTH_LONG).show();
+                return true;
+            }
+        });
 
         MediaController mediaController = new
                 MediaController(this);

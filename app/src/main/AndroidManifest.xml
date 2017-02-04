@@ -3,7 +3,7 @@
     package="com.example.raymond.barbro">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
@@ -36,7 +36,8 @@
             android:name=".sync.BarBroSyncIntentService"
             android:exported="false" />
 
-        <activity android:name=".AddDrinkActivity"></activity>
+        <activity android:name=".AddDrinkActivity" />
+        <activity android:name=".CameraActivity"></activity>
     </application>
 
 </manifest>
