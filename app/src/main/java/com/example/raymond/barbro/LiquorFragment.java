@@ -86,6 +86,7 @@ public class LiquorFragment extends Fragment implements
         //mErrorMessageDisplay = (TextView) myView.findViewById(R.id.tv_error_message_display);
         mLiquorSpinner = (Spinner) myView.findViewById(R.id.liquor_spinner);
         //mLoadingIndicator = (ProgressBar) myView.findViewById(R.id.pb_loading_indicator);
+        getActivity().setTitle("Search by Type");
         return myView;
     }
     private void showJsonDataView() {

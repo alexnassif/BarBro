@@ -73,10 +73,13 @@ public class ResultsFragment extends Fragment implements
         mDrinkAdapter = new DrinkAdapter(getContext(), this);
         mRecyclerView.setAdapter(mDrinkAdapter);
 
-        if(mParam1 == false)
+        if(mParam1 == false) {
             getLoaderManager().initLoader(GITHUB_SEARCH_LOADER, null, this);
-        else
+            getActivity().setTitle("All Drinks");
+        }
+        else{
             getLoaderManager().initLoader(FAVE_LOADER, null, this);
+            getActivity().setTitle("Favorites");}
 
     }
 

@@ -105,7 +105,7 @@ public class MainFragment extends Fragment implements
         mRecyclerView_Faves =  (RecyclerView) myView.findViewById(R.id.fave_recyclerView);
         faves_button = (Button) myView.findViewById(R.id.more_fave_button);
         randoms_button = (Button) myView.findViewById(R.id.random_button);
-
+        getActivity().setTitle("Bar Bro");
         return myView;
     }
 

@@ -34,7 +34,7 @@ public class DrinkDetailActivity extends AppCompatActivity {
         mDrinkVideo = (VideoView) findViewById(R.id.drink_video);
         Intent intent = getIntent();
         drink = (Drink) intent.getSerializableExtra("drink");
-
+        setTitle(drink.getDrinkName());
         mDrinkTitle.setText(drink.getDrinkName());;
         String ingredients = drink.getIngredients();
         mIngredients.setText(ingredients);

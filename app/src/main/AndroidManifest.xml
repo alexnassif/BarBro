@@ -25,7 +25,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DrinkDetailActivity" />
+        <activity android:name=".DrinkDetailActivity"
+             />
 
         <provider
             android:name=".data.BarBroContentProvider"
@@ -37,7 +38,6 @@
             android:exported="false" />
 
         <activity android:name=".AddDrinkActivity" />
-        <activity android:name=".CameraActivity"></activity>
     </application>
 
 </manifest>

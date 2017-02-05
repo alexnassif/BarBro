@@ -97,7 +97,6 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_results_layout) {
-            // Handle the camera action
             fragmentManager
                     .replace(R.id.content_frame, new ResultsFragment());
         } else if (id == R.id.nav_favorite_type) {
@@ -109,11 +108,6 @@ public class MainActivity extends AppCompatActivity
                     .replace(R.id.content_frame, new LiquorFragment());
         }
 
-        else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
         fragmentManager.addToBackStack(null);
         fragmentManager.commit();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
