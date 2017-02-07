@@ -20,14 +20,14 @@ public class BarBroContentProvider extends ContentProvider {
 
     private BarBroDbHelper dbHelper;
     public static final int DRINKS = 100;
-    public static final int FAVORITES = 200;
+    public static final int MYDRINKS = 200;
     public static final int DRINKS_WITH_ID = 101;
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
     public static UriMatcher buildUriMatcher(){
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(BarBroContract.AUTHORITY, BarBroContract.PATH_DRINKS, DRINKS);
-        uriMatcher.addURI(BarBroContract.AUTHORITY, BarBroContract.PATH_FAVES, FAVORITES);
+        uriMatcher.addURI(BarBroContract.AUTHORITY, BarBroContract.PATH_MYDRINKS, MYDRINKS);
         uriMatcher.addURI(BarBroContract.AUTHORITY, BarBroContract.PATH_DRINKS + "/#", DRINKS_WITH_ID);
 
         return uriMatcher;
@@ -50,6 +50,15 @@ public class BarBroContentProvider extends ContentProvider {
         switch (match){
             case DRINKS:
                 retCursor = db.query(BarBroContract.BarBroEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder);
+                break;
+            case MYDRINKS:
+                retCursor = db.query(BarBroContract.MyDrinkEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -96,8 +105,8 @@ public class BarBroContentProvider extends ContentProvider {
                 else
                     throw new SQLException("Failed to insert row into " + uri);
                 break;}
-            case FAVORITES:{
-                long id = db.insert(BarBroContract.FavoritesEntry.TABLE_NAME, null, values);
+            case MYDRINKS:{
+                long id = db.insert(BarBroContract.MyDrinkEntry.TABLE_NAME, null, values);
                 if(id > 0)
                     retUri = ContentUris.withAppendedId(uri, id);
                 else

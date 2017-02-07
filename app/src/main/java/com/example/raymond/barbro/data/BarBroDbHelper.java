@@ -33,24 +33,24 @@ public class BarBroDbHelper extends SQLiteOpenHelper {
                 BarBroContract.BarBroEntry.COLUMN_BRANDY + " INTEGER DEFAULT 0, " +
                 BarBroContract.BarBroEntry.COLUMN_VIDEO + " TEXT " +
                 ");";
-        final String SQL_CREATE_BARBRO_FAVE_TABLE = "CREATE TABLE " +
-                BarBroContract.FavoritesEntry.TABLE_NAME + " (" +
-                BarBroContract.FavoritesEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                BarBroContract.FavoritesEntry.COLUMN_DRINK_ID + " INTEGER NOT NULL, " +
-                " FOREIGN KEY(" +
-                BarBroContract.FavoritesEntry.COLUMN_DRINK_ID + ") REFERENCES drinks(_ID)" +
+        final String SQL_CREATE_BARBRO_MYDRINK_TABLE = "CREATE TABLE " +
+                BarBroContract.MyDrinkEntry.TABLE_NAME + " (" +
+                BarBroContract.MyDrinkEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_NAME + " TEXT NOT NULL, " +
+                BarBroContract.MyDrinkEntry.COLUMN_MYINGREDIENTS + " TEXT NOT NULL, " +
+                BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_PIC + " TEXT " +
                 ");";
 
 
         db.execSQL(SQL_CREATE_BARBRO_TABLE);
-        db.execSQL(SQL_CREATE_BARBRO_FAVE_TABLE);
+        db.execSQL(SQL_CREATE_BARBRO_MYDRINK_TABLE);
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + BarBroContract.BarBroEntry.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + BarBroContract.FavoritesEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + BarBroContract.MyDrinkEntry.TABLE_NAME);
         onCreate(db);
     }
 }
