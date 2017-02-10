@@ -106,7 +106,11 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_liquor_type){
             fragmentManager
                     .replace(R.id.content_frame, new LiquorFragment());
+        } else if (id == R.id.nav_my_drinks){
+            fragmentManager
+                    .replace(R.id.content_frame, new MyDrinkFragment());
         }
+
 
         fragmentManager.addToBackStack(null);
         fragmentManager.commit();

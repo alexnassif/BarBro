@@ -3,6 +3,13 @@ package com.example.raymond.barbro.data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * Created by alex on 12/29/16.
@@ -11,10 +18,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class BarBroDbHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "barbro.db";
     private static final int DATABASE_VERSION = 1;
-
+    private Context c;
+    String db_out_path;
     public BarBroDbHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-
+        c = context;
+        db_out_path = context.getDatabasePath(DATABASE_NAME).toString();
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -46,7 +55,6 @@ public class BarBroDbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_BARBRO_MYDRINK_TABLE);
 
     }
-
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + BarBroContract.BarBroEntry.TABLE_NAME);
