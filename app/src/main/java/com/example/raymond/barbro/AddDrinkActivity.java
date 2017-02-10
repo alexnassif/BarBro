@@ -1,5 +1,7 @@
 package com.example.raymond.barbro;
 
+import android.content.AsyncQueryHandler;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.provider.MediaStore;
@@ -10,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.example.raymond.barbro.data.BarBroContract;
 
 public class AddDrinkActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText mNewDrink;
@@ -42,8 +46,15 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
             if(mNewIngredients.getText().toString().trim().equals(""))
                 mNewIngredients.setError("Cannot be blank");
             else{
-                Toast.makeText(this, "works", Toast.LENGTH_SHORT).show();
+                AsyncQueryHandler putDrink = new AsyncQueryHandler(this.getContentResolver()) {
+                };
+                ContentValues newValue = new ContentValues();
+                newValue.put(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_NAME, mNewDrink.getText().toString().trim());
+                newValue.put(BarBroContract.MyDrinkEntry.COLUMN_MYINGREDIENTS, mNewIngredients.getText().toString().trim());
+                putDrink.startInsert(-1, null, BarBroContract.MyDrinkEntry.CONTENT_URI, newValue);
             }
+            mNewDrink.setText("");
+            mNewIngredients.setText("");
         }
     }
 
