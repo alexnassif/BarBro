@@ -40,7 +40,6 @@ public class MyDrinkAdapter extends RecyclerView.Adapter<MyDrinkAdapter.MyDrinkA
     public void onBindViewHolder(MyDrinkAdapter.MyDrinkAdapterViewHolder holder, int position) {
         int drinkId = mDrinkData.getColumnIndex(BarBroContract.MyDrinkEntry._ID);
         int drinkName = mDrinkData.getColumnIndex(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_NAME);
-        int ingredients = mDrinkData.getColumnIndex(BarBroContract.MyDrinkEntry.COLUMN_MYINGREDIENTS);
 
 
         mDrinkData.moveToPosition(position);
@@ -48,10 +47,8 @@ public class MyDrinkAdapter extends RecyclerView.Adapter<MyDrinkAdapter.MyDrinkA
         final int id = mDrinkData.getInt(drinkId);
         final String stringID = Integer.toString(id);
         String _drinkName = mDrinkData.getString(drinkName);
-        String drinkIngredients = mDrinkData.getString(ingredients);
         holder.itemView.setTag(id);
         holder.mDrinkTextView.setText(_drinkName);
-        holder.mDrinkIngredients.setText(drinkIngredients);
 
     }
 
@@ -69,11 +66,9 @@ public class MyDrinkAdapter extends RecyclerView.Adapter<MyDrinkAdapter.MyDrinkA
 
     public class MyDrinkAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final TextView mDrinkTextView;
-        public final TextView mDrinkIngredients;
         public MyDrinkAdapterViewHolder(View itemView) {
             super(itemView);
             mDrinkTextView = (TextView) itemView.findViewById(R.id.my_drink_name);
-            mDrinkIngredients = (TextView) itemView.findViewById(R.id.my_ingredients);
             itemView.setOnClickListener(this);
         }
 

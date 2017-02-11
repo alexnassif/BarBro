@@ -44,8 +44,8 @@
         app:layout_constraintHorizontal_bias="0.42" />
 
     <ImageView
-        android:layout_width="24dp"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         app:srcCompat="@drawable/ic_menu_camera"
         android:id="@+id/take_drink_pic"
         app:layout_constraintRight_toRightOf="parent"
