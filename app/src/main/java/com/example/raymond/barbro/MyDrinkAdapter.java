@@ -2,14 +2,19 @@ package com.example.raymond.barbro;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.raymond.barbro.data.BarBroContract;
 import com.example.raymond.barbro.data.Drink;
+
+import java.io.File;
 
 
 public class MyDrinkAdapter extends RecyclerView.Adapter<MyDrinkAdapter.MyDrinkAdapterViewHolder> {
@@ -40,13 +45,18 @@ public class MyDrinkAdapter extends RecyclerView.Adapter<MyDrinkAdapter.MyDrinkA
     public void onBindViewHolder(MyDrinkAdapter.MyDrinkAdapterViewHolder holder, int position) {
         int drinkId = mDrinkData.getColumnIndex(BarBroContract.MyDrinkEntry._ID);
         int drinkName = mDrinkData.getColumnIndex(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_NAME);
-
+        int drinkPic = mDrinkData.getColumnIndex(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_PIC);
 
         mDrinkData.moveToPosition(position);
 
         final int id = mDrinkData.getInt(drinkId);
         final String stringID = Integer.toString(id);
-        String _drinkName = mDrinkData.getString(drinkName);
+        final String _drinkName = mDrinkData.getString(drinkName);
+        final String _drinkPic = mDrinkData.getString(drinkPic);
+        if (_drinkPic != null) {
+            Uri takenPhotoUri = Uri.fromFile(new File(_drinkPic));
+            Glide.with(holder.mDrinkImage.getContext()).load(takenPhotoUri.getPath()).into(holder.mDrinkImage);
+        }
         holder.itemView.setTag(id);
         holder.mDrinkTextView.setText(_drinkName);
 
@@ -66,9 +76,11 @@ public class MyDrinkAdapter extends RecyclerView.Adapter<MyDrinkAdapter.MyDrinkA
 
     public class MyDrinkAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final TextView mDrinkTextView;
+        public final ImageView mDrinkImage;
         public MyDrinkAdapterViewHolder(View itemView) {
             super(itemView);
             mDrinkTextView = (TextView) itemView.findViewById(R.id.my_drink_name);
+            mDrinkImage = (ImageView) itemView.findViewById(R.id.my_drink_pic);
             itemView.setOnClickListener(this);
         }
 
@@ -95,4 +107,6 @@ public class MyDrinkAdapter extends RecyclerView.Adapter<MyDrinkAdapter.MyDrinkA
 
         }
     }
+
+
 }

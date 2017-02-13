@@ -30,9 +30,8 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
     private EditText mNewIngredients;
     private ImageView mAddImage;
     private Button mSubmit;
-    String mCurrentPhotoPath;
+    private String mCurrentPhotoPath;
     static final int REQUEST_TAKE_PHOTO = 1;
-    public final String APP_TAG = "MyCustomApp";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -64,10 +63,12 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
                 ContentValues newValue = new ContentValues();
                 newValue.put(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_NAME, mNewDrink.getText().toString().trim());
                 newValue.put(BarBroContract.MyDrinkEntry.COLUMN_MYINGREDIENTS, mNewIngredients.getText().toString().trim());
+                if(mCurrentPhotoPath != null){
+                    newValue.put(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_PIC, mCurrentPhotoPath);
+                }
                 putDrink.startInsert(-1, null, BarBroContract.MyDrinkEntry.CONTENT_URI, newValue);
             }
-            mNewDrink.setText("");
-            mNewIngredients.setText("");
+
         }
     }
     private void setPic(Uri uri) {
@@ -138,7 +139,7 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
-            Uri takenPhotoUri = getPhotoFileUri(mCurrentPhotoPath);
+            Uri takenPhotoUri = Uri.fromFile(new File(mCurrentPhotoPath));
             // by this point we have the camera photo on disk
             setPic(takenPhotoUri);
             // RESIZE BITMAP, see section below
@@ -146,31 +147,12 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
             Toast.makeText(this, takenPhotoUri.toString(), Toast.LENGTH_LONG).show();
         } else { // Result was a failure
             Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+            File file = new File(mCurrentPhotoPath);
+            file.delete();
+            mCurrentPhotoPath = null;
         }
 
     }
-
-    // Returns the Uri for a photo stored on disk given the fileName
-    public Uri getPhotoFileUri(String fileName) {
-        // Only continue if the SD Card is mounted
-        if (isExternalStorageAvailable()) {
-            // Get safe storage directory for photos
-            // Use `getExternalFilesDir` on Context to access package-specific directories.
-            // This way, we don't need to request external read/write runtime permissions.
-            File mediaStorageDir = new File(
-                    getExternalFilesDir(Environment.DIRECTORY_PICTURES), APP_TAG);
-
-            // Create the storage directory if it does not exist
-            if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
-                Log.d(APP_TAG, "failed to create directory");
-            }
-
-            // Return the file target for the photo based on filename
-            return Uri.fromFile(new File(fileName));
-        }
-        return null;
-    }
-
     // Returns true if external storage for photos is available
     private boolean isExternalStorageAvailable() {
         String state = Environment.getExternalStorageState();
