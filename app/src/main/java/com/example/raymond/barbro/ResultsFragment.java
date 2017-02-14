@@ -20,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.raymond.barbro.data.BarBroContract;
 import com.example.raymond.barbro.data.Drink;
@@ -181,7 +182,7 @@ public class ResultsFragment extends Fragment implements
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     Drink drink = (Drink) adapterView.getAdapter().getItem(i);
 
-                    drinkDetail(drink);
+                    //drinkDetail(drink);
                     acDrinkTextView.setText("");
                 }
             });
@@ -211,12 +212,13 @@ public class ResultsFragment extends Fragment implements
     }
 
     @Override
-    public void onClick(Drink drink) {
+    public void onClick(int drink) {
 
         drinkDetail(drink);
 
     }
-    public void drinkDetail(Drink drink){
+    public void drinkDetail(int drink){
+
         Intent intent = new Intent(getContext(), DrinkDetailActivity.class);
         intent.putExtra("drink", drink);
         startActivity(intent);

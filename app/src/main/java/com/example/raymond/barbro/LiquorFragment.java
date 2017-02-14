@@ -160,7 +160,7 @@ public class LiquorFragment extends Fragment implements
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     Drink drink = (Drink) adapterView.getAdapter().getItem(i);
 
-                    drinkDetail(drink);
+                   // drinkDetail(drink);
                     mAutoCompleteTextView.setText("");
                 }
             });
@@ -190,12 +190,12 @@ public class LiquorFragment extends Fragment implements
     }
 
     @Override
-    public void onClick(Drink drink) {
+    public void onClick(int drink) {
 
         drinkDetail(drink);
 
     }
-    public void drinkDetail(Drink drink){
+    public void drinkDetail(int drink){
         Intent intent = new Intent(getContext(), DrinkDetailActivity.class);
         intent.putExtra("drink", drink);
         startActivity(intent);

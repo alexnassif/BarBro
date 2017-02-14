@@ -68,10 +68,16 @@ public class BarBroContentProvider extends ContentProvider {
                 break;
             case DRINKS_WITH_ID:
                 String id = uri.getPathSegments().get(1);
-                retCursor = db.query(BarBroContract.BarBroEntry.TABLE_NAME,
+
+                // Selection is the _ID column = ?, and the Selection args = the row ID from the URI
+                String mSelection = "_id=?";
+                String[] mSelectionArgs = new String[]{id};
+
+                // Construct a query as you would normally, passing in the selection/args
+                retCursor =  db.query(BarBroContract.BarBroEntry.TABLE_NAME,
                         projection,
-                        selection,
-                        selectionArgs,
+                        mSelection,
+                        mSelectionArgs,
                         null,
                         null,
                         sortOrder);

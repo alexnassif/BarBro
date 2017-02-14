@@ -25,6 +25,7 @@ public class DrinkDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null) {
             // During initial setup, plug in the details fragment.
+
             Intent intent = getIntent();
             int drinkId = intent.getIntExtra("drink", 0);
             getSupportFragmentManager().beginTransaction().add(android.R.id.content, DrinkDetailFragment.newInstance(drinkId)).commit();

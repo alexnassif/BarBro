@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,14 +24,7 @@ import com.example.raymond.barbro.data.BarBroContract;
 import com.example.raymond.barbro.data.Drink;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link DrinkDetailFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link DrinkDetailFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class DrinkDetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private String drinkObj = "drinkId";
@@ -41,7 +35,7 @@ public class DrinkDetailFragment extends Fragment implements LoaderManager.Loade
     private VideoView mDrinkVideo;
     private String videoUrl = "http://assets.absolutdrinks.com/videos/";
     private static final int DRINK_SEARCH_LOADER = 1;
-    private OnFragmentInteractionListener mListener;
+    //private OnFragmentInteractionListener mListener;
 
     public DrinkDetailFragment() {
         // Required empty public constructor
@@ -76,28 +70,33 @@ public class DrinkDetailFragment extends Fragment implements LoaderManager.Loade
         return myView;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
+//    // TODO: Rename method, update argument and hook method into UI event
+//    public void onButtonPressed(Uri uri) {
+//        if (mListener != null) {
+//            mListener.onFragmentInteraction(uri);
+//        }
+//    }
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
+            getLoaderManager().initLoader(DRINK_SEARCH_LOADER, null, this);
+    }
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
+//        if (context instanceof OnFragmentInteractionListener) {
+//            mListener = (OnFragmentInteractionListener) context;
+//        } else {
+//            throw new RuntimeException(context.toString()
+//                    + " must implement OnFragmentInteractionListener");
+//        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        //mListener = null;
     }
 
     @Override
@@ -120,6 +119,10 @@ public class DrinkDetailFragment extends Fragment implements LoaderManager.Loade
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+        data.moveToFirst();
+        int drink_id = data.getColumnIndex(BarBroContract.BarBroEntry._ID);
+
         int drinkName = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
         int ingredients = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS);
         int videoId = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_VIDEO);
@@ -163,8 +166,8 @@ public class DrinkDetailFragment extends Fragment implements LoaderManager.Loade
 
     }
 
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
+//    public interface OnFragmentInteractionListener {
+//        // TODO: Update argument type and name
+//        void onFragmentInteraction(Uri uri);
+//    }
 }
