@@ -20,53 +20,15 @@ import com.example.raymond.barbro.data.Drink;
 
 public class DrinkDetailActivity extends AppCompatActivity {
 
-    private Drink drink;
-    private TextView mDrinkTitle;
-    private TextView mIngredients;
-    private VideoView mDrinkVideo;
-    private String videoUrl = "http://assets.absolutdrinks.com/videos/";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_drink_detail);
-        mDrinkTitle = (TextView) findViewById(R.id.drink_name);
-        mIngredients = (TextView) findViewById(R.id.drink_ingredients);
-        mDrinkVideo = (VideoView) findViewById(R.id.drink_video);
-        Intent intent = getIntent();
-        drink = (Drink) intent.getSerializableExtra("drink");
-        setTitle(drink.getDrinkName());
-        mDrinkTitle.setText(drink.getDrinkName());;
-        String ingredients = drink.getIngredients();
-        mIngredients.setText(ingredients);
-        String videoURL = videoUrl + drink.getVideo();
-        if(drink.getVideo() != null)
-            mDrinkVideo.setVideoPath(videoUrl + drink.getVideo());
-        else {
-            Toast.makeText(this, "No Video Available for this Drink", Toast.LENGTH_LONG).show();
-            mDrinkVideo.setVisibility(View.GONE);
+        if (savedInstanceState == null) {
+            // During initial setup, plug in the details fragment.
+            Intent intent = getIntent();
+            int drinkId = intent.getIntExtra("drink", 0);
+            getSupportFragmentManager().beginTransaction().add(android.R.id.content, DrinkDetailFragment.newInstance(drinkId)).commit();
         }
-        ConnectivityManager cm =
-                (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        final boolean isConnected = activeNetwork != null &&
-                activeNetwork.isConnectedOrConnecting();
-
-        mDrinkVideo.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-            @Override
-            public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
-                if(!isConnected)
-                    Toast.makeText(getBaseContext(), "No Network Connectivity. Cannot Play Video", Toast.LENGTH_LONG).show();
-                return true;
-            }
-        });
-
-        MediaController mediaController = new
-                MediaController(this);
-        mediaController.setAnchorView(mDrinkVideo);
-        mDrinkVideo.setMediaController(mediaController);
-        mDrinkVideo.seekTo(5000);
-        //mDrinkVideo.start();
 
 
     }
