@@ -177,11 +177,11 @@ public class MainFragment extends Fragment implements
     }
 
     @Override
-    public void onClick(Drink drink) {
+    public void onClick(int drink) {
         drinkDetail(drink);
     }
 
-    public void drinkDetail(Drink drink){
+    public void drinkDetail(int drink){
         Intent intent = new Intent(getContext(), DrinkDetailActivity.class);
         intent.putExtra("drink", drink);
         startActivity(intent);

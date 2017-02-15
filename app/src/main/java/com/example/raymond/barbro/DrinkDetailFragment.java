@@ -121,7 +121,6 @@ public class DrinkDetailFragment extends Fragment implements LoaderManager.Loade
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
         data.moveToFirst();
-        int drink_id = data.getColumnIndex(BarBroContract.BarBroEntry._ID);
 
         int drinkName = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
         int ingredients = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS);

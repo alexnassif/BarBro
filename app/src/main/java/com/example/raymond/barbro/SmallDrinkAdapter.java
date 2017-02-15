@@ -30,7 +30,7 @@ public class SmallDrinkAdapter extends RecyclerView.Adapter<SmallDrinkAdapter.Sm
     }
 
     public interface SmallDrinkAdapterOnClickHandler{
-        void onClick(Drink drink);
+        void onClick(int drink);
     }
     @Override
     public SmallDrinkAdapter.SmallDrinkAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -88,19 +88,9 @@ public class SmallDrinkAdapter extends RecyclerView.Adapter<SmallDrinkAdapter.Sm
             int adapterPosition = getAdapterPosition();
             mDrinkData.moveToPosition(adapterPosition);
             int drinkId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry._ID);
-            int drinkName = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
-            int ingredients = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS);
-            int drinkPicId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC);
-            int videoId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_VIDEO);
-
             int id = mDrinkData.getInt(drinkId);
-            String _drinkName = mDrinkData.getString(drinkName);
-            String drinkIngredients = mDrinkData.getString(ingredients);
-            String drinkPic = mDrinkData.getString(drinkPicId);
-            String drinkVideo = mDrinkData.getString(videoId);
-            Drink drink = new Drink(_drinkName, drinkIngredients, drinkPic);
-            drink.setVideo(drinkVideo);
-            mClickHandler.onClick(drink);
+
+            mClickHandler.onClick(id);
         }
     }
 }

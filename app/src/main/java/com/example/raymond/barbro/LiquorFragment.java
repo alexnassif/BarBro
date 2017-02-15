@@ -135,6 +135,7 @@ public class LiquorFragment extends Fragment implements
 
          //When we finish loading, we want to hide the loading indicator from the user.
         //mLoadingIndicator.setVisibility(View.INVISIBLE);
+        int drinkId = data.getColumnIndex(BarBroContract.BarBroEntry._ID);
         int drinkName = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
         int ingredients = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS);
         int drinkPicId = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC);
@@ -145,6 +146,7 @@ public class LiquorFragment extends Fragment implements
         while(!data.isAfterLast()){
             Drink drink = new Drink(data.getString(drinkName), data.getString(ingredients), data.getString(drinkPicId));
             drink.setVideo(data.getString(videoId));
+            drink.setDbId(data.getInt(drinkId));
             array[i] = drink;
             i++;
             data.moveToNext();
@@ -160,7 +162,7 @@ public class LiquorFragment extends Fragment implements
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     Drink drink = (Drink) adapterView.getAdapter().getItem(i);
 
-                   // drinkDetail(drink);
+                    drinkDetail(drink.getDbId());
                     mAutoCompleteTextView.setText("");
                 }
             });

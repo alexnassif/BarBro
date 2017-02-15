@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -48,6 +49,9 @@ public class ResultsFragment extends Fragment implements
     private View myView;
     private AutoCompleteTextView acDrinkTextView;
 
+    boolean mDualPane;
+    int mCurCheckPosition = 0;
+
     public static ResultsFragment newInstance(boolean param1) {
         ResultsFragment fragment = new ResultsFragment();
         Bundle args = new Bundle();
@@ -73,6 +77,18 @@ public class ResultsFragment extends Fragment implements
         mRecyclerView.setHasFixedSize(true);
         mDrinkAdapter = new DrinkAdapter(getContext(), this);
         mRecyclerView.setAdapter(mDrinkAdapter);
+        View detailsFrame = getActivity().findViewById(R.id.drink_detail_fragment);
+        mDualPane = detailsFrame != null && detailsFrame.getVisibility() == View.VISIBLE;
+
+        if (savedInstanceState != null) {
+            // Restore last state for checked position.
+            mCurCheckPosition = savedInstanceState.getInt("curChoice", 0);
+        }
+
+        if (mDualPane) {
+
+            showDetails(1);
+        }
 
         if(mParam1 == false) {
             getLoaderManager().initLoader(GITHUB_SEARCH_LOADER, null, this);
@@ -83,7 +99,33 @@ public class ResultsFragment extends Fragment implements
             getActivity().setTitle("Favorites");}
 
     }
+    void showDetails(int index) {
+        mCurCheckPosition = index;
 
+        if (mDualPane) {
+            // We can display everything in-place with fragments, so update
+            // the list to highlight the selected item and show the data.
+
+            // Check what fragment is currently shown, replace if needed.
+            DrinkDetailFragment details = (DrinkDetailFragment)
+                    getFragmentManager().findFragmentById(R.id.drink_detail_fragment);
+            if (details == null ) {
+                // Make new fragment to show this selection.
+                details = DrinkDetailFragment.newInstance(1);
+
+                // Execute a transaction, replacing any existing fragment
+                // with this one inside the frame.
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+                ft.replace(R.id.drink_detail_fragment, details);
+
+
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                ft.commit();
+            }
+
+        }
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -156,7 +198,7 @@ public class ResultsFragment extends Fragment implements
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
+        int drinkId = data.getColumnIndex(BarBroContract.BarBroEntry._ID);
         int drinkName = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
         int ingredients = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS);
         int drinkPicId = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC);
@@ -168,6 +210,7 @@ public class ResultsFragment extends Fragment implements
 
             Drink drink = new Drink(data.getString(drinkName), data.getString(ingredients), data.getString(drinkPicId));
             drink.setVideo(data.getString(videoId));
+            drink.setDbId(data.getInt(drinkId));
             array[i] = drink;
             i++;
             data.moveToNext();
@@ -182,7 +225,7 @@ public class ResultsFragment extends Fragment implements
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     Drink drink = (Drink) adapterView.getAdapter().getItem(i);
 
-                    //drinkDetail(drink);
+                    drinkDetail(drink.getDbId());
                     acDrinkTextView.setText("");
                 }
             });
@@ -213,8 +256,32 @@ public class ResultsFragment extends Fragment implements
 
     @Override
     public void onClick(int drink) {
+        mCurCheckPosition = drink;
 
-        drinkDetail(drink);
+        if (mDualPane) {
+            // We can display everything in-place with fragments, so update
+            // the list to highlight the selected item and show the data.
+
+            // Check what fragment is currently shown, replace if needed.
+            DrinkDetailFragment
+
+                // Make new fragment to show this selection.
+                details = DrinkDetailFragment.newInstance(drink);
+
+                // Execute a transaction, replacing any existing fragment
+                // with this one inside the frame.
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+                ft.replace(R.id.drink_detail_fragment, details);
+
+
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                ft.commit();
+
+
+        }
+        else
+            drinkDetail(drink);
 
     }
     public void drinkDetail(int drink){

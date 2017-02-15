@@ -10,6 +10,7 @@ import java.util.Map;
 
 public class Drink implements Serializable {
 
+    private int dbId;
     private String drinkName;
     private String id;
     private String ingredients;
@@ -38,6 +39,10 @@ public class Drink implements Serializable {
     public void setIngredients(String ingredients){
         this.ingredients = ingredients;
     }
+    public void setDbId(int id){
+        this.dbId = id;
+    }
+    public int getDbId(){return dbId;}
     @Override
     public String toString(){
         return drinkName;
