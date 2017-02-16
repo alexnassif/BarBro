@@ -106,11 +106,7 @@ public class ResultsFragment extends Fragment implements
             // the list to highlight the selected item and show the data.
 
             // Check what fragment is currently shown, replace if needed.
-            DrinkDetailFragment details = (DrinkDetailFragment)
-                    getFragmentManager().findFragmentById(R.id.drink_detail_fragment);
-            if (details == null ) {
-                // Make new fragment to show this selection.
-                details = DrinkDetailFragment.newInstance(1);
+            DrinkDetailFragment details = DrinkDetailFragment.newInstance(1);
 
                 // Execute a transaction, replacing any existing fragment
                 // with this one inside the frame.
@@ -121,7 +117,7 @@ public class ResultsFragment extends Fragment implements
 
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 ft.commit();
-            }
+
 
         }
     }
