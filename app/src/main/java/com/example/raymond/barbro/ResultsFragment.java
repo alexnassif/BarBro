@@ -79,6 +79,13 @@ public class ResultsFragment extends Fragment implements
         mRecyclerView.setAdapter(mDrinkAdapter);
         View detailsFrame = getActivity().findViewById(R.id.drink_detail_fragment);
         mDualPane = detailsFrame != null && detailsFrame.getVisibility() == View.VISIBLE;
+        if(mParam1 == false) {
+            getLoaderManager().initLoader(GITHUB_SEARCH_LOADER, null, this);
+            getActivity().setTitle("All Drinks");
+        }
+        else{
+            getLoaderManager().initLoader(FAVE_LOADER, null, this);
+            getActivity().setTitle("Favorites");}
 
         if (savedInstanceState != null) {
             // Restore last state for checked position.
@@ -89,14 +96,6 @@ public class ResultsFragment extends Fragment implements
 
             showDetails(1);
         }
-
-        if(mParam1 == false) {
-            getLoaderManager().initLoader(GITHUB_SEARCH_LOADER, null, this);
-            getActivity().setTitle("All Drinks");
-        }
-        else{
-            getLoaderManager().initLoader(FAVE_LOADER, null, this);
-            getActivity().setTitle("Favorites");}
 
     }
     void showDetails(int index) {
@@ -238,7 +237,7 @@ public class ResultsFragment extends Fragment implements
 
 
         if (null == data) {
-            showErrorMessage();
+            Toast.makeText(getContext(), " null data ", Toast.LENGTH_LONG).show();
         } else {
 
             showJsonDataView();
