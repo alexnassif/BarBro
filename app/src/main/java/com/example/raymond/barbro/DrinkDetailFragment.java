@@ -36,8 +36,6 @@ public class DrinkDetailFragment extends Fragment implements LoaderManager.Loade
     private int drinkId;
     private TextView mDrinkTitle;
     private TextView mIngredients;
-    private VideoView mDrinkVideo;
-    private String videoUrl = "http://assets.absolutdrinks.com/videos/";
     private static final int DRINK_SEARCH_LOADER = 1;
     private String videoURL;
     //private OnFragmentInteractionListener mListener;
@@ -116,11 +114,21 @@ public class DrinkDetailFragment extends Fragment implements LoaderManager.Loade
         int id = item.getItemId();
 
         if (id == R.id.video_item) {
-            Toast.makeText(getContext(), "working", Toast.LENGTH_LONG);
+            View detailsFrame = getActivity().findViewById(R.id.drink_detail_fragment);
+            boolean mDualPane = detailsFrame != null && detailsFrame.getVisibility() == View.VISIBLE;
+            if(mDualPane){
+                FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
+                fragmentManager
+                        .replace(R.id.drink_detail_fragment, VideoFragment.newInstance(videoURL))
+                        .addToBackStack(null)
+                        .commit();
+            }
+            else{
             FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
             fragmentManager
-                    .add(android.R.id.content, VideoFragment.newInstance(videoURL))
-                    .commit();
+                    .replace(R.id.drink_detail, VideoFragment.newInstance(videoURL))
+                    .addToBackStack(null)
+                    .commit();}
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -155,35 +163,7 @@ public class DrinkDetailFragment extends Fragment implements LoaderManager.Loade
 
         mDrinkTitle.setText(data.getString(drinkName));
         mIngredients.setText(data.getString(ingredients));
-        videoURL = videoUrl + data.getString(videoId);
-//        if(data.getString(videoId) != null) {
-//            String videoURL = videoUrl + data.getString(videoId);
-//            mDrinkVideo.setVideoPath(videoURL);
-//            ConnectivityManager cm =
-//                    (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-//
-//            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-//            final boolean isConnected = activeNetwork != null &&
-//                    activeNetwork.isConnectedOrConnecting();
-//
-//            mDrinkVideo.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-//                @Override
-//                public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
-//                    if(!isConnected)
-//                        Toast.makeText(getContext(), "No Network Connectivity. Cannot Play Video", Toast.LENGTH_LONG).show();
-//                    return true;
-//                }
-//            });
-//            MediaController mediaController = new
-//                    MediaController(getContext());
-//            mediaController.setAnchorView(mDrinkVideo);
-//            mDrinkVideo.setMediaController(mediaController);
-//            mDrinkVideo.seekTo(5000);
-//        }
-//        else {
-//            Toast.makeText(getContext(), "No Video Available for this Drink", Toast.LENGTH_LONG).show();
-//            mDrinkVideo.setVisibility(View.GONE);
-//        }
+        videoURL = data.getString(videoId);
 
     }
 

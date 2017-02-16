@@ -23,12 +23,13 @@ public class DrinkDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.test_drink_detail);
         if (savedInstanceState == null) {
             // During initial setup, plug in the details fragment.
 
             Intent intent = getIntent();
             int drinkId = intent.getIntExtra("drink", 0);
-            getSupportFragmentManager().beginTransaction().add(android.R.id.content, DrinkDetailFragment.newInstance(drinkId)).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.drink_detail, DrinkDetailFragment.newInstance(drinkId)).commit();
         }
 
 

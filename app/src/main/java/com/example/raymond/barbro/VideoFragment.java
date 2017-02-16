@@ -24,6 +24,7 @@ import android.widget.VideoView;
 public class VideoFragment extends Fragment {
     private VideoView videoView;
     private static final String video_url = "videoUrl";
+    private String videoUrl = "http://assets.absolutdrinks.com/videos/";
     private String mParam1;
     private View myView;
 
@@ -62,9 +63,8 @@ public class VideoFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Toast.makeText(getContext(), mParam1, Toast.LENGTH_LONG).show();
         if(mParam1 != null) {
-            videoView.setVideoPath(mParam1);
+            videoView.setVideoPath(videoUrl + mParam1);
             ConnectivityManager cm =
                     (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
 
