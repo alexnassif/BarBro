@@ -14,6 +14,9 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -51,6 +54,8 @@ public class ResultsFragment extends Fragment implements
 
     boolean mDualPane;
     int mCurCheckPosition = 1;
+    private String videoURL;
+
 
     public static ResultsFragment newInstance(boolean param1) {
         ResultsFragment fragment = new ResultsFragment();
@@ -66,6 +71,7 @@ public class ResultsFragment extends Fragment implements
         if (getArguments() != null) {
             mParam1 = getArguments().getBoolean(ARG_PARAM1);
         }
+        setHasOptionsMenu(true);
     }
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -221,11 +227,42 @@ public class ResultsFragment extends Fragment implements
          */
         //mLoadingIndicator.setVisibility(View.INVISIBLE);
     }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if(mDualPane){
+        inflater.inflate(R.menu.video, menu);}
+        super.onCreateOptionsMenu(menu, inflater);
+    }
 
     @Override
-    public void onClick(int drink) {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(mDualPane) {
+            if (id == R.id.video_item) {
+                View detailsFrame = getActivity().findViewById(R.id.drink_detail_fragment);
+                boolean mDualPane = detailsFrame != null && detailsFrame.getVisibility() == View.VISIBLE;
+                if (mDualPane) {
+                    FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
+                    fragmentManager
+                            .replace(R.id.drink_detail_fragment, VideoFragment.newInstance(videoURL))
+                            .addToBackStack(null)
+                            .commit();
+                } else {
+                    FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
+                    fragmentManager
+                            .replace(R.id.drink_detail, VideoFragment.newInstance(videoURL))
+                            .addToBackStack(null)
+                            .commit();
+                }
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public void onClick(int drink, String video) {
         mCurCheckPosition = drink;
-
+        videoURL = video;
         if (mDualPane) {
             showDetails(drink);
         }

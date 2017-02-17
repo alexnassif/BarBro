@@ -192,7 +192,7 @@ public class LiquorFragment extends Fragment implements
     }
 
     @Override
-    public void onClick(int drink) {
+    public void onClick(int drink, String video) {
 
         drinkDetail(drink);
 

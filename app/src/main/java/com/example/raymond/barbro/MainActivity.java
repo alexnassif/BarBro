@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity
         fragmentManager
                 .beginTransaction()
                 .replace(R.id.content_frame, new MainFragment())
-                .addToBackStack(null)
                 .commit();}
         BarBroSyncUtils.initialize(this);
     }

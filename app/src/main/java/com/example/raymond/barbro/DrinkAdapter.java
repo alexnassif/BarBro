@@ -34,7 +34,7 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
     }
 
     public interface DrinkAdapterOnClickHandler{
-        void onClick(int drink);
+        void onClick(int drink, String video);
     }
 
     @Override
@@ -143,7 +143,7 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
             } else {
                 Drink drink = new Drink(_drinkName, drinkIngredients, drinkPic);
                 drink.setVideo(video);
-                mClickHandler.onClick(id);
+                mClickHandler.onClick(id, video);
             }
         }
     }

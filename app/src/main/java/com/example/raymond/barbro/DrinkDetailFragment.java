@@ -60,7 +60,6 @@ public class DrinkDetailFragment extends Fragment implements LoaderManager.Loade
         if (getArguments() != null) {
             drinkId = getArguments().getInt(drinkObj);
         }
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -103,36 +102,7 @@ public class DrinkDetailFragment extends Fragment implements LoaderManager.Loade
         //mListener = null;
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.video, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.video_item) {
-            View detailsFrame = getActivity().findViewById(R.id.drink_detail_fragment);
-            boolean mDualPane = detailsFrame != null && detailsFrame.getVisibility() == View.VISIBLE;
-            if (mDualPane) {
-                FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
-                fragmentManager
-                        .replace(R.id.drink_detail_fragment, VideoFragment.newInstance(videoURL))
-                        .addToBackStack(null)
-                        .commit();
-            } else {
-                FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
-                fragmentManager
-                        .replace(R.id.drink_detail, VideoFragment.newInstance(videoURL))
-                        .addToBackStack(null)
-                        .commit();
-            }
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
