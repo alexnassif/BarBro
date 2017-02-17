@@ -116,19 +116,19 @@ public class DrinkDetailFragment extends Fragment implements LoaderManager.Loade
         if (id == R.id.video_item) {
             View detailsFrame = getActivity().findViewById(R.id.drink_detail_fragment);
             boolean mDualPane = detailsFrame != null && detailsFrame.getVisibility() == View.VISIBLE;
-            if(mDualPane){
+            if (mDualPane) {
                 FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
                 fragmentManager
                         .replace(R.id.drink_detail_fragment, VideoFragment.newInstance(videoURL))
                         .addToBackStack(null)
                         .commit();
+            } else {
+                FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
+                fragmentManager
+                        .replace(R.id.drink_detail, VideoFragment.newInstance(videoURL))
+                        .addToBackStack(null)
+                        .commit();
             }
-            else{
-            FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
-            fragmentManager
-                    .replace(R.id.drink_detail, VideoFragment.newInstance(videoURL))
-                    .addToBackStack(null)
-                    .commit();}
             return true;
         }
         return super.onOptionsItemSelected(item);

@@ -50,7 +50,7 @@ public class ResultsFragment extends Fragment implements
     private AutoCompleteTextView acDrinkTextView;
 
     boolean mDualPane;
-    int mCurCheckPosition = 0;
+    int mCurCheckPosition = 1;
 
     public static ResultsFragment newInstance(boolean param1) {
         ResultsFragment fragment = new ResultsFragment();
@@ -94,9 +94,14 @@ public class ResultsFragment extends Fragment implements
 
         if (mDualPane) {
 
-            showDetails(1);
+            showDetails(mCurCheckPosition);
         }
 
+    }
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("curChoice", mCurCheckPosition);
     }
     void showDetails(int index) {
         mCurCheckPosition = index;
@@ -106,7 +111,7 @@ public class ResultsFragment extends Fragment implements
             // the list to highlight the selected item and show the data.
 
             // Check what fragment is currently shown, replace if needed.
-            DrinkDetailFragment details = DrinkDetailFragment.newInstance(1);
+            DrinkDetailFragment details = DrinkDetailFragment.newInstance(index);
 
                 // Execute a transaction, replacing any existing fragment
                 // with this one inside the frame.
@@ -130,35 +135,6 @@ public class ResultsFragment extends Fragment implements
         acDrinkTextView = (AutoCompleteTextView) myView.findViewById(R.id.search_drinks);
         //mLoadingIndicator = (ProgressBar) myView.findViewById(R.id.pb_loading_indicator);
         return myView;
-    }
-
-
-    /**
-     * This method will make the View for the JSON data visible and
-     * hide the error message.
-     * <p>
-     * Since it is okay to redundantly set the visibility of a View, we don't
-     * need to check whether each view is currently visible or invisible.
-     */
-    private void showJsonDataView() {
-        /* First, make sure the error is invisible */
-       // mErrorMessageDisplay.setVisibility(View.INVISIBLE);
-        /* Then, make sure the JSON data is visible */
-
-    }
-
-    /**
-     * This method will make the error message visible and hide the JSON
-     * View.
-     * <p>
-     * Since it is okay to redundantly set the visibility of a View, we don't
-     * need to check whether each view is currently visible or invisible.
-     */
-    private void showErrorMessage() {
-        /* First, hide the currently visible data */
-
-        /* Then, show the error */
-        //mErrorMessageDisplay.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -234,9 +210,6 @@ public class ResultsFragment extends Fragment implements
 
         if (null == data) {
             Toast.makeText(getContext(), " null data ", Toast.LENGTH_LONG).show();
-        } else {
-
-            showJsonDataView();
         }
     }
 
@@ -254,26 +227,7 @@ public class ResultsFragment extends Fragment implements
         mCurCheckPosition = drink;
 
         if (mDualPane) {
-            // We can display everything in-place with fragments, so update
-            // the list to highlight the selected item and show the data.
-
-            // Check what fragment is currently shown, replace if needed.
-            DrinkDetailFragment
-
-                // Make new fragment to show this selection.
-                details = DrinkDetailFragment.newInstance(drink);
-
-                // Execute a transaction, replacing any existing fragment
-                // with this one inside the frame.
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-
-                ft.replace(R.id.drink_detail_fragment, details);
-
-
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                ft.commit();
-
-
+            showDetails(drink);
         }
         else
             drinkDetail(drink);
