@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity
         fragmentManager
                 .beginTransaction()
                 .replace(R.id.content_frame, new MainFragment())
+                .addToBackStack(null)
                 .commit();}
         BarBroSyncUtils.initialize(this);
     }
@@ -71,6 +72,9 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        MenuItem item = menu.findItem(R.id.video_item);
+        if(item != null)
+            item.setVisible(false);
         return true;
     }
 

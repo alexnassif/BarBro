@@ -120,7 +120,7 @@ public class ResultsFragment extends Fragment implements
                 ft.replace(R.id.drink_detail_fragment, details);
 
 
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 ft.commit();
 
 
