@@ -2,6 +2,7 @@ package com.example.raymond.barbro;
 
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -54,7 +55,7 @@ public class ResultsFragment extends Fragment implements
 
     boolean mDualPane;
     int mCurCheckPosition = 1;
-    private String videoURL;
+    private String videoURL = "pennsylvania.mp4";
 
 
     public static ResultsFragment newInstance(boolean param1) {
@@ -85,6 +86,9 @@ public class ResultsFragment extends Fragment implements
         mRecyclerView.setAdapter(mDrinkAdapter);
         View detailsFrame = getActivity().findViewById(R.id.drink_detail_fragment);
         mDualPane = detailsFrame != null && detailsFrame.getVisibility() == View.VISIBLE;
+        if(!mDualPane){
+            getActivity().setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
         if(mParam1 == false) {
             getLoaderManager().initLoader(GITHUB_SEARCH_LOADER, null, this);
             getActivity().setTitle("All Drinks");
@@ -104,6 +108,13 @@ public class ResultsFragment extends Fragment implements
         }
 
     }
+
+    @Override
+    public void onDestroy() {
+        getActivity().setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+        super.onDestroy();
+    }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
