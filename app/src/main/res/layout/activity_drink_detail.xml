@@ -41,7 +41,7 @@
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
         android:textSize="18sp" />
 
-    <VideoView
+    <FrameLayout
         android:id="@+id/drink_video"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

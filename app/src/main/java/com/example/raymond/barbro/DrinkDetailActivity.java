@@ -7,12 +7,17 @@ import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.TextView;
@@ -29,8 +34,10 @@ public class DrinkDetailActivity extends AppCompatActivity implements LoaderMana
     private int drinkId;
     private TextView mDrinkNameView;
     private TextView mDrinkIngredientsView;
-    private VideoView mVideoView;
+    //private VideoView mVideoView;
+    private String videoURL;
     private String videoUrl = "http://assets.absolutdrinks.com/videos/";
+    private FrameLayout frameLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,9 +52,31 @@ public class DrinkDetailActivity extends AppCompatActivity implements LoaderMana
 
         mDrinkNameView = (TextView) findViewById(R.id.drink_name);
         mDrinkIngredientsView = (TextView) findViewById(R.id.drink_ingredients);
-        mVideoView = (VideoView) findViewById(R.id.drink_video);
+        frameLayout = (FrameLayout) findViewById(R.id.drink_video);
+        frameLayout.setVisibility(View.INVISIBLE);
+        //mVideoView = (VideoView) findViewById(R.id.drink_video);
         getSupportLoaderManager().initLoader(DRINK_SEARCH_LOADER, null, this);
 
+    }
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.video, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+            if (id == R.id.video_item) {
+                frameLayout.setVisibility(View.VISIBLE);
+                    FragmentTransaction fragmentManager = getSupportFragmentManager().beginTransaction();
+                    fragmentManager
+                            .replace(R.id.drink_video, VideoFragment.newInstance(videoURL))
+                            .commit();
+                return true;
+                }
+        return true;
     }
 
     @Override
@@ -78,34 +107,8 @@ public class DrinkDetailActivity extends AppCompatActivity implements LoaderMana
 
         mDrinkNameView.setText(data.getString(drinkName));
         mDrinkIngredientsView.setText(data.getString(ingredients));
-        String videoURL = data.getString(videoId);
-        if(videoURL != null) {
-            mVideoView.setVideoPath(videoUrl + videoURL);
-            ConnectivityManager cm =
-                    (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        videoURL = data.getString(videoId);
 
-            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-            final boolean isConnected = activeNetwork != null &&
-                    activeNetwork.isConnectedOrConnecting();
-
-            mVideoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-                @Override
-                public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
-                    if(!isConnected)
-                        Toast.makeText(DrinkDetailActivity.this, "No Network Connectivity. Cannot Play Video", Toast.LENGTH_LONG).show();
-                    return true;
-                }
-            });
-            MediaController mediaController = new
-                    MediaController(this);
-            mediaController.setAnchorView(mVideoView);
-            mVideoView.setMediaController(mediaController);
-            mVideoView.start();
-        }
-        else {
-            Toast.makeText(this, "No Video Available for this Drink", Toast.LENGTH_LONG).show();
-            mVideoView.setVisibility(View.GONE);
-        }
     }
 
     @Override
