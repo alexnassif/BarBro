@@ -34,16 +34,13 @@ public class DrinkDetailActivity extends AppCompatActivity implements LoaderMana
     private int drinkId;
     private TextView mDrinkNameView;
     private TextView mDrinkIngredientsView;
-    //private VideoView mVideoView;
     private String videoURL;
-    private String videoUrl = "http://assets.absolutdrinks.com/videos/";
     private FrameLayout frameLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drink_detail);
         if (savedInstanceState == null) {
-            // During initial setup, plug in the details fragment.
 
             Intent intent = getIntent();
             drinkId = intent.getIntExtra("drink", 0);
@@ -53,8 +50,6 @@ public class DrinkDetailActivity extends AppCompatActivity implements LoaderMana
         mDrinkNameView = (TextView) findViewById(R.id.drink_name);
         mDrinkIngredientsView = (TextView) findViewById(R.id.drink_ingredients);
         frameLayout = (FrameLayout) findViewById(R.id.drink_video);
-        frameLayout.setVisibility(View.INVISIBLE);
-        //mVideoView = (VideoView) findViewById(R.id.drink_video);
         getSupportLoaderManager().initLoader(DRINK_SEARCH_LOADER, null, this);
 
     }
@@ -68,14 +63,13 @@ public class DrinkDetailActivity extends AppCompatActivity implements LoaderMana
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-            if (id == R.id.video_item) {
-                frameLayout.setVisibility(View.VISIBLE);
-                    FragmentTransaction fragmentManager = getSupportFragmentManager().beginTransaction();
-                    fragmentManager
-                            .replace(R.id.drink_video, VideoFragment.newInstance(videoURL))
-                            .commit();
-                return true;
-                }
+        if (id == R.id.video_item) {
+            FragmentTransaction fragmentManager = getSupportFragmentManager().beginTransaction();
+            fragmentManager
+                    .replace(R.id.drink_video, VideoFragment.newInstance(videoURL))
+                    .commit();
+            return true;
+        }
         return true;
     }
 
