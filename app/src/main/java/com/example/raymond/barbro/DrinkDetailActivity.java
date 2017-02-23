@@ -64,10 +64,9 @@ public class DrinkDetailActivity extends AppCompatActivity implements LoaderMana
         int id = item.getItemId();
 
         if (id == R.id.video_item) {
-            FragmentTransaction fragmentManager = getSupportFragmentManager().beginTransaction();
-            fragmentManager
-                    .replace(R.id.drink_video, VideoFragment.newInstance(videoURL))
-                    .commit();
+            Intent intent = new Intent(this, VideoActivity.class);
+            intent.putExtra("video", videoURL);
+            startActivity(intent);
             return true;
         }
         return true;
