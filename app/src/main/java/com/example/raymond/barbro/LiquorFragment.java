@@ -1,17 +1,22 @@
 package com.example.raymond.barbro;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -41,11 +46,24 @@ public class LiquorFragment extends Fragment implements
     private Spinner mLiquorSpinner;
     private String liqType;
     private AutoCompleteTextView mAutoCompleteTextView;
+    private boolean mDualPane;
+    int mCurCheckPosition = 1;
+    private String videoURL = "pennsylvania.mp4";
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        View detailsFrame = getActivity().findViewById(R.id.drink_detail_fragment);
+        mDualPane = detailsFrame != null && detailsFrame.getVisibility() == View.VISIBLE;
+        if(!mDualPane){
+            getActivity().setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
@@ -73,9 +91,47 @@ public class LiquorFragment extends Fragment implements
 
             }
         });
+        if (savedInstanceState != null) {
+            // Restore last state for checked position.
+            mCurCheckPosition = savedInstanceState.getInt("curChoice", 0);
+        }
+
+        if (mDualPane) {
+
+            showDetails(mCurCheckPosition);
+        }
+
 
     }
 
+    @Override
+    public void onDestroy() {
+        getActivity().setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+        super.onDestroy();
+    }
+    void showDetails(int index) {
+        mCurCheckPosition = index;
+
+        if (mDualPane) {
+            // We can display everything in-place with fragments, so update
+            // the list to highlight the selected item and show the data.
+
+            // Check what fragment is currently shown, replace if needed.
+            DrinkDetailFragment details = DrinkDetailFragment.newInstance(index);
+
+            // Execute a transaction, replacing any existing fragment
+            // with this one inside the frame.
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+            ft.replace(R.id.drink_detail_fragment, details);
+
+
+            //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.commit();
+
+
+        }
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -88,6 +144,29 @@ public class LiquorFragment extends Fragment implements
         //mLoadingIndicator = (ProgressBar) myView.findViewById(R.id.pb_loading_indicator);
         getActivity().setTitle("Search by Type");
         return myView;
+    }
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if(mDualPane){
+            inflater.inflate(R.menu.video, menu);}
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (mDualPane) {
+            if (id == R.id.video_item) {
+
+                FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
+                fragmentManager
+                        .replace(R.id.drink_detail_fragment, VideoFragment.newInstance(videoURL))
+                        .addToBackStack(null)
+                        .commit();
+            }
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
     private void showJsonDataView() {
          //First, make sure the error is invisible
@@ -161,8 +240,13 @@ public class LiquorFragment extends Fragment implements
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     Drink drink = (Drink) adapterView.getAdapter().getItem(i);
-
-                    drinkDetail(drink.getDbId());
+                    videoURL = drink.getVideo();
+                    //drinkDetail(drink.getDbId());
+                    if (mDualPane) {
+                        showDetails(drink.getDbId());
+                    }
+                    else
+                        drinkDetail(drink.getDbId());
                     mAutoCompleteTextView.setText("");
                 }
             });
@@ -193,13 +277,20 @@ public class LiquorFragment extends Fragment implements
 
     @Override
     public void onClick(int drink, String video) {
-
-        drinkDetail(drink);
+        mCurCheckPosition = drink;
+        videoURL = video;
+        if (mDualPane) {
+            showDetails(drink);
+        }
+        else
+            drinkDetail(drink);
 
     }
     public void drinkDetail(int drink){
+
         Intent intent = new Intent(getContext(), DrinkDetailActivity.class);
         intent.putExtra("drink", drink);
         startActivity(intent);
     }
+
 }

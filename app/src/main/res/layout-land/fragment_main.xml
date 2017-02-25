@@ -48,7 +48,7 @@
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="260dp"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         android:id="@+id/random_recyclerView"
         android:orientation="horizontal"
         android:scrollbars="horizontal"
@@ -60,7 +60,7 @@
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="260dp"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         android:id="@+id/fave_recyclerView"
         android:orientation="horizontal"
         android:scrollbars="horizontal"

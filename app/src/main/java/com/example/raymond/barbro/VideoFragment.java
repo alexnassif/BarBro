@@ -6,12 +6,15 @@ import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.MediaController;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -27,7 +30,6 @@ public class VideoFragment extends Fragment {
     private String videoUrl = "http://assets.absolutdrinks.com/videos/";
     private String mParam1;
     private View myView;
-
 
 
     public VideoFragment() {
@@ -49,6 +51,8 @@ public class VideoFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(video_url);
         }
+
+        // Start lengthy operation in a background thread
     }
 
     @Override
@@ -65,6 +69,7 @@ public class VideoFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         if(mParam1 != null) {
             videoView.setVideoPath(videoUrl + mParam1);
+
             ConnectivityManager cm =
                     (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
 

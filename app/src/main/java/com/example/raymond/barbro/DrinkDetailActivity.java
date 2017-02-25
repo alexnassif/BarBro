@@ -35,7 +35,6 @@ public class DrinkDetailActivity extends AppCompatActivity implements LoaderMana
     private TextView mDrinkNameView;
     private TextView mDrinkIngredientsView;
     private String videoURL;
-    private FrameLayout frameLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +48,6 @@ public class DrinkDetailActivity extends AppCompatActivity implements LoaderMana
 
         mDrinkNameView = (TextView) findViewById(R.id.drink_name);
         mDrinkIngredientsView = (TextView) findViewById(R.id.drink_ingredients);
-        frameLayout = (FrameLayout) findViewById(R.id.drink_video);
         getSupportLoaderManager().initLoader(DRINK_SEARCH_LOADER, null, this);
 
     }

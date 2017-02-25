@@ -10,9 +10,9 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.raymond.barbro.VideoActivity">
 
-    <FrameLayout
+    <VideoView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/video_activity_view"/>
+        android:id="@+id/video_view_activity" />
 
 </RelativeLayout>

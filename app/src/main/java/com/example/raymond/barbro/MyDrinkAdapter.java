@@ -55,7 +55,7 @@ public class MyDrinkAdapter extends RecyclerView.Adapter<MyDrinkAdapter.MyDrinkA
         final String _drinkPic = mDrinkData.getString(drinkPic);
         if (_drinkPic != null) {
             Uri takenPhotoUri = Uri.fromFile(new File(_drinkPic));
-            Glide.with(holder.mDrinkImage.getContext()).load(takenPhotoUri.getPath()).into(holder.mDrinkImage);
+            Glide.with(holder.mDrinkImage.getContext()).load(takenPhotoUri.getPath()).centerCrop().into(holder.mDrinkImage);
         }
         holder.itemView.setTag(id);
         holder.mDrinkTextView.setText(_drinkName);

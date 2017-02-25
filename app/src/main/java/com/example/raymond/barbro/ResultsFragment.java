@@ -53,7 +53,7 @@ public class ResultsFragment extends Fragment implements
     private View myView;
     private AutoCompleteTextView acDrinkTextView;
 
-    boolean mDualPane;
+    private boolean mDualPane;
     int mCurCheckPosition = 1;
     private String videoURL = "pennsylvania.mp4";
 
@@ -99,7 +99,7 @@ public class ResultsFragment extends Fragment implements
 
         if (savedInstanceState != null) {
             // Restore last state for checked position.
-            mCurCheckPosition = savedInstanceState.getInt("curChoice", 0);
+            mCurCheckPosition = savedInstanceState.getInt("curChoice", 1);
         }
 
         if (mDualPane) {
@@ -212,9 +212,15 @@ public class ResultsFragment extends Fragment implements
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     Drink drink = (Drink) adapterView.getAdapter().getItem(i);
-
-                    drinkDetail(drink.getDbId());
+                    videoURL = drink.getVideo();
+                    //drinkDetail(drink.getDbId());
+                    if (mDualPane) {
+                        showDetails(drink.getDbId());
+                    }
+                    else
+                        drinkDetail(drink.getDbId());
                     acDrinkTextView.setText("");
+
                 }
             });
         }
@@ -248,26 +254,17 @@ public class ResultsFragment extends Fragment implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if(mDualPane) {
+        if (mDualPane) {
             if (id == R.id.video_item) {
-                View detailsFrame = getActivity().findViewById(R.id.drink_detail_fragment);
-                boolean mDualPane = detailsFrame != null && detailsFrame.getVisibility() == View.VISIBLE;
-                if (mDualPane) {
-                    FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
-                    fragmentManager
-                            .replace(R.id.drink_detail_fragment, VideoFragment.newInstance(videoURL))
-                            .addToBackStack(null)
-                            .commit();
-                } else {
-                    FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
-                    fragmentManager
-                            .replace(R.id.drink_detail, VideoFragment.newInstance(videoURL))
-                            .addToBackStack(null)
-                            .commit();
-                }
-                return true;
+
+                FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
+                fragmentManager
+                        .replace(R.id.drink_detail_fragment, VideoFragment.newInstance(videoURL))
+                        .commit();
             }
+            return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
     @Override
