@@ -22,6 +22,7 @@ public class BarBroContentProvider extends ContentProvider {
     public static final int DRINKS = 100;
     public static final int MYDRINKS = 200;
     public static final int DRINKS_WITH_ID = 101;
+    public static final int MYDRINKS_WITH_ID = 201;
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
     public static UriMatcher buildUriMatcher(){
@@ -29,6 +30,7 @@ public class BarBroContentProvider extends ContentProvider {
         uriMatcher.addURI(BarBroContract.AUTHORITY, BarBroContract.PATH_DRINKS, DRINKS);
         uriMatcher.addURI(BarBroContract.AUTHORITY, BarBroContract.PATH_MYDRINKS, MYDRINKS);
         uriMatcher.addURI(BarBroContract.AUTHORITY, BarBroContract.PATH_DRINKS + "/#", DRINKS_WITH_ID);
+        uriMatcher.addURI(BarBroContract.AUTHORITY, BarBroContract.PATH_MYDRINKS + "/#", MYDRINKS_WITH_ID);
 
         return uriMatcher;
     }
@@ -128,7 +130,24 @@ public class BarBroContentProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        return 0;
+        final SQLiteDatabase db = dbHelper.getWritableDatabase();
+        int match = sUriMatcher.match(uri);
+        int retInt;
+
+        switch (match){
+            case MYDRINKS_WITH_ID:
+                String id = uri.getPathSegments().get(1);
+                retInt = db.delete(BarBroContract.MyDrinkEntry.TABLE_NAME, "_id=?", new String[]{id});
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+
+        }
+        if (retInt != 0) {
+            //set notifications if a task was updated
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return retInt;
     }
 
     @Override
