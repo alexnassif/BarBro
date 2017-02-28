@@ -32,6 +32,7 @@ public class Drink implements Serializable {
     public String getIngredients(){
         return ingredients;
     }
+    public void setId(String id){ this.id = id; }
     public void setVideo(String video){this.video = video; }
     public void setDrinkName(String drinkName){
         this.drinkName = drinkName;

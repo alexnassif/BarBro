@@ -45,6 +45,7 @@ public class MyDrinkAdapter extends RecyclerView.Adapter<MyDrinkAdapter.MyDrinkA
     public void onBindViewHolder(MyDrinkAdapter.MyDrinkAdapterViewHolder holder, int position) {
         int drinkId = mDrinkData.getColumnIndex(BarBroContract.MyDrinkEntry._ID);
         int drinkName = mDrinkData.getColumnIndex(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_NAME);
+        int drinkIngredients = mDrinkData.getColumnIndexOrThrow(BarBroContract.MyDrinkEntry.COLUMN_MYINGREDIENTS);
         int drinkPic = mDrinkData.getColumnIndex(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_PIC);
 
         mDrinkData.moveToPosition(position);
@@ -52,12 +53,19 @@ public class MyDrinkAdapter extends RecyclerView.Adapter<MyDrinkAdapter.MyDrinkA
         final int id = mDrinkData.getInt(drinkId);
         final String stringID = Integer.toString(id);
         final String _drinkName = mDrinkData.getString(drinkName);
+        final String _drinkIngredients = mDrinkData.getString(drinkIngredients);
         final String _drinkPic = mDrinkData.getString(drinkPic);
+
+        final Drink drink = new Drink();
+        drink.setDbId(id);
+        drink.setDrinkName(_drinkName);
+        drink.setIngredients(_drinkIngredients);
+        drink.setId(_drinkPic);
         if (_drinkPic != null) {
             Uri takenPhotoUri = Uri.fromFile(new File(_drinkPic));
             Glide.with(holder.mDrinkImage.getContext()).load(takenPhotoUri.getPath()).centerCrop().into(holder.mDrinkImage);
         }
-        holder.itemView.setTag(id);
+        holder.itemView.setTag(drink);
         holder.mDrinkTextView.setText(_drinkName);
 
     }

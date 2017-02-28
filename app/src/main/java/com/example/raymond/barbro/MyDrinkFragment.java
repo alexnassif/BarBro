@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.example.raymond.barbro.data.BarBroContract;
 import com.example.raymond.barbro.data.Drink;
 
+import java.io.File;
 
 
 public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, MyDrinkAdapter.MyDrinkAdapterOnClickHandler {
@@ -101,12 +102,19 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
                 // COMPLETED (1) Construct the URI for the item to delete
                 //[Hint] Use getTag (from the adapter code) to get the id of the swiped item
                 // Retrieve the id of the task to delete
-                int id = (int) viewHolder.itemView.getTag();
+                Drink drink = (Drink) viewHolder.itemView.getTag();
 
                 // Build appropriate uri with String row id appended
-                String stringId = Integer.toString(id);
+                String stringId = Integer.toString(drink.getDbId());
                 Uri uri = BarBroContract.MyDrinkEntry.CONTENT_URI;
                 uri = uri.buildUpon().appendPath(stringId).build();
+                if(drink.getId() != null){
+                    File file = new File(drink.getId());
+                    if(file != null)
+                        file.delete();
+
+                }
+
 
                 // COMPLETED (2) Delete a single row of data using a ContentResolver
                 getContext().getContentResolver().delete(uri, null, null);
