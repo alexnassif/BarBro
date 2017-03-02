@@ -50,7 +50,7 @@
             android:exported="false" />
 
         <activity android:name=".AddDrinkActivity" />
-        <activity android:name=".VideoActivity"></activity>
+        <activity android:name=".VideoActivity" />
     </application>
 
 </manifest>

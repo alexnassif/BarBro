@@ -28,7 +28,7 @@ public class MyDrinkAdapter extends RecyclerView.Adapter<MyDrinkAdapter.MyDrinkA
     }
 
     public interface MyDrinkAdapterOnClickHandler{
-        void onClick(Drink drink);
+        void onClick(int drinkId);
     }
 
     @Override
@@ -111,7 +111,7 @@ public class MyDrinkAdapter extends RecyclerView.Adapter<MyDrinkAdapter.MyDrinkA
             Drink drink = new Drink();
             drink.setDrinkName(_drinkName);
             drink.setIngredients(drinkIngredients);
-            mClickHandler.onClick(drink);
+            mClickHandler.onClick(id);
 
         }
     }
