@@ -85,10 +85,25 @@ public class VideoFragment extends Fragment {
                     return true;
                 }
             });
-            MediaController mediaController = new
-                    MediaController(getContext());
-            mediaController.setAnchorView(videoView);
-            videoView.setMediaController(mediaController);
+            videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    mp.setOnVideoSizeChangedListener(new MediaPlayer.OnVideoSizeChangedListener() {
+                        @Override
+                        public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
+                /*
+                 * add media controller
+                 */
+                            final MediaController mediaController = new MediaController(getContext());
+                            videoView.setMediaController(mediaController);
+                /*
+                 * and set its position on screen
+                 */
+                            mediaController.setAnchorView(videoView);
+                        }
+                    });
+                }
+            });
             videoView.start();
         }
         else {

@@ -52,10 +52,26 @@ public class VideoActivity extends AppCompatActivity {
                     return true;
                 }
             });
-            MediaController mediaController = new
-                    MediaController(this);
-            mediaController.setAnchorView(videoView);
-            videoView.setMediaController(mediaController);
+
+            videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    mp.setOnVideoSizeChangedListener(new MediaPlayer.OnVideoSizeChangedListener() {
+                        @Override
+                        public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
+                /*
+                 * add media controller
+                 */
+                            final MediaController mediaController = new MediaController(VideoActivity.this);
+                            videoView.setMediaController(mediaController);
+                /*
+                 * and set its position on screen
+                 */
+                            mediaController.setAnchorView(videoView);
+                        }
+                    });
+                }
+            });
             videoView.seekTo(videoPoint);
             videoView.start();
         }

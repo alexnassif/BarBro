@@ -1,6 +1,7 @@
 package com.example.raymond.barbro;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -151,6 +152,10 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public void onClick(int drink) {
+
+        Intent intent = new Intent(getContext(), MyDrinkDetailActivity.class);
+        intent.putExtra("drink", drink);
+        startActivity(intent);
 
     }
 
