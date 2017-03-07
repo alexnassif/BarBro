@@ -34,6 +34,7 @@ public class DrinkDetailActivity extends AppCompatActivity implements LoaderMana
     private int drinkId;
     private TextView mDrinkNameView;
     private TextView mDrinkIngredientsView;
+    private ImageView mImageView;
     private String videoURL;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,7 @@ public class DrinkDetailActivity extends AppCompatActivity implements LoaderMana
 
         mDrinkNameView = (TextView) findViewById(R.id.drink_name);
         mDrinkIngredientsView = (TextView) findViewById(R.id.drink_ingredients);
+        mImageView = (ImageView) findViewById(R.id.drink_pic_activity);
         getSupportLoaderManager().initLoader(DRINK_SEARCH_LOADER, null, this);
 
     }
@@ -95,9 +97,11 @@ public class DrinkDetailActivity extends AppCompatActivity implements LoaderMana
         int drinkName = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
         int ingredients = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS);
         int videoId = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_VIDEO);
+        int picId = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC);
 
         mDrinkNameView.setText(data.getString(drinkName));
         mDrinkIngredientsView.setText(data.getString(ingredients));
+        Glide.with(mImageView.getContext()).load("http://assets.absolutdrinks.com/drinks/300x400/" + data.getString(picId) +".png").into(mImageView);
         videoURL = data.getString(videoId);
 
     }

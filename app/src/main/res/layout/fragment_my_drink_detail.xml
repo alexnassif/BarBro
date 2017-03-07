@@ -34,32 +34,32 @@
         android:layout_marginLeft="16dp" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@mipmap/ic_launcher"
         android:id="@+id/my_drink_pic_view"
-        android:layout_marginTop="40dp"
-        app:layout_constraintTop_toBottomOf="@+id/my_ingredients_view"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:layout_marginEnd="16dp"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="40dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginLeft="16dp" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/my_ingredients_view"
+        app:srcCompat="@mipmap/ic_launcher" />
 
     <Button
-        android:text="Edit Drink"
+        android:id="@+id/edit_mydrink_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/edit_mydrink_button"
-        android:background="@android:drawable/editbox_background_normal"
-        android:backgroundTint="@android:color/holo_blue_light"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/my_drink_pic_view"
         android:layout_marginEnd="16dp"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:drawable/editbox_background_normal"
+        android:backgroundTint="@android:color/holo_blue_light"
+        android:text="Edit Drink"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginLeft="16dp" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/my_drink_pic_view" />
 </android.support.constraint.ConstraintLayout>

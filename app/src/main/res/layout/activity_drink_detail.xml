@@ -7,7 +7,10 @@
     android:orientation="vertical"
     tools:context=".DrinkDetailActivity">
 
-
+    <ImageView
+        android:id="@+id/drink_pic_activity"
+        android:layout_width="match_parent"
+        android:layout_height="300dp" />
     <TextView
         android:id="@+id/drink_name"
         android:layout_width="match_parent"

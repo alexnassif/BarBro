@@ -100,8 +100,10 @@ public class VideoFragment extends Fragment {
                  * and set its position on screen
                  */
                             mediaController.setAnchorView(videoView);
+
                         }
                     });
+
                 }
             });
             videoView.start();

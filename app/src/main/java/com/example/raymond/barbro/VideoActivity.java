@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.MediaController;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -68,8 +69,11 @@ public class VideoActivity extends AppCompatActivity {
                  * and set its position on screen
                  */
                             mediaController.setAnchorView(videoView);
+
                         }
                     });
+
+
                 }
             });
             videoView.seekTo(videoPoint);
