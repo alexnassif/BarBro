@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.raymond.barbro.data.BarBroContract;
-import com.google.android.gms.plus.PlusOneButton;
 
 import java.io.File;
 

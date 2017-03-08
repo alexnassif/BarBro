@@ -55,10 +55,11 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="7dp"
         android:background="@android:drawable/editbox_background_normal"
         android:backgroundTint="@android:color/holo_blue_light"
         android:text="Edit Drink"
+        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/my_drink_pic_view" />
