@@ -57,6 +57,12 @@ public class MyDrinkDetailFragment extends Fragment implements LoaderManager.Loa
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        mEditButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
         getLoaderManager().initLoader(MY_DRINK_DETAIL_LOADER, null, this);
     }
     @Override

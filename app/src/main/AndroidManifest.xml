@@ -51,7 +51,8 @@
 
         <activity android:name=".AddDrinkActivity" />
         <activity android:name=".VideoActivity" />
-        <activity android:name=".MyDrinkDetailActivity"></activity>
+        <activity android:name=".MyDrinkDetailActivity" />
+        <activity android:name=".EditDrinkActivity"></activity>
     </application>
 
 </manifest>
