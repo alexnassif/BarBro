@@ -18,7 +18,7 @@ public class EditDrinkActivity extends AppCompatActivity {
 
         FragmentTransaction fragmentManager = getSupportFragmentManager().beginTransaction();
         fragmentManager
-                .replace(R.id.edit_drink_fragment, MyDrinkDetailFragment.newInstance(drinkId))
+                .replace(R.id.edit_drink_fragment, EditDrinkFragment.newInstance(drinkId))
                 .commit();
     }
 }
