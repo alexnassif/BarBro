@@ -21,5 +21,10 @@ public class EditDrinkActivity extends AppCompatActivity {
                 .replace(R.id.edit_drink_fragment, EditDrinkFragment.newInstance(drinkId))
                 .commit();
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
+    }
 }
 

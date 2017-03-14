@@ -173,10 +173,16 @@ public class BarBroContentProvider extends ContentProvider {
         int retInt;
 
         switch (match){
-            case DRINKS_WITH_ID:
+            case DRINKS_WITH_ID: {
                 String id = uri.getPathSegments().get(1);
                 retInt = db.update(BarBroContract.BarBroEntry.TABLE_NAME, values, "_id=?", new String[]{id});
                 break;
+            }
+            case MYDRINKS_WITH_ID: {
+                String id = uri.getPathSegments().get(1);
+                retInt = db.update(BarBroContract.MyDrinkEntry.TABLE_NAME, values, "_id=?", new String[]{id});
+                break;
+            }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
 
