@@ -7,30 +7,26 @@
     android:background="@color/cardview_light_background">
 
     <Button
-        android:text="More"
+        android:id="@+id/more_fave_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/more_fave_button"
-        app:layout_constraintBottom_toTopOf="@+id/fave_recyclerView"
-        app:layout_constraintLeft_toLeftOf="@+id/fave_recyclerView"
-        android:background="@android:drawable/editbox_background_normal"
-        android:backgroundTint="@android:color/holo_blue_light"
-        android:layout_marginStart="104dp"
         android:layout_marginLeft="104dp"
-        />
+        android:layout_marginStart="104dp"
+        android:background="@android:color/holo_blue_bright"
+        android:text="More"
+        app:layout_constraintBottom_toTopOf="@+id/fave_recyclerView"
+        app:layout_constraintLeft_toLeftOf="@+id/fave_recyclerView" />
 
     <Button
-        android:text="More"
+        android:id="@+id/random_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/random_button"
-        app:layout_constraintBottom_toTopOf="@+id/random_recyclerView"
-        app:layout_constraintLeft_toLeftOf="@+id/random_recyclerView"
-        android:background="@android:drawable/editbox_background_normal"
-        android:backgroundTint="@android:color/holo_blue_light"
-        android:layout_marginStart="104dp"
         android:layout_marginLeft="104dp"
-        />
+        android:layout_marginStart="104dp"
+        android:background="@android:color/holo_blue_bright"
+        android:text="More"
+        app:layout_constraintBottom_toTopOf="@+id/random_recyclerView"
+        app:layout_constraintLeft_toLeftOf="@+id/random_recyclerView" />
 
     <TextView
         android:text="Favorites"

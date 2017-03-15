@@ -18,6 +18,7 @@
     <string name="add_a_picture">Add a picture</string>
     <string name="submit_new_drink">Submit</string>
     <string name="cancel_edit">Cancel</string>
+    <string name="cancel_button">Cancel</string>
     <string-array name="liquor_array">
         <item>Vodka</item>
         <item>Gin</item>
