@@ -17,6 +17,8 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
@@ -141,7 +143,35 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mDrinkAdapter.swapCursor(data);
+        int drinkId = data.getColumnIndex(BarBroContract.MyDrinkEntry._ID);
+        int drinkName = data.getColumnIndex(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_NAME);
+        int ingredients = data.getColumnIndex(BarBroContract.MyDrinkEntry.COLUMN_MYINGREDIENTS);
+        int drinkPicId = data.getColumnIndex(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_PIC);
+        Drink[] array = new Drink[data.getCount()];
+        int i = 0;
+        data.moveToFirst();
+        while(!data.isAfterLast()){
+
+            Drink drink = new Drink(data.getString(drinkName), data.getString(ingredients), data.getString(drinkPicId));
+            drink.setDbId(data.getInt(drinkId));
+            array[i] = drink;
+            i++;
+            data.moveToNext();
+        }
+        if(data != null) {
+            mDrinkAdapter.swapCursor(data);
+            ArrayAdapter<Drink> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, array);
+            acDrinkTextView.setAdapter(adapter);
+            acDrinkTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Drink drink = (Drink) adapterView.getAdapter().getItem(i);
+                    drinkDetail(drink.getDbId());
+                    acDrinkTextView.setText("");
+
+                }
+            });
+        }
     }
 
     @Override
@@ -152,10 +182,15 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onClick(int drink) {
 
+        drinkDetail(drink);
+
+    }
+
+    public void drinkDetail(int drink){
+
         Intent intent = new Intent(getContext(), MyDrinkDetailActivity.class);
         intent.putExtra("drink", drink);
         startActivity(intent);
-
     }
 
 }
