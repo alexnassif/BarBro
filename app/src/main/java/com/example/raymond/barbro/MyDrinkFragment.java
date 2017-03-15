@@ -142,7 +142,6 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mDrinkAdapter.swapCursor(data);
-        Toast.makeText(getActivity(), "number of drinks " + mDrinkAdapter.getItemCount(), Toast.LENGTH_LONG).show();
     }
 
     @Override

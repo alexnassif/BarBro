@@ -31,6 +31,7 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
     private EditText mNewIngredients;
     private ImageView mAddImage;
     private Button mSubmit;
+    private Button mCancel;
     private String mCurrentPhotoPath;
     static final int REQUEST_TAKE_PHOTO = 1;
     @Override
@@ -42,6 +43,8 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
         mNewIngredients = (EditText) findViewById(R.id.new_drink_ingredients);
         mAddImage = (ImageView) findViewById(R.id.take_drink_pic);
         mSubmit = (Button) findViewById(R.id.submit_button);
+        mCancel = (Button) findViewById(R.id.cancel_button);
+        mCancel.setOnClickListener(this);
         mAddImage.setOnClickListener(this);
         mSubmit.setOnClickListener(this);
     }
@@ -51,6 +54,9 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
         if(view.getId() == R.id.take_drink_pic) {
             dispatchTakePictureIntent();
             //setPic();
+        }
+        else if (view.getId() == R.id.cancel_button) {
+            finish();
         }
         else if(view.getId() == R.id.submit_button){
             if(mNewDrink.getText().toString().trim().equals("")) {
@@ -122,7 +128,7 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
             File photoFile = null;
             try {
                 photoFile = createImageFile();
-                Toast.makeText(this, mCurrentPhotoPath, Toast.LENGTH_LONG).show();
+                //Toast.makeText(this, mCurrentPhotoPath, Toast.LENGTH_LONG).show();
             } catch (IOException ex) {
                 // Error occurred while creating the File
 
@@ -147,7 +153,7 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
             setPic(takenPhotoUri);
             // RESIZE BITMAP, see section below
             // Load the taken image into a preview
-            Toast.makeText(this, takenPhotoUri.toString(), Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, takenPhotoUri.toString(), Toast.LENGTH_LONG).show();
         } else { // Result was a failure
             Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             File file = new File(mCurrentPhotoPath);
