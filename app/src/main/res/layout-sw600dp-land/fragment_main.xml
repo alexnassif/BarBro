@@ -15,7 +15,8 @@
         android:background="@android:color/holo_blue_bright"
         android:text="More"
         app:layout_constraintBottom_toTopOf="@+id/fave_recyclerView"
-        app:layout_constraintLeft_toLeftOf="@+id/fave_recyclerView" />
+        app:layout_constraintLeft_toLeftOf="@+id/fave_recyclerView"
+        android:stateListAnimator="@animator/button_raise"/>
 
     <Button
         android:id="@+id/random_button"
@@ -26,7 +27,8 @@
         android:background="@android:color/holo_blue_bright"
         android:text="More"
         app:layout_constraintBottom_toTopOf="@+id/random_recyclerView"
-        app:layout_constraintLeft_toLeftOf="@+id/random_recyclerView" />
+        app:layout_constraintLeft_toLeftOf="@+id/random_recyclerView"
+        android:stateListAnimator="@animator/button_raise"/>
 
     <TextView
         android:text="Favorites"
