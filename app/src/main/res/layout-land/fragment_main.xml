@@ -16,7 +16,7 @@
         android:background="@android:color/holo_blue_bright"
         android:layout_marginStart="104dp"
         android:layout_marginLeft="104dp"
-        android:stateListAnimator="@animator/button_raise"/>
+        />
 
     <Button
         android:text="More"
@@ -28,7 +28,7 @@
         app:layout_constraintLeft_toLeftOf="@+id/random_recyclerView"
         android:layout_marginStart="104dp"
         android:layout_marginLeft="104dp"
-        android:stateListAnimator="@animator/button_raise"/>
+        />
 
     <TextView
         android:text="Favorites"

@@ -2,6 +2,7 @@ package com.example.raymond.barbro;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -65,6 +66,7 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        getActivity().setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

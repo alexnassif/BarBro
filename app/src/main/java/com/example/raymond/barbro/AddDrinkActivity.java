@@ -3,6 +3,7 @@ package com.example.raymond.barbro;
 import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -45,6 +46,7 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
         mCancel.setOnClickListener(this);
         mAddImage.setOnClickListener(this);
         mSubmit.setOnClickListener(this);
+        setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     @Override

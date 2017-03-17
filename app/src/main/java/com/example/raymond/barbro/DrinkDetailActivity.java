@@ -2,6 +2,7 @@ package com.example.raymond.barbro;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
@@ -50,6 +51,7 @@ public class DrinkDetailActivity extends AppCompatActivity implements LoaderMana
         mDrinkNameView = (TextView) findViewById(R.id.drink_name);
         mDrinkIngredientsView = (TextView) findViewById(R.id.drink_ingredients);
         mImageView = (ImageView) findViewById(R.id.drink_pic_activity);
+        setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getSupportLoaderManager().initLoader(DRINK_SEARCH_LOADER, null, this);
 
     }

@@ -1,8 +1,11 @@
 package com.example.raymond.barbro;
 
+import android.animation.Animator;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,6 +18,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.Button;
 
@@ -190,7 +194,16 @@ public class MainFragment extends Fragment implements
     @Override
     public void onClick(View view) {
         FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
+
         if(view.getId() == R.id.random_button) {
+            Animator anim = null;
+            int finalRadius = (int)Math.hypot(view.getWidth()/2, view.getHeight()/2);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                anim = ViewAnimationUtils.createCircularReveal(view, (int) view.getWidth()/2, (int) view.getHeight()/2, 0, finalRadius);
+            }
+            ColorDrawable color = (ColorDrawable) view.getBackground();
+            view.setBackgroundColor(color.getColor());
+            anim.start();
             getLoaderManager().restartLoader(RANDOM_DRINKS_LOADER, null, this);
         }
         else if(view.getId() == R.id.more_fave_button){
@@ -198,6 +211,8 @@ public class MainFragment extends Fragment implements
                     .replace(R.id.content_frame, ResultsFragment.newInstance(true))
                     .commit();
         }
+
+
 
         fragmentManager.addToBackStack(null);
     }
