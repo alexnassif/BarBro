@@ -19,6 +19,7 @@ public class VideoActivity extends AppCompatActivity {
     private VideoView videoView;
     private String videoUrl = "http://assets.absolutdrinks.com/videos/";
     private int videoPoint = 0;
+    private ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +36,7 @@ public class VideoActivity extends AppCompatActivity {
 
         }
         videoView = (VideoView) findViewById(R.id.video_view_activity);
+        progressBar = (ProgressBar) findViewById(R.id.video_progressbar);
         if(drinkVideoId != null) {
             videoView.setVideoPath(videoUrl + drinkVideoId);
 
@@ -69,6 +71,7 @@ public class VideoActivity extends AppCompatActivity {
                  * and set its position on screen
                  */
                             mediaController.setAnchorView(videoView);
+                            progressBar.setVisibility(View.GONE);
 
                         }
                     });
