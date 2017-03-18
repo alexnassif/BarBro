@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import com.example.raymond.barbro.data.BarBroContract;
 import com.example.raymond.barbro.data.Drink;
@@ -47,6 +48,7 @@ public class MainFragment extends Fragment implements
     private SmallDrinkAdapter mDrinkAdapter_Randoms;
     private Button faves_button;
     private Button randoms_button;
+    private ProgressBar progressBar;
     private View myView;
 
     public MainFragment() {
@@ -86,7 +88,6 @@ public class MainFragment extends Fragment implements
         mRecyclerView_Randoms.setHasFixedSize(true);
         mDrinkAdapter_Randoms = new SmallDrinkAdapter(getContext(), this);
         mRecyclerView_Randoms.setAdapter(mDrinkAdapter_Randoms);
-
         faves_button.setOnClickListener(this);
         randoms_button.setOnClickListener(this);
         Loader<Cursor> loaderM = getLoaderManager().getLoader(FAVE_DRINK_LOADER);
@@ -109,33 +110,10 @@ public class MainFragment extends Fragment implements
         mRecyclerView_Faves =  (RecyclerView) myView.findViewById(R.id.fave_recyclerView);
         faves_button = (Button) myView.findViewById(R.id.more_fave_button);
         randoms_button = (Button) myView.findViewById(R.id.random_button);
+        progressBar = (ProgressBar) myView.findViewById(R.id.main_progress_bar);
         getActivity().setTitle("Bar Bro");
         return myView;
     }
-
-    // TODO: Rename method, update argument and hook method into UI event
-//    public void onButtonPressed(Uri uri) {
-//        if (mListener != null) {
-//            mListener.onFragmentInteraction(uri);
-//        }
-//    }
-//
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
-
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//        mListener = null;
-//    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -165,13 +143,15 @@ public class MainFragment extends Fragment implements
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
+        if(data.getCount() > 0)
+            progressBar.setVisibility(View.GONE);
         if(data != null) {
             if(loader.getId() == FAVE_DRINK_LOADER)
                 mDrinkAdapter_Faves.swapCursor(data);
             else
                 mDrinkAdapter_Randoms.swapCursor(data);
         }
+
 
     }
 

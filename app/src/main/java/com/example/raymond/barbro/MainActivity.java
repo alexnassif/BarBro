@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        BarBroSyncUtils.initialize(this);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -49,12 +50,12 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        if(savedInstanceState == null){
-        fragmentManager
-                .beginTransaction()
-                .replace(R.id.content_frame, new MainFragment())
-                .commit();}
-        BarBroSyncUtils.initialize(this);
+        if (savedInstanceState == null) {
+            fragmentManager
+                    .beginTransaction()
+                    .replace(R.id.content_frame, new MainFragment())
+                    .commit();
+        }
     }
 
     @Override
