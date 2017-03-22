@@ -18,6 +18,7 @@ public class YouTubeLayout extends ViewGroup {
 
     private View mHeaderView;
     private View mDescView;
+    private View mPicView;
 
     private float mInitialMotionX;
     private float mInitialMotionY;
@@ -45,6 +46,7 @@ public class YouTubeLayout extends ViewGroup {
         super.onFinishInflate();
         mHeaderView = findViewById(R.id.header);
         mDescView = findViewById(R.id.desc);
+        mPicView = findViewById(R.id.image_view_youtube);
     }
 
     public void maximize() {
@@ -85,6 +87,7 @@ public class YouTubeLayout extends ViewGroup {
             mHeaderView.setScaleY(1 - mDragOffset / 2);
 
             mDescView.setAlpha(1 - mDragOffset);
+            mPicView.setAlpha(1 - mDragOffset);
 
             requestLayout();
         }
@@ -194,7 +197,7 @@ public class YouTubeLayout extends ViewGroup {
             }
         }
 
-        return isHeaderViewUnder && isViewHit(mHeaderView, (int) x, (int) y) || isViewHit(mDescView, (int) x, (int) y);
+        return isHeaderViewUnder && isViewHit(mHeaderView, (int) x, (int) y) || isViewHit(mDescView, (int) x, (int) y) || isViewHit(mPicView, (int) x, (int) y);
     }
 
 
@@ -234,6 +237,9 @@ public class YouTubeLayout extends ViewGroup {
                 0,
                 mTop + mHeaderView.getMeasuredHeight(),
                 r,
-                mTop  + b);
-    }
-}
+                mTop  + mHeaderView.getMeasuredHeight() + mDescView.getMeasuredHeight());
+        mPicView.layout(
+                0,
+                mTop + mHeaderView.getMeasuredHeight() + mDescView.getMeasuredHeight(),
+                r,
+                mTop  + b);}}

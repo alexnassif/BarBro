@@ -45,21 +45,28 @@
             android:id="@+id/header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="25sp"
+            android:textSize="35sp"
+            android:textColor="#FFFFFF"
             android:text="Drag me to the bottom"
             android:tag="text"
             android:gravity="center"
-            android:background="@color/cardview_light_background"/>
+            android:background="#000000"/>
 
         <TextView
             android:id="@+id/desc"
             android:tag="desc"
-            android:textSize="35sp"
+            android:textSize="25sp"
+            android:textColor="#FFFFFF"
             android:gravity="center"
             android:text=""
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/cardview_light_background"/>
+            android:layout_height="wrap_content"
+            android:background="#000000"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:id="@+id/image_view_youtube"
+            android:background="#000000"/>
 
 
     </com.example.raymond.barbro.YouTubeLayout>

@@ -23,10 +23,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.raymond.barbro.data.BarBroContract;
 import com.example.raymond.barbro.data.Drink;
 
@@ -57,6 +59,7 @@ public class ResultsFragment extends Fragment implements
     private TextView viewHeader;
     private int drinkId;
     private TextView viewDesc;
+    private ImageView mImageView;
 
 
     public static ResultsFragment newInstance(boolean param1) {
@@ -154,6 +157,7 @@ public class ResultsFragment extends Fragment implements
         if (!mDualPane) {
             viewHeader = (TextView) myView.findViewById(R.id.header);
             viewDesc = (TextView) myView.findViewById(R.id.desc);
+            mImageView = (ImageView) myView.findViewById(R.id.image_view_youtube);
             youtubeLayout = (YouTubeLayout) myView.findViewById(R.id.dragLayout);
             //youtubeLayout.setVisibility(View.GONE);
         }
@@ -247,10 +251,12 @@ public class ResultsFragment extends Fragment implements
 
             int drinkName = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
             int ingredients = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS);
+            int drinkPicId = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC);
             int videoId = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_VIDEO);
 
             viewHeader.setText(data.getString(drinkName));
             viewDesc.setText(data.getString(ingredients));
+            Glide.with(mImageView.getContext()).load("http://assets.absolutdrinks.com/drinks/300x400/" + data.getString(drinkPicId) +".png").into(mImageView);
             videoURL = data.getString(videoId);
             youtubeLayout.setVisibility(View.VISIBLE);
             youtubeLayout.maximize();
@@ -275,28 +281,34 @@ public class ResultsFragment extends Fragment implements
          */
         //mLoadingIndicator.setVisibility(View.INVISIBLE);
     }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if(mDualPane){
-        inflater.inflate(R.menu.video, menu);}
+
+        inflater.inflate(R.menu.video, menu);
+
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (mDualPane) {
-            if (id == R.id.video_item) {
-
+        if (id == R.id.video_item) {
+            if(mDualPane) {
                 FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
                 fragmentManager
                         .replace(R.id.drink_detail_fragment, VideoFragment.newInstance(videoURL))
                         .commit();
             }
-            return true;
+            else {
+                Intent intent = new Intent(getContext(), VideoActivity.class);
+                intent.putExtra("video", videoURL);
+                startActivity(intent);
+            }
         }
 
-        return super.onOptionsItemSelected(item);
+
+        return true;
     }
     @Override
     public void onClick(int drink, String video) {
