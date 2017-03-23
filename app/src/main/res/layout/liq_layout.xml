@@ -1,40 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/background_light"
+        android:orientation="vertical">
 
 
-    <Spinner
-        android:id="@+id/liquor_spinner"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:prompt="@string/liquor_prompt"
-        android:gravity="center_vertical|center|start"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        <Spinner
+            android:id="@+id/liquor_spinner"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:gravity="center_vertical|center|start"
+            android:prompt="@string/liquor_prompt"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerview_drinks"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="@+id/liquor_spinner"
-        app:layout_constraintRight_toRightOf="@+id/liquor_spinner"
-        app:layout_constraintTop_toBottomOf="@+id/drink_autoCompleteTextView" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview_drinks"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="@+id/liquor_spinner"
+            app:layout_constraintRight_toRightOf="@+id/liquor_spinner"
+            app:layout_constraintTop_toBottomOf="@+id/drink_autoCompleteTextView" />
 
-    <AutoCompleteTextView
-        android:hint="@string/search_drink_string"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/drink_autoCompleteTextView"
-        app:layout_constraintTop_toBottomOf="@+id/liquor_spinner"
-        app:layout_constraintLeft_toLeftOf="@+id/liquor_spinner"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="1.0" />
+        <AutoCompleteTextView
+            android:id="@+id/drink_autoCompleteTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/search_drink_string"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toLeftOf="@+id/liquor_spinner"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/liquor_spinner" />
 
 
-</android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
+
+    <com.example.raymond.barbro.YouTubeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/dragLayout"
+        android:orientation="vertical"
+        android:visibility="gone"
+        >
+
+        <TextView
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:textSize="35sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:text="Drag me to the bottom"
+            android:tag="text"
+            android:gravity="center"
+            android:background="@android:color/holo_blue_bright"/>
+
+        <TextView
+            android:id="@+id/desc"
+            android:tag="desc"
+            android:textSize="25sp"
+            android:textColor="#FFFFFF"
+            android:gravity="center"
+            android:text=""
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#000000"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:id="@+id/image_view_youtube"
+            android:background="#000000"/>
+
+
+    </com.example.raymond.barbro.YouTubeLayout>
+
+</FrameLayout>

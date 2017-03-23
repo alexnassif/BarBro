@@ -8,7 +8,8 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
 
         <AutoCompleteTextView
@@ -25,7 +26,6 @@
             android:id="@+id/recyclerview_drinks"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -39,18 +39,19 @@
         android:layout_height="match_parent"
         android:id="@+id/dragLayout"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="gone"
+        >
 
         <TextView
             android:id="@+id/header"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:textSize="35sp"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/colorPrimaryDark"
             android:text="Drag me to the bottom"
             android:tag="text"
             android:gravity="center"
-            android:background="#000000"/>
+            android:background="@android:color/holo_blue_bright"/>
 
         <TextView
             android:id="@+id/desc"
@@ -61,12 +62,12 @@
             android:text=""
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#000000"/>
+            android:background="#286db7"/>
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:id="@+id/image_view_youtube"
-            android:background="#000000"/>
+            android:background="#286db7"/>
 
 
     </com.example.raymond.barbro.YouTubeLayout>

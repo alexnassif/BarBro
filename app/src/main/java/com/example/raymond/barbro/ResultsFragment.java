@@ -53,7 +53,7 @@ public class ResultsFragment extends Fragment implements
     private AutoCompleteTextView acDrinkTextView;
 
     private boolean mDualPane;
-    int mCurCheckPosition = 1;
+    int mCurCheckPosition = 0;
     private String videoURL = "pennsylvania.mp4";
     private YouTubeLayout youtubeLayout;
     private TextView viewHeader;
@@ -256,7 +256,9 @@ public class ResultsFragment extends Fragment implements
 
             viewHeader.setText(data.getString(drinkName));
             viewDesc.setText(data.getString(ingredients));
-            Glide.with(mImageView.getContext()).load("http://assets.absolutdrinks.com/drinks/300x400/" + data.getString(drinkPicId) +".png").into(mImageView);
+            Glide.with(mImageView.getContext())
+                    .load("http://assets.absolutdrinks.com/drinks/300x400/" + data.getString(drinkPicId) +".png")
+                    .into(mImageView);
             videoURL = data.getString(videoId);
             youtubeLayout.setVisibility(View.VISIBLE);
             youtubeLayout.maximize();
@@ -293,7 +295,7 @@ public class ResultsFragment extends Fragment implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.video_item) {
+        if (id == R.id.video_item && mCurCheckPosition != 0) {
             if(mDualPane) {
                 FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
                 fragmentManager
@@ -306,6 +308,8 @@ public class ResultsFragment extends Fragment implements
                 startActivity(intent);
             }
         }
+        else
+            Toast.makeText(getContext(), "No Drink Chosen", Toast.LENGTH_LONG).show();
 
 
         return true;

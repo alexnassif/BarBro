@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:openDrawer="start"
-    android:background="@color/cardview_light_background">
+    android:background="#071049">
 
     <include
         layout="@layout/app_bar_main"

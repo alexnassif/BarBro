@@ -22,8 +22,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.raymond.barbro.data.BarBroContract;
 import com.example.raymond.barbro.data.Drink;
 
@@ -39,16 +43,19 @@ public class LiquorFragment extends Fragment implements
 
     private DrinkAdapter mDrinkAdapter;
 
-    //private TextView mErrorMessageDisplay;
-
-    //private ProgressBar mLoadingIndicator;
     private View myView;
     private Spinner mLiquorSpinner;
     private String liqType;
     private AutoCompleteTextView mAutoCompleteTextView;
     private boolean mDualPane;
-    int mCurCheckPosition = 1;
-    private String videoURL = "pennsylvania.mp4";
+    int mCurCheckPosition = 0;
+    private String videoURL;
+    private static final int DRINK_BY_ID_LOADER = 24;
+    private YouTubeLayout youtubeLayout;
+    private TextView viewHeader;
+    private int drinkId;
+    private TextView viewDesc;
+    private ImageView mImageView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -137,57 +144,47 @@ public class LiquorFragment extends Fragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.liq_layout, container, false);
         mRecyclerView = (RecyclerView) myView.findViewById(R.id.recyclerview_drinks);
-        mRecyclerView.setVisibility(View.INVISIBLE);
         mAutoCompleteTextView = (AutoCompleteTextView) myView.findViewById(R.id.drink_autoCompleteTextView);
-        //mErrorMessageDisplay = (TextView) myView.findViewById(R.id.tv_error_message_display);
         mLiquorSpinner = (Spinner) myView.findViewById(R.id.liquor_spinner);
-        //mLoadingIndicator = (ProgressBar) myView.findViewById(R.id.pb_loading_indicator);
         getActivity().setTitle("Search by Type");
+        if (!mDualPane) {
+            viewHeader = (TextView) myView.findViewById(R.id.header);
+            viewDesc = (TextView) myView.findViewById(R.id.desc);
+            mImageView = (ImageView) myView.findViewById(R.id.image_view_youtube);
+            youtubeLayout = (YouTubeLayout) myView.findViewById(R.id.dragLayout);
+            //youtubeLayout.setVisibility(View.GONE);
+        }
         return myView;
     }
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if(mDualPane){
-            inflater.inflate(R.menu.video, menu);}
+
+        inflater.inflate(R.menu.video, menu);
+
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (mDualPane) {
-            if (id == R.id.video_item) {
-
+        if (id == R.id.video_item && mCurCheckPosition != 0) {
+            if(mDualPane) {
                 FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
                 fragmentManager
                         .replace(R.id.drink_detail_fragment, VideoFragment.newInstance(videoURL))
-                        .addToBackStack(null)
                         .commit();
             }
-            return true;
+            else {
+                Intent intent = new Intent(getContext(), VideoActivity.class);
+                intent.putExtra("video", videoURL);
+                startActivity(intent);
+            }
         }
+        else
+            Toast.makeText(getContext(), "No Drink Chosen", Toast.LENGTH_LONG).show();
 
-        return super.onOptionsItemSelected(item);
-    }
-    private void showJsonDataView() {
-         //First, make sure the error is invisible
-        //mErrorMessageDisplay.setVisibility(View.INVISIBLE);
-        mRecyclerView.setVisibility(View.VISIBLE);
-         //Then, make sure the JSON data is visible
 
-    }
-
-//    *
-//     * This method will make the error message visible and hide the JSON
-//     * View.
-//     * <p>
-//     * Since it is okay to redundantly set the visibility of a View, we don't
-//     * need to check whether each view is currently visible or invisible.
-
-    private void showErrorMessage() {
-//         First, hide the currently visible data
-//
-//         Then, show the error
-        //mErrorMessageDisplay.setVisibility(View.VISIBLE);
+        return true;
     }
 
     @Override
@@ -202,6 +199,16 @@ public class LiquorFragment extends Fragment implements
                         new String[]{"1"},
                         null);
             }
+            case DRINK_BY_ID_LOADER:{
+                String stringId = Integer.toString(drinkId);
+                Uri uri = BarBroContract.BarBroEntry.CONTENT_URI;
+                uri = uri.buildUpon().appendPath(stringId).build();
+                return new CursorLoader(getContext(),
+                        uri,
+                        null,
+                        null,
+                        null,
+                        null);}
             default:
                 throw new RuntimeException("Loader Not Implemented: " + id);
 
@@ -214,56 +221,62 @@ public class LiquorFragment extends Fragment implements
 
          //When we finish loading, we want to hide the loading indicator from the user.
         //mLoadingIndicator.setVisibility(View.INVISIBLE);
-        int drinkId = data.getColumnIndex(BarBroContract.BarBroEntry._ID);
-        int drinkName = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
-        int ingredients = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS);
-        int drinkPicId = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC);
-        int videoId = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_VIDEO);
-        Drink[] array = new Drink[data.getCount()];
-        int i = 0;
-        data.moveToFirst();
-        while(!data.isAfterLast()){
-            Drink drink = new Drink(data.getString(drinkName), data.getString(ingredients), data.getString(drinkPicId));
-            drink.setVideo(data.getString(videoId));
-            drink.setDbId(data.getInt(drinkId));
-            array[i] = drink;
-            i++;
-            data.moveToNext();
-        }
-        //mLoadingIndicator.setVisibility(View.INVISIBLE);
-        if(data != null) {
-            mDrinkAdapter.swapCursor(data);
-            ArrayAdapter<Drink> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, array);
-            mAutoCompleteTextView.setAdapter(adapter);
-            mRecyclerView.scrollToPosition(0);
-            mAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Drink drink = (Drink) adapterView.getAdapter().getItem(i);
-                    videoURL = drink.getVideo();
-                    //drinkDetail(drink.getDbId());
-                    if (mDualPane) {
-                        showDetails(drink.getDbId());
+        if(loader.getId() == GITHUB_SEARCH_LOADER) {
+            int drinkId = data.getColumnIndex(BarBroContract.BarBroEntry._ID);
+            int drinkName = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
+            int ingredients = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS);
+            int drinkPicId = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC);
+            int videoId = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_VIDEO);
+            Drink[] array = new Drink[data.getCount()];
+            int i = 0;
+            data.moveToFirst();
+            while (!data.isAfterLast()) {
+                Drink drink = new Drink(data.getString(drinkName), data.getString(ingredients), data.getString(drinkPicId));
+                drink.setVideo(data.getString(videoId));
+                drink.setDbId(data.getInt(drinkId));
+                array[i] = drink;
+                i++;
+                data.moveToNext();
+            }
+            //mLoadingIndicator.setVisibility(View.INVISIBLE);
+            if (data != null) {
+                mDrinkAdapter.swapCursor(data);
+                ArrayAdapter<Drink> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, array);
+                mAutoCompleteTextView.setAdapter(adapter);
+                mRecyclerView.scrollToPosition(0);
+                mAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        Drink drink = (Drink) adapterView.getAdapter().getItem(i);
+                        videoURL = drink.getVideo();
+                        //drinkDetail(drink.getDbId());
+                        if (mDualPane) {
+                            showDetails(drink.getDbId());
+                        } else
+                            drinkDetail(drink.getDbId());
+                        mAutoCompleteTextView.setText("");
                     }
-                    else
-                        drinkDetail(drink.getDbId());
-                    mAutoCompleteTextView.setText("");
-                }
-            });
+                });
+            }
+        }
+        if(loader.getId() == DRINK_BY_ID_LOADER){
+            data.moveToFirst();
+
+            int drinkName = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
+            int ingredients = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS);
+            int drinkPicId = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC);
+            int videoId = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_VIDEO);
+
+            viewHeader.setText(data.getString(drinkName));
+            viewDesc.setText(data.getString(ingredients));
+            Glide.with(mImageView.getContext())
+                    .load("http://assets.absolutdrinks.com/drinks/300x400/" + data.getString(drinkPicId) +".png")
+                    .into(mImageView);
+            videoURL = data.getString(videoId);
+            youtubeLayout.setVisibility(View.VISIBLE);
+            youtubeLayout.maximize();
         }
 
-
-//         * If the results are null, we assume an error has occurred. There are much more robust
-//         * methods for checking errors, but we wanted to keep this particular example simple.
-
-
-
-        if (null == data) {
-            showErrorMessage();
-        } else {
-
-            showJsonDataView();
-        }
     }
 
     @Override
@@ -287,10 +300,15 @@ public class LiquorFragment extends Fragment implements
 
     }
     public void drinkDetail(int drink){
-
-        Intent intent = new Intent(getContext(), DrinkDetailActivity.class);
-        intent.putExtra("drink", drink);
-        startActivity(intent);
+        drinkId = drink;
+        Loader<Cursor> loaderM = getLoaderManager().getLoader(DRINK_BY_ID_LOADER);
+        if(loaderM == null)
+            getLoaderManager().initLoader(DRINK_BY_ID_LOADER, null, this);
+        else
+            getLoaderManager().restartLoader(DRINK_BY_ID_LOADER, null, this);
+//        Intent intent = new Intent(getContext(), DrinkDetailActivity.class);
+//        intent.putExtra("drink", drink);
+//        startActivity(intent);
     }
 
 }
