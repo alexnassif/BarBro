@@ -3,86 +3,91 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#286db7">
+    android:background="#286db7"
+    android:orientation="vertical">
     <ProgressBar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/main_progress_bar"
-        android:visibility="visible"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:indeterminate="true"/>
-
-
-    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context="com.example.raymond.barbro.MainFragment">
+        android:indeterminate="true"
+        android:visibility="visible" />
 
-        <Button
-            android:id="@+id/more_fave_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="104dp"
-            android:layout_marginStart="104dp"
-            android:background="@android:color/holo_blue_bright"
-            android:text="More"
-            app:layout_constraintBottom_toTopOf="@+id/fave_recyclerView"
-            app:layout_constraintLeft_toLeftOf="@+id/fave_recyclerView" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/random_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="104dp"
-            android:layout_marginStart="104dp"
-            android:background="@android:color/holo_blue_bright"
-            android:text="More"
-            app:layout_constraintBottom_toTopOf="@+id/random_recyclerView"
-            app:layout_constraintLeft_toLeftOf="@+id/random_recyclerView" />
 
-        <TextView
-            android:id="@+id/fave_textview"
-            android:layout_width="wrap_content"
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Favorites"
-            android:textColor="#ffffff"
-            app:layout_constraintBottom_toTopOf="@+id/fave_recyclerView"
-            app:layout_constraintLeft_toLeftOf="@+id/fave_recyclerView" />
+            tools:context="com.example.raymond.barbro.MainFragment">
 
-        <TextView
-            android:id="@+id/allDrinks_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Random Drinks"
-            android:textColor="#ffffff"
-            app:layout_constraintBottom_toTopOf="@+id/random_recyclerView"
-            app:layout_constraintLeft_toLeftOf="@+id/random_recyclerView" />
+            <Button
+                android:id="@+id/more_fave_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="104dp"
+                android:layout_marginStart="104dp"
+                android:background="@android:color/holo_blue_bright"
+                android:text="More"
+                app:layout_constraintBottom_toTopOf="@+id/fave_recyclerView"
+                app:layout_constraintLeft_toLeftOf="@+id/fave_recyclerView" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/fave_recyclerView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="72dp"
-            android:elevation="0dp"
-            android:orientation="horizontal"
-            android:scrollbars="horizontal"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <Button
+                android:id="@+id/random_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="104dp"
+                android:layout_marginStart="104dp"
+                android:background="@android:color/holo_blue_bright"
+                android:text="More"
+                app:layout_constraintBottom_toTopOf="@+id/random_recyclerView"
+                app:layout_constraintLeft_toLeftOf="@+id/random_recyclerView" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/random_recyclerView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="72dp"
-            android:elevation="0dp"
-            android:orientation="horizontal"
-            android:scrollbars="horizontal"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fave_recyclerView" />
-    </android.support.constraint.ConstraintLayout>
+            <TextView
+                android:id="@+id/fave_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Favorites"
+                android:textColor="#ffffff"
+                app:layout_constraintBottom_toTopOf="@+id/fave_recyclerView"
+                app:layout_constraintLeft_toLeftOf="@+id/fave_recyclerView" />
+
+            <TextView
+                android:id="@+id/allDrinks_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Random Drinks"
+                android:textColor="#ffffff"
+                app:layout_constraintBottom_toTopOf="@+id/random_recyclerView"
+                app:layout_constraintLeft_toLeftOf="@+id/random_recyclerView" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/fave_recyclerView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="72dp"
+                android:elevation="0dp"
+                android:orientation="horizontal"
+                android:scrollbars="horizontal"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/random_recyclerView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="72dp"
+                android:elevation="0dp"
+                android:orientation="horizontal"
+                android:scrollbars="horizontal"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fave_recyclerView" />
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
 
 </LinearLayout>
