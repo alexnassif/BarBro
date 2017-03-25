@@ -197,7 +197,7 @@ public class LiquorFragment extends Fragment implements
                         null,
                         liqType + "=?",
                         new String[]{"1"},
-                        null);
+                        BarBroContract.BarBroEntry.COLUMN_DRINK_NAME + " asc");
             }
             case DRINK_BY_ID_LOADER:{
                 String stringId = Integer.toString(drinkId);

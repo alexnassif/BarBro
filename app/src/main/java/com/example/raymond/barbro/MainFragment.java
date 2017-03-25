@@ -3,6 +3,7 @@ package com.example.raymond.barbro;
 import android.animation.Animator;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -69,6 +70,7 @@ public class MainFragment extends Fragment implements
         if (getArguments() != null) {
             mParam1 = getArguments().getBoolean(ARG_PARAM1);
         }
+        getActivity().setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     @Override

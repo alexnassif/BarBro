@@ -32,6 +32,8 @@ import com.bumptech.glide.Glide;
 import com.example.raymond.barbro.data.BarBroContract;
 import com.example.raymond.barbro.data.Drink;
 
+import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
+
 
 public class ResultsFragment extends Fragment implements
         LoaderCallbacks<Cursor>, DrinkAdapter.DrinkAdapterOnClickHandler {
@@ -76,6 +78,7 @@ public class ResultsFragment extends Fragment implements
         if (getArguments() != null) {
             mParam1 = getArguments().getBoolean(ARG_PARAM1);
         }
+
         setHasOptionsMenu(true);
     }
     @Override
@@ -90,7 +93,7 @@ public class ResultsFragment extends Fragment implements
         mRecyclerView.setAdapter(mDrinkAdapter);
         View detailsFrame = getActivity().findViewById(R.id.drink_detail_fragment);
         mDualPane = detailsFrame != null && detailsFrame.getVisibility() == View.VISIBLE;
-        if(!mDualPane){
+        if(!mDualPane ){
             getActivity().setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
         if(mParam1 == false) {
@@ -175,7 +178,7 @@ public class ResultsFragment extends Fragment implements
                         null,
                         null,
                         null,
-                        null);}
+                        BarBroContract.BarBroEntry.COLUMN_DRINK_NAME + " asc");}
             case FAVE_LOADER:{
                 Uri uriAllDrinks = BarBroContract.BarBroEntry.CONTENT_URI;
                 return new CursorLoader(getContext(),
@@ -183,7 +186,7 @@ public class ResultsFragment extends Fragment implements
                         null,
                         BarBroContract.BarBroEntry.COLUMN_FAVORITE + "=?",
                         new String[]{"1"},
-                        null);
+                        BarBroContract.BarBroEntry.COLUMN_DRINK_NAME + " asc");
             }
             case DRINK_BY_ID_LOADER:{
                 String stringId = Integer.toString(drinkId);
@@ -208,7 +211,7 @@ public class ResultsFragment extends Fragment implements
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
         if(loader.getId() == GITHUB_SEARCH_LOADER || loader.getId() == FAVE_LOADER) {
-            int drinkId = data.getColumnIndex(BarBroContract.BarBroEntry._ID);
+            final int drinkId = data.getColumnIndex(BarBroContract.BarBroEntry._ID);
             int drinkName = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
             int ingredients = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS);
             int drinkPicId = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC);
@@ -235,6 +238,7 @@ public class ResultsFragment extends Fragment implements
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         Drink drink = (Drink) adapterView.getAdapter().getItem(i);
                         videoURL = drink.getVideo();
+                        mCurCheckPosition = drink.getDbId();
                         //drinkDetail(drink.getDbId());
                         if (mDualPane) {
                             showDetails(drink.getDbId());

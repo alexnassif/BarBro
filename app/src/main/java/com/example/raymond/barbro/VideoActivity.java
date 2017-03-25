@@ -84,7 +84,7 @@ public class VideoActivity extends AppCompatActivity {
         }
         else {
             Toast.makeText(this, "No Video Available for this Drink", Toast.LENGTH_LONG).show();
-            videoView.setVisibility(View.GONE);
+            finish();
         }
     }
 
