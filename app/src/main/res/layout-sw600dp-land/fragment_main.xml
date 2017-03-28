@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <ProgressBar
         android:id="@+id/main_progress_bar"
@@ -16,7 +17,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/cardview_light_background"
+        android:background="#286db7"
         tools:context="com.example.raymond.barbro.MainFragment">
 
         <Button
@@ -46,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Favorites"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="#ffffff"
             app:layout_constraintBottom_toTopOf="@+id/fave_recyclerView"
             app:layout_constraintLeft_toLeftOf="@+id/fave_recyclerView" />
 
@@ -55,7 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Random Drinks"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="#ffffff"
             app:layout_constraintBottom_toTopOf="@+id/random_recyclerView"
             app:layout_constraintLeft_toLeftOf="@+id/random_recyclerView" />
 
