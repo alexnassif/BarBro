@@ -110,11 +110,13 @@ public class ResultsFragment extends Fragment implements
         if (savedInstanceState != null) {
             // Restore last state for checked position.
             mCurCheckPosition = savedInstanceState.getInt("curChoice", 1);
-            whichFragment = savedInstanceState.getBoolean("fragment");
-            if(whichFragment)
-                drinkDetailFragment = (DrinkDetailFragment) getFragmentManager().getFragment(savedInstanceState, "myFragmentName");
-            else
-                videoFragment = (VideoFragment) getFragmentManager().getFragment(savedInstanceState, "myFragmentName");
+            if(mDualPane) {
+                whichFragment = savedInstanceState.getBoolean("fragment");
+                if (whichFragment)
+                    drinkDetailFragment = (DrinkDetailFragment) getFragmentManager().getFragment(savedInstanceState, "myFragmentName");
+                else
+                    videoFragment = (VideoFragment) getFragmentManager().getFragment(savedInstanceState, "myFragmentName");
+            }
         }
 
         if (mDualPane) {
@@ -143,12 +145,14 @@ public class ResultsFragment extends Fragment implements
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("curChoice", mCurCheckPosition);
-        if(whichFragment)
-            getFragmentManager().putFragment(outState, "myFragmentName", drinkDetailFragment);
-        else
-            getFragmentManager().putFragment(outState, "myFragmentName", videoFragment);
+        if(mDualPane) {
+            if (whichFragment)
+                getFragmentManager().putFragment(outState, "myFragmentName", drinkDetailFragment);
+            else
+                getFragmentManager().putFragment(outState, "myFragmentName", videoFragment);
 
-        outState.putBoolean("fragment", whichFragment);
+            outState.putBoolean("fragment", whichFragment);
+        }
     }
     void showDetails(int index) {
         whichFragment = true;
