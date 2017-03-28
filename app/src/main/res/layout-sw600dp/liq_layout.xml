@@ -1,33 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    >
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:id="@+id/drink_list"
-        android:layout_weight="1"
-        android:background="#ffffff">
+        android:layout_weight="1">
 
-        <AutoCompleteTextView
-            android:id="@+id/search_drinks"
+        <Spinner
+            android:id="@+id/liquor_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/search_drink_string"
-             />
+            android:prompt="@string/liquor_prompt" />
+
+        <AutoCompleteTextView
+            android:id="@+id/drink_autoCompleteTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/search_drink_string" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerview_drinks"
-            android:layout_height="wrap_content"
-
             android:layout_width="match_parent"
-             />
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
+
     <FrameLayout
-        android:paddingLeft="10dp"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:id="@+id/drink_detail_fragment"

@@ -30,6 +30,8 @@ public class VideoFragment extends Fragment {
     private String videoUrl = "http://assets.absolutdrinks.com/videos/";
     private String mParam1;
     private View myView;
+    private ProgressBar progressBar;
+    private int videoPoint = 0;
 
 
     public VideoFragment() {
@@ -51,7 +53,11 @@ public class VideoFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(video_url);
         }
+        if(savedInstanceState != null){
+            mParam1 = savedInstanceState.getString("video");
+            videoPoint = savedInstanceState.getInt("position");
 
+        }
         // Start lengthy operation in a background thread
     }
 
@@ -60,6 +66,8 @@ public class VideoFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         myView = inflater.inflate(R.layout.fragment_video, container, false);
+
+        progressBar = (ProgressBar) myView.findViewById(R.id.video_progressbar);
         videoView = (VideoView) myView.findViewById(R.id.video_fragment_view);
         return myView;
     }
@@ -100,17 +108,25 @@ public class VideoFragment extends Fragment {
                  * and set its position on screen
                  */
                             mediaController.setAnchorView(videoView);
+                            progressBar.setVisibility(View.GONE);
 
                         }
                     });
 
                 }
             });
+            videoView.seekTo(videoPoint);
             videoView.start();
         }
         else {
             Toast.makeText(getContext(), "No Video Available for this Drink", Toast.LENGTH_LONG).show();
             videoView.setVisibility(View.GONE);
         }
+    }
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("video", mParam1);
+        outState.putInt("position", videoView.getCurrentPosition());
     }
 }

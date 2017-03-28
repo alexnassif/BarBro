@@ -100,11 +100,12 @@ public class LiquorFragment extends Fragment implements
         });
         if (savedInstanceState != null) {
             // Restore last state for checked position.
-            mCurCheckPosition = savedInstanceState.getInt("curChoice", 0);
+            mCurCheckPosition = savedInstanceState.getInt("curChoice", 1);
         }
 
         if (mDualPane) {
-
+            if(mCurCheckPosition == 0)
+                mCurCheckPosition = 1;
             showDetails(mCurCheckPosition);
         }
 

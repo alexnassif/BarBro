@@ -53,6 +53,8 @@ public class ResultsFragment extends Fragment implements
     private DrinkAdapter mDrinkAdapter;
     private View myView;
     private AutoCompleteTextView acDrinkTextView;
+    private VideoFragment videoFragment;
+    private DrinkDetailFragment drinkDetailFragment;
 
     private boolean mDualPane;
     int mCurCheckPosition = 0;
@@ -62,6 +64,7 @@ public class ResultsFragment extends Fragment implements
     private int drinkId;
     private TextView viewDesc;
     private ImageView mImageView;
+    private boolean whichFragment = true;
 
 
     public static ResultsFragment newInstance(boolean param1) {
@@ -107,11 +110,25 @@ public class ResultsFragment extends Fragment implements
         if (savedInstanceState != null) {
             // Restore last state for checked position.
             mCurCheckPosition = savedInstanceState.getInt("curChoice", 1);
+            whichFragment = savedInstanceState.getBoolean("fragment");
+            if(whichFragment)
+                drinkDetailFragment = (DrinkDetailFragment) getFragmentManager().getFragment(savedInstanceState, "myFragmentName");
+            else
+                videoFragment = (VideoFragment) getFragmentManager().getFragment(savedInstanceState, "myFragmentName");
         }
 
         if (mDualPane) {
-
-            showDetails(mCurCheckPosition);
+            if(mCurCheckPosition == 0)
+                mCurCheckPosition = 1;
+            if(whichFragment)
+                showDetails(mCurCheckPosition);
+            else {
+                FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
+                //videoFragment = videoFragment.newInstance(videoURL);
+                fragmentManager
+                        .replace(R.id.drink_detail_fragment, videoFragment)
+                        .commit();
+            }
         }
 
     }
@@ -126,8 +143,15 @@ public class ResultsFragment extends Fragment implements
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("curChoice", mCurCheckPosition);
+        if(whichFragment)
+            getFragmentManager().putFragment(outState, "myFragmentName", drinkDetailFragment);
+        else
+            getFragmentManager().putFragment(outState, "myFragmentName", videoFragment);
+
+        outState.putBoolean("fragment", whichFragment);
     }
     void showDetails(int index) {
+        whichFragment = true;
         mCurCheckPosition = index;
 
         if (mDualPane) {
@@ -135,13 +159,13 @@ public class ResultsFragment extends Fragment implements
             // the list to highlight the selected item and show the data.
 
             // Check what fragment is currently shown, replace if needed.
-            DrinkDetailFragment details = DrinkDetailFragment.newInstance(index);
+            //DrinkDetailFragment details = DrinkDetailFragment.newInstance(index);
 
                 // Execute a transaction, replacing any existing fragment
                 // with this one inside the frame.
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
-
-                ft.replace(R.id.drink_detail_fragment, details);
+                drinkDetailFragment = drinkDetailFragment.newInstance(index);
+                ft.replace(R.id.drink_detail_fragment, drinkDetailFragment);
 
 
                 //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -301,9 +325,11 @@ public class ResultsFragment extends Fragment implements
         int id = item.getItemId();
         if (id == R.id.video_item && mCurCheckPosition != 0) {
             if(mDualPane) {
+                whichFragment = false;
                 FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
+                videoFragment = videoFragment.newInstance(videoURL);
                 fragmentManager
-                        .replace(R.id.drink_detail_fragment, VideoFragment.newInstance(videoURL))
+                        .replace(R.id.drink_detail_fragment, videoFragment)
                         .commit();
             }
             else {

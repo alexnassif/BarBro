@@ -19,11 +19,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.bumptech.glide.Glide;
 import com.example.raymond.barbro.data.BarBroContract;
 import com.example.raymond.barbro.data.Drink;
 
@@ -34,11 +36,11 @@ public class DrinkDetailFragment extends Fragment implements LoaderManager.Loade
     private String drinkObj = "drinkId";
     private View myView;
     private int drinkId;
+    private ImageView mImageView;
     private TextView mDrinkTitle;
     private TextView mIngredients;
     private static final int DRINK_SEARCH_LOADER = 1;
     private String videoURL;
-    //private OnFragmentInteractionListener mListener;
 
     public DrinkDetailFragment() {
         // Required empty public constructor
@@ -69,43 +71,21 @@ public class DrinkDetailFragment extends Fragment implements LoaderManager.Loade
         myView = inflater.inflate(R.layout.drink_detail_novideo, container, false);
         mDrinkTitle = (TextView) myView.findViewById(R.id.drink_name_novideo);
         mIngredients = (TextView) myView.findViewById(R.id.drink_ingredients_novideo);
-       // mDrinkVideo = (VideoView) myView.findViewById(R.id.drink_video);
+        mImageView = (ImageView) myView.findViewById(R.id.drink_pic_novideo);
+        // mDrinkVideo = (VideoView) myView.findViewById(R.id.drink_video);
         return myView;
     }
 
-//    // TODO: Rename method, update argument and hook method into UI event
-//    public void onButtonPressed(Uri uri) {
-//        if (mListener != null) {
-//            mListener.onFragmentInteraction(uri);
-//        }
-//    }
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getLoaderManager().initLoader(DRINK_SEARCH_LOADER, null, this);
     }
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        //mListener = null;
-    }
-
 
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        switch (id){
+        switch (id) {
             case DRINK_SEARCH_LOADER: {
                 Uri uriAllDrinks = BarBroContract.BarBroEntry.CONTENT_URI;
                 return new CursorLoader(getContext(),
@@ -128,10 +108,12 @@ public class DrinkDetailFragment extends Fragment implements LoaderManager.Loade
 
         int drinkName = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
         int ingredients = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS);
+        int drinkPic = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC);
         int videoId = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_VIDEO);
 
         mDrinkTitle.setText(data.getString(drinkName));
         mIngredients.setText(data.getString(ingredients));
+        Glide.with(mImageView.getContext()).load("http://assets.absolutdrinks.com/drinks/300x400/" + data.getString(drinkPic) + ".png").into(mImageView);
         videoURL = data.getString(videoId);
 
     }
@@ -140,10 +122,4 @@ public class DrinkDetailFragment extends Fragment implements LoaderManager.Loade
     public void onLoaderReset(Loader<Cursor> loader) {
 
     }
-
-
-    //    public interface OnFragmentInteractionListener {
-//        // TODO: Update argument type and name
-//        void onFragmentInteraction(Uri uri);
-//    }
 }
