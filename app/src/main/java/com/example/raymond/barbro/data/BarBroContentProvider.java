@@ -12,6 +12,8 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import java.io.IOException;
+
 /**
  * Created by alex on 12/29/16.
  */
@@ -42,6 +44,12 @@ public class BarBroContentProvider extends ContentProvider {
     public boolean onCreate() {
         Context context = getContext();
         dbHelper = new BarBroDbHelper(context);
+        try {
+            dbHelper.createDataBase();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        dbHelper.openDataBase();
         return true;
     }
 
