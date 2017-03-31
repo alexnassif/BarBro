@@ -120,6 +120,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         fragmentManager.addToBackStack(null);
+        fragmentManager.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentManager.commit();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

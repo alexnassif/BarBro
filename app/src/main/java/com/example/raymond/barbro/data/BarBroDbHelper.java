@@ -28,7 +28,8 @@ public class BarBroDbHelper extends SQLiteOpenHelper {
     public BarBroDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         c = context;
-        DB_PATH = "/data/data/" + context.getPackageName() + "/" + "databases/";
+        //DB_PATH = "/data/data/" + context.getPackageName() + "/" + "databases/";
+        DB_PATH = context.getDatabasePath(DATABASE_NAME).getAbsolutePath();
     }
 
     public void createDataBase() throws IOException {
@@ -69,8 +70,8 @@ public class BarBroDbHelper extends SQLiteOpenHelper {
         SQLiteDatabase checkDB = null;
 
         try {
-            String myPath = DB_PATH + DATABASE_NAME;
-            checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
+            //String myPath = DB_PATH + DATABASE_NAME;
+            checkDB = SQLiteDatabase.openDatabase(DB_PATH, null, SQLiteDatabase.OPEN_READONLY);
 
         } catch (SQLiteException e) {
 
@@ -93,7 +94,7 @@ public class BarBroDbHelper extends SQLiteOpenHelper {
         InputStream myInput = c.getAssets().open(DATABASE_NAME);
 
         // Path to the just created empty db
-        String outFileName = DB_PATH + DATABASE_NAME;
+        String outFileName = DB_PATH;
 
         //Open the empty db as the output stream
         OutputStream myOutput = new FileOutputStream(outFileName);
@@ -115,7 +116,7 @@ public class BarBroDbHelper extends SQLiteOpenHelper {
     public void openDataBase() throws SQLException {
 
         //Open the database
-        String myPath = DB_PATH + DATABASE_NAME;
+        String myPath = DB_PATH;
         myDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
 
     }
