@@ -24,6 +24,7 @@ public class BarBroContentProvider extends ContentProvider {
     public static final int HISTORY = 300;
     public static final int DRINKS_WITH_ID = 101;
     public static final int MYDRINKS_WITH_ID = 201;
+    public static final int HISTORY_WITH_ID = 301;
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
     public static UriMatcher buildUriMatcher(){
@@ -33,6 +34,7 @@ public class BarBroContentProvider extends ContentProvider {
         uriMatcher.addURI(BarBroContract.AUTHORITY, BarBroContract.PATH_HISTORY, HISTORY);
         uriMatcher.addURI(BarBroContract.AUTHORITY, BarBroContract.PATH_DRINKS + "/#", DRINKS_WITH_ID);
         uriMatcher.addURI(BarBroContract.AUTHORITY, BarBroContract.PATH_MYDRINKS + "/#", MYDRINKS_WITH_ID);
+        uriMatcher.addURI(BarBroContract.AUTHORITY, BarBroContract.PATH_HISTORY + "/#", HISTORY_WITH_ID);
 
         return uriMatcher;
     }
@@ -102,6 +104,22 @@ public class BarBroContentProvider extends ContentProvider {
 
                 // Construct a query as you would normally, passing in the selection/args
                 retCursor =  db.query(BarBroContract.MyDrinkEntry.TABLE_NAME,
+                        projection,
+                        mSelection,
+                        mSelectionArgs,
+                        null,
+                        null,
+                        sortOrder);
+                break;}
+            case HISTORY_WITH_ID: {
+                String id = uri.getPathSegments().get(1);
+
+                // Selection is the _ID column = ?, and the Selection args = the row ID from the URI
+                String mSelection = "idh=?";
+                String[] mSelectionArgs = new String[]{id};
+
+                // Construct a query as you would normally, passing in the selection/args
+                retCursor =  db.query(BarBroContract.HistoryEntry.TABLE_NAME,
                         projection,
                         mSelection,
                         mSelectionArgs,
@@ -197,6 +215,11 @@ public class BarBroContentProvider extends ContentProvider {
             case MYDRINKS_WITH_ID: {
                 String id = uri.getPathSegments().get(1);
                 retInt = db.update(BarBroContract.MyDrinkEntry.TABLE_NAME, values, "_id=?", new String[]{id});
+                break;
+            }
+            case HISTORY_WITH_ID: {
+                String id = uri.getPathSegments().get(1);
+                retInt = db.update(BarBroContract.HistoryEntry.TABLE_NAME, values, "_id=?", new String[]{id});
                 break;
             }
             default:

@@ -353,12 +353,13 @@ public class ResultsFragment extends Fragment implements
     }
     @Override
     public void onClick(int drink, String video) {
-        AsyncQueryHandler historyDrink = new AsyncQueryHandler(getActivity().getContentResolver()) {
+        /*AsyncQueryHandler historyDrink = new AsyncQueryHandler(getActivity().getContentResolver()) {
         };
         Uri uriHistory = BarBroContract.HistoryEntry.CONTENT_URI;
         ContentValues newValue = new ContentValues();
         newValue.put(BarBroContract.HistoryEntry.COLUMN_HISTORYID, drink);
-        historyDrink.startInsert(-1, null, uriHistory, newValue);
+        historyDrink.startInsert(-1, null, uriHistory, newValue);*/
+        HistoryUtils.addToHistory(getContext(), drink);
         mCurCheckPosition = drink;
         videoURL = video;
         if (mDualPane) {
