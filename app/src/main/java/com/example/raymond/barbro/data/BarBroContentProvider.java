@@ -21,6 +21,7 @@ public class BarBroContentProvider extends ContentProvider {
     private BarBroDbHelper dbHelper;
     public static final int DRINKS = 100;
     public static final int MYDRINKS = 200;
+    public static final int HISTORY = 300;
     public static final int DRINKS_WITH_ID = 101;
     public static final int MYDRINKS_WITH_ID = 201;
     private static final UriMatcher sUriMatcher = buildUriMatcher();
@@ -29,6 +30,7 @@ public class BarBroContentProvider extends ContentProvider {
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(BarBroContract.AUTHORITY, BarBroContract.PATH_DRINKS, DRINKS);
         uriMatcher.addURI(BarBroContract.AUTHORITY, BarBroContract.PATH_MYDRINKS, MYDRINKS);
+        uriMatcher.addURI(BarBroContract.AUTHORITY, BarBroContract.PATH_HISTORY, HISTORY);
         uriMatcher.addURI(BarBroContract.AUTHORITY, BarBroContract.PATH_DRINKS + "/#", DRINKS_WITH_ID);
         uriMatcher.addURI(BarBroContract.AUTHORITY, BarBroContract.PATH_MYDRINKS + "/#", MYDRINKS_WITH_ID);
 
@@ -67,6 +69,13 @@ public class BarBroContentProvider extends ContentProvider {
                         null,
                         null,
                         sortOrder);
+                break;
+            case HISTORY:
+                retCursor = db.rawQuery("select * from " +
+                        BarBroContract.BarBroEntry.TABLE_NAME + " INNER JOIN "
+                        + BarBroContract.HistoryEntry.TABLE_NAME + " ON ("
+                        + BarBroContract.BarBroEntry.TABLE_NAME + "._id"
+                        + " = " + BarBroContract.HistoryEntry.TABLE_NAME + ".idh)", null);
                 break;
             case DRINKS_WITH_ID: {
                 String id = uri.getPathSegments().get(1);
@@ -131,6 +140,13 @@ public class BarBroContentProvider extends ContentProvider {
                 break;}
             case MYDRINKS:{
                 long id = db.insert(BarBroContract.MyDrinkEntry.TABLE_NAME, null, values);
+                if(id > 0)
+                    retUri = ContentUris.withAppendedId(uri, id);
+                else
+                    throw new SQLException("Failed to insert row into " + uri);
+                break;}
+            case HISTORY:{
+                long id = db.insert(BarBroContract.HistoryEntry.TABLE_NAME, null, values);
                 if(id > 0)
                     retUri = ContentUris.withAppendedId(uri, id);
                 else

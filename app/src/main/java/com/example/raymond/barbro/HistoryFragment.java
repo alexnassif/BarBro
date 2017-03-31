@@ -1,8 +1,8 @@
 package com.example.raymond.barbro;
 
-
 import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
@@ -11,7 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,29 +26,19 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.raymond.barbro.data.BarBroContract;
 import com.example.raymond.barbro.data.Drink;
-import com.example.raymond.barbro.data.HistoryUtils;
-
-import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 
 
-public class ResultsFragment extends Fragment implements
-        LoaderCallbacks<Cursor>, DrinkAdapter.DrinkAdapterOnClickHandler {
 
-    private static final String ARG_PARAM1 = "param1";
-    private boolean mParam1 = false;
-    /*
-     * This number will uniquely identify our Loader and is chosen arbitrarily. You can change this
-     * to any number you like, as long as you use the same variable name.
-     */
-    private static final int GITHUB_SEARCH_LOADER = 22;
-    private static final int FAVE_LOADER = 23;
+public class HistoryFragment extends Fragment implements
+        LoaderManager.LoaderCallbacks<Cursor>, DrinkAdapter.DrinkAdapterOnClickHandler {
+
+    private static final int HISTORY_SEARCH_LOADER = 22;
     private static final int DRINK_BY_ID_LOADER = 24;
 
     private RecyclerView mRecyclerView;
@@ -69,24 +59,29 @@ public class ResultsFragment extends Fragment implements
     private ImageView mImageView;
     private boolean whichFragment = true;
 
+    public HistoryFragment() {
+        // Required empty public constructor
+    }
 
-    public static ResultsFragment newInstance(boolean param1) {
-        ResultsFragment fragment = new ResultsFragment();
-        Bundle args = new Bundle();
-        args.putBoolean(ARG_PARAM1, param1);
-        fragment.setArguments(args);
+    public static HistoryFragment newInstance() {
+        HistoryFragment fragment = new HistoryFragment();
+        /*Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);*/
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getBoolean(ARG_PARAM1);
-        }
-
+        /*if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }*/
         setHasOptionsMenu(true);
     }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -102,13 +97,9 @@ public class ResultsFragment extends Fragment implements
         if(!mDualPane ){
             getActivity().setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
-        if(mParam1 == false) {
-            getLoaderManager().initLoader(GITHUB_SEARCH_LOADER, null, this);
-            getActivity().setTitle("All Drinks");
-        }
-        else{
-            getLoaderManager().initLoader(FAVE_LOADER, null, this);
-            getActivity().setTitle("Favorites");}
+
+        getLoaderManager().initLoader(HISTORY_SEARCH_LOADER, null, this);
+        getActivity().setTitle("History");
 
         if (savedInstanceState != null) {
             // Restore last state for checked position.
@@ -139,12 +130,6 @@ public class ResultsFragment extends Fragment implements
     }
 
     @Override
-    public void onDestroy() {
-        getActivity().setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
-        super.onDestroy();
-    }
-
-    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("curChoice", mCurCheckPosition);
@@ -168,15 +153,15 @@ public class ResultsFragment extends Fragment implements
             // Check what fragment is currently shown, replace if needed.
             //DrinkDetailFragment details = DrinkDetailFragment.newInstance(index);
 
-                // Execute a transaction, replacing any existing fragment
-                // with this one inside the frame.
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                drinkDetailFragment = drinkDetailFragment.newInstance(index);
-                ft.replace(R.id.drink_detail_fragment, drinkDetailFragment);
+            // Execute a transaction, replacing any existing fragment
+            // with this one inside the frame.
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            drinkDetailFragment = drinkDetailFragment.newInstance(index);
+            ft.replace(R.id.drink_detail_fragment, drinkDetailFragment);
 
 
-                //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                ft.commit();
+            //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.commit();
 
 
         }
@@ -202,23 +187,14 @@ public class ResultsFragment extends Fragment implements
     public Loader<Cursor> onCreateLoader(int id, final Bundle args) {
 
         switch (id){
-            case GITHUB_SEARCH_LOADER:{
-                Uri uriAllDrinks = BarBroContract.BarBroEntry.CONTENT_URI;
+            case HISTORY_SEARCH_LOADER:{
+                Uri uriAllDrinks = BarBroContract.HistoryEntry.CONTENT_URI;
                 return new CursorLoader(getContext(),
                         uriAllDrinks,
                         null,
                         null,
                         null,
-                        BarBroContract.BarBroEntry.COLUMN_DRINK_NAME + " asc");}
-            case FAVE_LOADER:{
-                Uri uriAllDrinks = BarBroContract.BarBroEntry.CONTENT_URI;
-                return new CursorLoader(getContext(),
-                        uriAllDrinks,
-                        null,
-                        BarBroContract.BarBroEntry.COLUMN_FAVORITE + "=?",
-                        new String[]{"1"},
-                        BarBroContract.BarBroEntry.COLUMN_DRINK_NAME + " asc");
-            }
+                        null);}
             case DRINK_BY_ID_LOADER:{
                 String stringId = Integer.toString(drinkId);
                 Uri uri = BarBroContract.BarBroEntry.CONTENT_URI;
@@ -241,7 +217,7 @@ public class ResultsFragment extends Fragment implements
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
-        if(loader.getId() == GITHUB_SEARCH_LOADER || loader.getId() == FAVE_LOADER) {
+        if(loader.getId() == HISTORY_SEARCH_LOADER) {
             final int drinkId = data.getColumnIndex(BarBroContract.BarBroEntry._ID);
             int drinkName = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
             int ingredients = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS);
@@ -353,12 +329,12 @@ public class ResultsFragment extends Fragment implements
     }
     @Override
     public void onClick(int drink, String video) {
-        AsyncQueryHandler historyDrink = new AsyncQueryHandler(getActivity().getContentResolver()) {
+        /*AsyncQueryHandler historyDrink = new AsyncQueryHandler(getActivity().getContentResolver()) {
         };
         Uri uriHistory = BarBroContract.HistoryEntry.CONTENT_URI;
         ContentValues newValue = new ContentValues();
         newValue.put(BarBroContract.HistoryEntry.COLUMN_HISTORYID, drink);
-        historyDrink.startInsert(-1, null, uriHistory, newValue);
+        historyDrink.startInsert(-1, null, uriHistory, newValue);*/
         mCurCheckPosition = drink;
         videoURL = video;
         if (mDualPane) {

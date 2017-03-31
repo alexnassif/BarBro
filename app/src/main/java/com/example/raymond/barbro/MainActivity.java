@@ -114,7 +114,10 @@ public class MainActivity extends AppCompatActivity
             fragmentManager
                     .replace(R.id.content_frame, new MyDrinkFragment());
         }
-
+        else if (id == R.id.nav_history){
+            fragmentManager
+                    .replace(R.id.content_frame, new HistoryFragment());
+        }
 
         fragmentManager.addToBackStack(null);
         fragmentManager.commit();

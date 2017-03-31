@@ -17,6 +17,7 @@ import android.view.View.OnClickListener;
 import com.bumptech.glide.Glide;
 import com.example.raymond.barbro.data.BarBroContract;
 import com.example.raymond.barbro.data.Drink;
+import com.example.raymond.barbro.data.HistoryUtils;
 
 /**
  * Created by raymond on 12/12/16.

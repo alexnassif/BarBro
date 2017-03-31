@@ -14,6 +14,7 @@ public class BarBroContract {
 
     public static final String PATH_DRINKS = "drinks";
     public static final String PATH_MYDRINKS = "mydrinks";
+    public static final String PATH_HISTORY = "history";
 
     public static final class BarBroEntry implements BaseColumns {
         public static final Uri CONTENT_URI =
@@ -39,6 +40,15 @@ public class BarBroContract {
         public static final String COLUMN_MYDRINK_NAME = "name";
         public static final String COLUMN_MYINGREDIENTS = "ingredients";
         public static final String COLUMN_MYDRINK_PIC = "pic";
+
+    }
+
+    public static final class HistoryEntry implements BaseColumns {
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_HISTORY).build();
+        public static final String TABLE_NAME = "history";
+        public static final String COLUMN_HISTORYID = "idh";
+        public static final String COLUMN_DATE = "date";
 
     }
 }
