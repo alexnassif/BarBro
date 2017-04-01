@@ -30,8 +30,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.raymond.barbro.data.BarBroContract;
 import com.example.raymond.barbro.data.Drink;
-
-
+import com.example.raymond.barbro.data.HistoryUtils;
 
 
 public class LiquorFragment extends Fragment implements
@@ -284,6 +283,7 @@ public class LiquorFragment extends Fragment implements
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         Drink drink = (Drink) adapterView.getAdapter().getItem(i);
+                        HistoryUtils.addToHistory(getContext(), drink.getDbId());
                         videoURL = drink.getVideo();
                         //drinkDetail(drink.getDbId());
                         if (mDualPane) {
@@ -326,6 +326,7 @@ public class LiquorFragment extends Fragment implements
 
     @Override
     public void onClick(int drink, String video) {
+        HistoryUtils.addToHistory(getContext(), drink);
         mCurCheckPosition = drink;
         videoURL = video;
         if (mDualPane) {

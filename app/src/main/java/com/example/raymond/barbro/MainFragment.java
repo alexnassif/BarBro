@@ -26,8 +26,7 @@ import android.widget.ProgressBar;
 
 import com.example.raymond.barbro.data.BarBroContract;
 import com.example.raymond.barbro.data.Drink;
-
-
+import com.example.raymond.barbro.data.HistoryUtils;
 
 
 public class MainFragment extends Fragment implements
@@ -164,6 +163,7 @@ public class MainFragment extends Fragment implements
 
     @Override
     public void onClick(int drink) {
+        HistoryUtils.addToHistory(getContext(), drink);
         drinkDetail(drink);
     }
 

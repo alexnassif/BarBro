@@ -268,6 +268,7 @@ public class ResultsFragment extends Fragment implements
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         Drink drink = (Drink) adapterView.getAdapter().getItem(i);
+                        HistoryUtils.addToHistory(getContext(), drink.getDbId());
                         videoURL = drink.getVideo();
                         mCurCheckPosition = drink.getDbId();
                         //drinkDetail(drink.getDbId());

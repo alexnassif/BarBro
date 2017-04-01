@@ -127,13 +127,12 @@ public class BarBroContentProvider extends ContentProvider {
                 String[] mSelectionArgs = new String[]{id};
 
                 // Construct a query as you would normally, passing in the selection/args
-                retCursor =  db.query(BarBroContract.HistoryEntry.TABLE_NAME,
-                        projection,
-                        mSelection,
-                        mSelectionArgs,
-                        null,
-                        null,
-                        sortOrder);
+                retCursor =  db.rawQuery("select * from " +
+                        BarBroContract.BarBroEntry.TABLE_NAME + " INNER JOIN "
+                        + BarBroContract.HistoryEntry.TABLE_NAME + " ON ("
+                        + BarBroContract.BarBroEntry.TABLE_NAME + "._id"
+                        + " = " + BarBroContract.HistoryEntry.TABLE_NAME + ".idh) WHERE "
+                        + BarBroContract.HistoryEntry.TABLE_NAME + "._id=" + id, null);
                 break;}
             default:
                 throw new UnsupportedOperationException("Uri doesn't match " + uri);

@@ -197,7 +197,7 @@ public class HistoryFragment extends Fragment implements
                         null);}
             case DRINK_BY_ID_LOADER:{
                 String stringId = Integer.toString(drinkId);
-                Uri uri = BarBroContract.BarBroEntry.CONTENT_URI;
+                Uri uri = BarBroContract.HistoryEntry.CONTENT_URI;
                 uri = uri.buildUpon().appendPath(stringId).build();
                 return new CursorLoader(getContext(),
                         uri,
