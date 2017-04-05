@@ -22,6 +22,7 @@ public class BarBroContract {
         public static final String TABLE_NAME = "drinks";
         public static final String COLUMN_DRINK_NAME = "drinkName";
         public static final String COLUMN_INGREDIENTS = "ingredients";
+        public static final String COLUMN_DESCRIPTION = "description";
         public static final String COLUMN_DRINK_PIC = "pic";
         public static final String COLUMN_VIDEO = "video";
         public static final String COLUMN_FAVORITE = "favorite";
@@ -31,6 +32,13 @@ public class BarBroContract {
         public static final String COLUMN_TEQUILA = "tequila";
         public static final String COLUMN_WHISKY = "whisky";
         public static final String COLUMN_BRANDY = "brandy";
+        public static final String COLUMN_BERRY = "berry";
+        public static final String COLUMN_SWEET = "sweet";
+        public static final String COLUMN_FRUITY = "fruity";
+        public static final String COLUMN_SOUR = "sour";
+        public static final String COLUMN_SPICY = "spicy";
+        public static final String COLUMN_HERB = "herb";
+        public static final String COLUMN_FRESH = "fresh";
     }
 
     public static final class MyDrinkEntry implements BaseColumns {

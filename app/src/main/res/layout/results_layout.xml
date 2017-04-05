@@ -64,10 +64,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#286db7"/>
-        <ImageView
+        <TextView
+            android:textColor="#FFFFFF"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:id="@+id/image_view_youtube"
+            android:layout_height="wrap_content"
+            android:id="@+id/desc_view_youtube"
             android:background="#000000"/>
 
 

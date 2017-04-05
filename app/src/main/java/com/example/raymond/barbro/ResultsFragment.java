@@ -66,7 +66,7 @@ public class ResultsFragment extends Fragment implements
     private TextView viewHeader;
     private int drinkId;
     private TextView viewDesc;
-    private ImageView mImageView;
+    private TextView mMixView;
     private boolean whichFragment = true;
 
 
@@ -191,7 +191,7 @@ public class ResultsFragment extends Fragment implements
         if (!mDualPane) {
             viewHeader = (TextView) myView.findViewById(R.id.header);
             viewDesc = (TextView) myView.findViewById(R.id.desc);
-            mImageView = (ImageView) myView.findViewById(R.id.image_view_youtube);
+            mMixView = (TextView) myView.findViewById(R.id.desc_view_youtube);
             youtubeLayout = (YouTubeLayout) myView.findViewById(R.id.dragLayout);
             //youtubeLayout.setVisibility(View.GONE);
         }
@@ -287,14 +287,12 @@ public class ResultsFragment extends Fragment implements
 
             int drinkName = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
             int ingredients = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS);
-            int drinkPicId = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC);
+            int description = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DESCRIPTION);
             int videoId = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_VIDEO);
 
             viewHeader.setText(data.getString(drinkName));
             viewDesc.setText(data.getString(ingredients));
-            Glide.with(mImageView.getContext())
-                    .load("http://assets.absolutdrinks.com/drinks/300x400/" + data.getString(drinkPicId) +".png")
-                    .into(mImageView);
+            mMixView.setText(data.getString(description));
             videoURL = data.getString(videoId);
             youtubeLayout.setVisibility(View.VISIBLE);
             youtubeLayout.maximize();

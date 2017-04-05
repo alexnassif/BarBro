@@ -27,4 +27,13 @@
         <item>Rum</item>
         <item>Brandy</item>
     </string-array>
+    <string-array name="taste_array">
+        <item>Sweet</item>
+        <item>Fruity</item>
+        <item>Berry</item>
+        <item>Sour</item>
+        <item>Herb</item>
+        <item>Spicy</item>
+        <item>Fresh</item>
+    </string-array>
 </resources>

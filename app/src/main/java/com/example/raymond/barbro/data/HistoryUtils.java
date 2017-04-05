@@ -50,7 +50,7 @@ public class HistoryUtils {
                     }
 
                 }
-                else{
+                else if(cursor.getCount() == 0){
                     Uri newuri = BarBroContract.HistoryEntry.CONTENT_URI;
                     ContentValues values = new ContentValues();
                     values.put(BarBroContract.HistoryEntry.COLUMN_HISTORYID, drink);

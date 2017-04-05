@@ -60,11 +60,11 @@ public class BarBroDbHelper extends SQLiteOpenHelper {
 
     }
 
-    /**
-     * Check if the database already exist to avoid re-copying the file each time you open the application.
-     *
-     * @return true if it exists, false if it doesn't
-     */
+    //    *//**//**//**//**//**//**//**//**
+//     * Check if the database already exist to avoid re-copying the file each time you open the application.
+//     *
+//     * @return true if it exists, false if it doesn't
+//     *//**//**//**//**//**//**//**//*
     private boolean checkDataBase() {
 
         SQLiteDatabase checkDB = null;
@@ -137,46 +137,54 @@ public class BarBroDbHelper extends SQLiteOpenHelper {
 
     }
 
-    /*@Override
-    public void onCreate(SQLiteDatabase db) {
-        final String SQL_CREATE_BARBRO_TABLE = "CREATE TABLE " +
-                BarBroContract.BarBroEntry.TABLE_NAME + " (" +
-                BarBroContract.BarBroEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                BarBroContract.BarBroEntry.COLUMN_DRINK_NAME + " TEXT NOT NULL, " +
-                BarBroContract.BarBroEntry.COLUMN_INGREDIENTS + " TEXT NOT NULL, " +
-                BarBroContract.BarBroEntry.COLUMN_DRINK_PIC + " TEXT, " +
-                BarBroContract.BarBroEntry.COLUMN_FAVORITE + " INTEGER DEFAULT 0, " +
-                BarBroContract.BarBroEntry.COLUMN_VODKA + " INTEGER DEFAULT 0, " +
-                BarBroContract.BarBroEntry.COLUMN_GIN + " INTEGER DEFAULT 0, " +
-                BarBroContract.BarBroEntry.COLUMN_RUM + " INTEGER DEFAULT 0, " +
-                BarBroContract.BarBroEntry.COLUMN_TEQUILA + " INTEGER DEFAULT 0, " +
-                BarBroContract.BarBroEntry.COLUMN_WHISKY + " INTEGER DEFAULT 0, " +
-                BarBroContract.BarBroEntry.COLUMN_BRANDY + " INTEGER DEFAULT 0, " +
-                BarBroContract.BarBroEntry.COLUMN_VIDEO + " TEXT " +
-                ");";
-        final String SQL_CREATE_BARBRO_MYDRINK_TABLE = "CREATE TABLE " +
-                BarBroContract.MyDrinkEntry.TABLE_NAME + " (" +
-                BarBroContract.MyDrinkEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_NAME + " TEXT NOT NULL, " +
-                BarBroContract.MyDrinkEntry.COLUMN_MYINGREDIENTS + " TEXT NOT NULL, " +
-                BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_PIC + " TEXT " +
-                ");";
-        final String SQL_CREATE_BARBRO_HISTORY_TABLE = "CREATE TABLE " +
-                BarBroContract.HistoryEntry.TABLE_NAME + " (" +
-                BarBroContract.HistoryEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                BarBroContract.HistoryEntry.COLUMN_HISTORYID + " TEXT NOT NULL, " +
-                BarBroContract.HistoryEntry.COLUMN_DATE + " DATETIME DEFAULT CURRENT_TIMESTAMP, " +
-                "FOREIGN KEY(" + BarBroContract.HistoryEntry.COLUMN_HISTORYID +
-                ") REFERENCES " + BarBroContract.BarBroEntry.TABLE_NAME +
-                "(" + BarBroContract.BarBroEntry._ID + ") " +
-                ");";
+    /* @Override
+     public void onCreate(SQLiteDatabase db) {
+         final String SQL_CREATE_BARBRO_TABLE = "CREATE TABLE " +
+                 BarBroContract.BarBroEntry.TABLE_NAME + " (" +
+                 BarBroContract.BarBroEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                 BarBroContract.BarBroEntry.COLUMN_DRINK_NAME + " TEXT NOT NULL, " +
+                 BarBroContract.BarBroEntry.COLUMN_INGREDIENTS + " TEXT NOT NULL, " +
+                 BarBroContract.BarBroEntry.COLUMN_DRINK_PIC + " TEXT, " +
+                 BarBroContract.BarBroEntry.COLUMN_DESCRIPTION + " TEXT, " +
+                 BarBroContract.BarBroEntry.COLUMN_BERRY + " INTEGER DEFAULT 0, " +
+                 BarBroContract.BarBroEntry.COLUMN_FRESH + " INTEGER DEFAULT 0, " +
+                 BarBroContract.BarBroEntry.COLUMN_FRUITY + " INTEGER DEFAULT 0, " +
+                 BarBroContract.BarBroEntry.COLUMN_HERB + " INTEGER DEFAULT 0, " +
+                 BarBroContract.BarBroEntry.COLUMN_SOUR + " INTEGER DEFAULT 0, " +
+                 BarBroContract.BarBroEntry.COLUMN_SPICY + " INTEGER DEFAULT 0, " +
+                 BarBroContract.BarBroEntry.COLUMN_SWEET + " INTEGER DEFAULT 0, " +
+                 BarBroContract.BarBroEntry.COLUMN_FAVORITE + " INTEGER DEFAULT 0, " +
+                 BarBroContract.BarBroEntry.COLUMN_VODKA + " INTEGER DEFAULT 0, " +
+                 BarBroContract.BarBroEntry.COLUMN_GIN + " INTEGER DEFAULT 0, " +
+                 BarBroContract.BarBroEntry.COLUMN_RUM + " INTEGER DEFAULT 0, " +
+                 BarBroContract.BarBroEntry.COLUMN_TEQUILA + " INTEGER DEFAULT 0, " +
+                 BarBroContract.BarBroEntry.COLUMN_WHISKY + " INTEGER DEFAULT 0, " +
+                 BarBroContract.BarBroEntry.COLUMN_BRANDY + " INTEGER DEFAULT 0, " +
+                 BarBroContract.BarBroEntry.COLUMN_VIDEO + " TEXT " +
+                 ");";
+         final String SQL_CREATE_BARBRO_MYDRINK_TABLE = "CREATE TABLE " +
+                 BarBroContract.MyDrinkEntry.TABLE_NAME + " (" +
+                 BarBroContract.MyDrinkEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                 BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_NAME + " TEXT NOT NULL, " +
+                 BarBroContract.MyDrinkEntry.COLUMN_MYINGREDIENTS + " TEXT NOT NULL, " +
+                 BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_PIC + " TEXT " +
+                 ");";
+         final String SQL_CREATE_BARBRO_HISTORY_TABLE = "CREATE TABLE " +
+                 BarBroContract.HistoryEntry.TABLE_NAME + " (" +
+                 BarBroContract.HistoryEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                 BarBroContract.HistoryEntry.COLUMN_HISTORYID + " TEXT NOT NULL, " +
+                 BarBroContract.HistoryEntry.COLUMN_DATE + " DATETIME DEFAULT CURRENT_TIMESTAMP, " +
+                 "FOREIGN KEY(" + BarBroContract.HistoryEntry.COLUMN_HISTORYID +
+                 ") REFERENCES " + BarBroContract.BarBroEntry.TABLE_NAME +
+                 "(" + BarBroContract.BarBroEntry._ID + ") " +
+                 ");";
 
 
-        db.execSQL(SQL_CREATE_BARBRO_TABLE);
-        db.execSQL(SQL_CREATE_BARBRO_MYDRINK_TABLE);
-        db.execSQL(SQL_CREATE_BARBRO_HISTORY_TABLE);
+         db.execSQL(SQL_CREATE_BARBRO_TABLE);
+         db.execSQL(SQL_CREATE_BARBRO_MYDRINK_TABLE);
+         db.execSQL(SQL_CREATE_BARBRO_HISTORY_TABLE);
 
-    }*/
+     }*/
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + BarBroContract.BarBroEntry.TABLE_NAME);

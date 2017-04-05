@@ -1,5 +1,6 @@
 package com.example.raymond.barbro;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
@@ -33,7 +34,8 @@ import com.example.raymond.barbro.data.Drink;
 import com.example.raymond.barbro.data.HistoryUtils;
 
 
-public class LiquorFragment extends Fragment implements
+
+public class TastesFragment extends Fragment implements
         LoaderManager.LoaderCallbacks<Cursor>, DrinkAdapter.DrinkAdapterOnClickHandler {
 
     private static final int GITHUB_SEARCH_LOADER = 22;
@@ -44,7 +46,7 @@ public class LiquorFragment extends Fragment implements
 
     private View myView;
     private Spinner mLiquorSpinner;
-    private String liqType;
+    private String tasteType;
     private AutoCompleteTextView mAutoCompleteTextView;
     private boolean mDualPane;
     int mCurCheckPosition = 0;
@@ -81,18 +83,18 @@ public class LiquorFragment extends Fragment implements
         mDrinkAdapter = new DrinkAdapter(getContext(), this);
         mRecyclerView.setAdapter(mDrinkAdapter);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
-                R.array.liquor_array, android.R.layout.simple_spinner_item);
+                R.array.taste_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mLiquorSpinner.setAdapter(adapter);
         mLiquorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                liqType = (String) adapterView.getItemAtPosition(i);
+                tasteType = (String) adapterView.getItemAtPosition(i);
                 Loader<Cursor> githubSearchLoader = getLoaderManager().getLoader(GITHUB_SEARCH_LOADER);
                 if (githubSearchLoader == null) {
-                    getLoaderManager().initLoader(GITHUB_SEARCH_LOADER, null, LiquorFragment.this);
+                    getLoaderManager().initLoader(GITHUB_SEARCH_LOADER, null, TastesFragment.this);
                 } else {
-                    getLoaderManager().restartLoader(GITHUB_SEARCH_LOADER, null, LiquorFragment.this);
+                    getLoaderManager().restartLoader(GITHUB_SEARCH_LOADER, null, TastesFragment.this);
                 }
             }
 
@@ -230,7 +232,7 @@ public class LiquorFragment extends Fragment implements
                 return new CursorLoader(getContext(),
                         uriAllDrinks,
                         null,
-                        liqType + "=?",
+                        tasteType + "=?",
                         new String[]{"1"},
                         BarBroContract.BarBroEntry.COLUMN_DRINK_NAME + " asc");
             }
@@ -254,7 +256,7 @@ public class LiquorFragment extends Fragment implements
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
-         //When we finish loading, we want to hide the loading indicator from the user.
+        //When we finish loading, we want to hide the loading indicator from the user.
         //mLoadingIndicator.setVisibility(View.INVISIBLE);
         if(loader.getId() == GITHUB_SEARCH_LOADER) {
             int drinkId = data.getColumnIndex(BarBroContract.BarBroEntry._ID);
@@ -319,7 +321,7 @@ public class LiquorFragment extends Fragment implements
 //         * We aren't using this method in our example application, but we are required to Override
 //         * it to implement the LoaderCallbacks<String> interface
 
-       // mLoadingIndicator.setVisibility(View.INVISIBLE);
+        // mLoadingIndicator.setVisibility(View.INVISIBLE);
     }
 
     @Override

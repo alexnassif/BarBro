@@ -65,6 +65,8 @@ public final class BarJsonUtils {
         final String NAME = "name";
         final String ID = "id";
         final String VIDEO = "videos";
+        final String TASTES = "tastes";
+        final String DESCRIPTION = "descriptionPlain";
 
         JSONObject drinkJson = new JSONObject(drinkJsonStr);
 
@@ -109,6 +111,38 @@ public final class BarJsonUtils {
                     }
 
                 }
+                JSONArray tastesArray = drinkObject.getJSONArray(TASTES);
+                for(int j = 0; j < tastesArray.length(); j++){
+                    JSONObject tObject = tastesArray.getJSONObject(j);
+                    String typeT = tObject.getString("id");
+                    switch (typeT){
+                        case "sweet":
+                            drinkValue.put(BarBroContract.BarBroEntry.COLUMN_SWEET, 1);
+                            break;
+                        case "fresh":
+                            drinkValue.put(BarBroContract.BarBroEntry.COLUMN_FRESH, 1);
+                            break;
+                        case "fruity":
+                            drinkValue.put(BarBroContract.BarBroEntry.COLUMN_FRUITY, 1);
+                            break;
+                        case "berry":
+                            drinkValue.put(BarBroContract.BarBroEntry.COLUMN_BERRY, 1);
+                            break;
+                        case "sour":
+                            drinkValue.put(BarBroContract.BarBroEntry.COLUMN_SOUR, 1);
+                            break;
+                        case "spicy":
+                            drinkValue.put(BarBroContract.BarBroEntry.COLUMN_SPICY, 1);
+                            break;
+                        case "herb":
+                            drinkValue.put(BarBroContract.BarBroEntry.COLUMN_HERB, 1);
+                            break;
+                        default:
+                            break;
+
+                    }
+
+                }
                 JSONArray videoArray = drinkObject.getJSONArray(VIDEO);
                 for(int k = 0; k < videoArray.length(); k++){
                     JSONObject vidObject = videoArray.getJSONObject(k);
@@ -119,7 +153,9 @@ public final class BarJsonUtils {
                     }
 
                 }
+                String description = drinkObject.getString(DESCRIPTION);
                 String id = drinkObject.getString(ID);
+                drinkValue.put(BarBroContract.BarBroEntry.COLUMN_DESCRIPTION, description);
                 drinkValue.put(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME, drinkName);
                 drinkValue.put(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS, ingList);
                 drinkValue.put(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC, id);
