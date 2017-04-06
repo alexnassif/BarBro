@@ -118,11 +118,6 @@ public class MainActivity extends AppCompatActivity
             fragmentManager
                     .replace(R.id.content_frame, new HistoryFragment());
         }
-        else if (id == R.id.nav_taste_type){
-            fragmentManager
-                    .replace(R.id.content_frame, new TastesFragment());
-        }
-
         fragmentManager.addToBackStack(null);
         fragmentManager.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentManager.commit();

@@ -12,9 +12,6 @@
             android:id="@+id/nav_liquor_type"
             android:title="Search by Liquor Type" />
         <item
-            android:id="@+id/nav_taste_type"
-            android:title="Search by Taste"/>
-        <item
             android:id="@+id/nav_my_drinks"
             android:title="My Drinks"/>
         <item

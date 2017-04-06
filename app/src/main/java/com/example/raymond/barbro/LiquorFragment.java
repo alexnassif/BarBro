@@ -34,6 +34,8 @@ import com.example.raymond.barbro.data.Drink;
 import com.example.raymond.barbro.data.HistoryUtils;
 import com.thomashaertel.widget.MultiSpinner;
 
+import java.util.ArrayList;
+
 
 public class LiquorFragment extends Fragment implements
         LoaderManager.LoaderCallbacks<Cursor>, DrinkAdapter.DrinkAdapterOnClickHandler {
@@ -88,8 +90,9 @@ public class LiquorFragment extends Fragment implements
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mLiquorSpinner.setAdapter(adapter, false, onSelectedListener);
         boolean[] selectedItems = new boolean[adapter.getCount()];
-        selectedItems[1] = true; // select second item
+        //selectedItems[1] = true; // select second item
         mLiquorSpinner.setSelected(selectedItems);
+        mLiquorSpinner.setDefaultText("Pick your flavor");
         /*mLiquorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -357,48 +360,26 @@ public class LiquorFragment extends Fragment implements
         //String[] sArray = res.getStringArray(R.array.liquor_array);
         public void onItemsSelected(boolean[] selected) {
             // Do something here with the selected items
+            liqType = "";
             Resources res = getResources();
             String[] sArray = res.getStringArray(R.array.liquor_array);
-            if(selected[0]) {
-                liqType = sArray[0] + " AND ";
-            }
-            if(selected[1]) {
-                liqType = sArray[1] + " AND ";
-            }
-            if(selected[2]) {
-                liqType = sArray[2] + " AND ";
-            }
-            if(selected[3]) {
-                liqType = sArray[3] + " AND ";
-            }
-            if(selected[4]) {
-                liqType = sArray[4] + " AND ";
-            }
-            if(selected[5]) {
-                liqType = sArray[5] + " AND ";
-            }
-            if(selected[6]) {
-                liqType = sArray[6] + " AND ";
-            }
-            if(selected[7]) {
-                liqType = sArray[7] + " AND ";
-            }
-            if(selected[8]) {
-                liqType = sArray[8] + " AND ";
-            }
-            if(selected[9]) {
-                liqType = sArray[9] + " AND ";
-            }
-            if(selected[10]) {
-                liqType = sArray[10] + " AND ";
-            }
-            if(selected[11]) {
-                liqType = sArray[11] + " AND ";
-            }
-            if(selected[12]) {
-                liqType = sArray[12] + " AND ";
+            ArrayList<String> sList = new ArrayList<>();
+            StringBuilder builder = new StringBuilder();
+
+            for (int i = 0; i < selected.length; i++) {
+                if (selected[i]) {
+                    sList.add(adapter.getItem(i).toString());
+                }
             }
 
+            for(int i = 0; i < sList.size(); i++){
+                if(i != sList.size()-1)
+                    builder.append(sList.get(i)).append(" AND ");
+                else
+                    builder.append(sList.get(i));
+            }
+            liqType = builder.toString();
+            Toast.makeText(getContext(), builder.toString(), Toast.LENGTH_SHORT).show();
             Loader<Cursor> githubSearchLoader = getLoaderManager().getLoader(GITHUB_SEARCH_LOADER);
             if (githubSearchLoader == null) {
                 getLoaderManager().initLoader(GITHUB_SEARCH_LOADER, null, LiquorFragment.this);
