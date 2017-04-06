@@ -19,6 +19,7 @@
     <string name="submit_new_drink">Submit</string>
     <string name="cancel_edit">Cancel</string>
     <string name="cancel_button">Cancel</string>
+    <string name="pick_flavor">Pick Your Flavor</string>
     <string-array name="liquor_array">
         <item>Vodka</item>
         <item>Gin</item>
@@ -26,6 +27,13 @@
         <item>Whisky</item>
         <item>Rum</item>
         <item>Brandy</item>
+        <item>Sweet</item>
+        <item>Fruity</item>
+        <item>Berry</item>
+        <item>Sour</item>
+        <item>Herb</item>
+        <item>Spicy</item>
+        <item>Fresh</item>
     </string-array>
     <string-array name="taste_array">
         <item>Sweet</item>

@@ -2,6 +2,7 @@ package com.example.raymond.barbro;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ import com.bumptech.glide.Glide;
 import com.example.raymond.barbro.data.BarBroContract;
 import com.example.raymond.barbro.data.Drink;
 import com.example.raymond.barbro.data.HistoryUtils;
+import com.thomashaertel.widget.MultiSpinner;
 
 
 public class LiquorFragment extends Fragment implements
@@ -43,7 +45,7 @@ public class LiquorFragment extends Fragment implements
     private DrinkAdapter mDrinkAdapter;
 
     private View myView;
-    private Spinner mLiquorSpinner;
+    private MultiSpinner mLiquorSpinner;
     private String liqType;
     private AutoCompleteTextView mAutoCompleteTextView;
     private boolean mDualPane;
@@ -58,6 +60,7 @@ public class LiquorFragment extends Fragment implements
     private boolean whichFragment = true;
     private VideoFragment videoFragment;
     private DrinkDetailFragment drinkDetailFragment;
+    ArrayAdapter<CharSequence> adapter;
 
 
     @Override
@@ -80,11 +83,14 @@ public class LiquorFragment extends Fragment implements
         mRecyclerView.setHasFixedSize(true);
         mDrinkAdapter = new DrinkAdapter(getContext(), this);
         mRecyclerView.setAdapter(mDrinkAdapter);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+        adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.liquor_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mLiquorSpinner.setAdapter(adapter);
-        mLiquorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        mLiquorSpinner.setAdapter(adapter, false, onSelectedListener);
+        boolean[] selectedItems = new boolean[adapter.getCount()];
+        selectedItems[1] = true; // select second item
+        mLiquorSpinner.setSelected(selectedItems);
+        /*mLiquorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 liqType = (String) adapterView.getItemAtPosition(i);
@@ -100,7 +106,7 @@ public class LiquorFragment extends Fragment implements
             public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
-        });
+        });*/
         if (savedInstanceState != null) {
             // Restore last state for checked position.
             mCurCheckPosition = savedInstanceState.getInt("curChoice", 1);
@@ -178,7 +184,7 @@ public class LiquorFragment extends Fragment implements
         myView = inflater.inflate(R.layout.liq_layout, container, false);
         mRecyclerView = (RecyclerView) myView.findViewById(R.id.recyclerview_drinks);
         mAutoCompleteTextView = (AutoCompleteTextView) myView.findViewById(R.id.drink_autoCompleteTextView);
-        mLiquorSpinner = (Spinner) myView.findViewById(R.id.liquor_spinner);
+        mLiquorSpinner = (MultiSpinner) myView.findViewById(R.id.liquor_spinner);
         getActivity().setTitle("Search by Type");
         if (!mDualPane) {
             viewHeader = (TextView) myView.findViewById(R.id.header);
@@ -345,5 +351,61 @@ public class LiquorFragment extends Fragment implements
 //        intent.putExtra("drink", drink);
 //        startActivity(intent);
     }
+
+    private MultiSpinner.MultiSpinnerListener onSelectedListener = new MultiSpinner.MultiSpinnerListener() {
+       // Resources res = getResources();
+        //String[] sArray = res.getStringArray(R.array.liquor_array);
+        public void onItemsSelected(boolean[] selected) {
+            // Do something here with the selected items
+            Resources res = getResources();
+            String[] sArray = res.getStringArray(R.array.liquor_array);
+            if(selected[0]) {
+                liqType = sArray[0] + " AND ";
+            }
+            if(selected[1]) {
+                liqType = sArray[1] + " AND ";
+            }
+            if(selected[2]) {
+                liqType = sArray[2] + " AND ";
+            }
+            if(selected[3]) {
+                liqType = sArray[3] + " AND ";
+            }
+            if(selected[4]) {
+                liqType = sArray[4] + " AND ";
+            }
+            if(selected[5]) {
+                liqType = sArray[5] + " AND ";
+            }
+            if(selected[6]) {
+                liqType = sArray[6] + " AND ";
+            }
+            if(selected[7]) {
+                liqType = sArray[7] + " AND ";
+            }
+            if(selected[8]) {
+                liqType = sArray[8] + " AND ";
+            }
+            if(selected[9]) {
+                liqType = sArray[9] + " AND ";
+            }
+            if(selected[10]) {
+                liqType = sArray[10] + " AND ";
+            }
+            if(selected[11]) {
+                liqType = sArray[11] + " AND ";
+            }
+            if(selected[12]) {
+                liqType = sArray[12] + " AND ";
+            }
+
+            Loader<Cursor> githubSearchLoader = getLoaderManager().getLoader(GITHUB_SEARCH_LOADER);
+            if (githubSearchLoader == null) {
+                getLoaderManager().initLoader(GITHUB_SEARCH_LOADER, null, LiquorFragment.this);
+            } else {
+                getLoaderManager().restartLoader(GITHUB_SEARCH_LOADER, null, LiquorFragment.this);
+            }
+        }
+    };
 
 }

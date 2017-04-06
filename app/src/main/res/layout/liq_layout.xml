@@ -10,16 +10,14 @@
         android:background="@android:color/background_light"
         android:orientation="vertical">
 
-
-        <Spinner
+        <com.thomashaertel.widget.MultiSpinner
             android:id="@+id/liquor_spinner"
             android:layout_width="0dp"
             android:layout_height="48dp"
-            android:gravity="center_vertical|center|start"
-            android:prompt="@string/liquor_prompt"
+            android:prompt="@string/pick_flavor"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerview_drinks"
