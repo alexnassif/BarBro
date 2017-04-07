@@ -87,7 +87,7 @@ public class BarBroContentProvider extends ContentProvider {
                         + BarBroContract.HistoryEntry.TABLE_NAME + " ON ("
                         + BarBroContract.BarBroEntry.TABLE_NAME + "._id"
                         + " = " + BarBroContract.HistoryEntry.TABLE_NAME + ".idh) ORDER BY datetime("
-                        + BarBroContract.HistoryEntry.TABLE_NAME + ".date) DESC ", null);
+                        + BarBroContract.HistoryEntry.TABLE_NAME + ".date, 'localtime') DESC ", null);
                 break;
             case DRINKS_WITH_ID: {
                 String id = uri.getPathSegments().get(1);
