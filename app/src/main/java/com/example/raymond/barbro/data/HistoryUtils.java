@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,23 +36,26 @@ public class HistoryUtils {
                         null,
                         null);
 
-                if (null != cursor && cursor.getCount() == 1) {
+                if (cursor.getCount() > 0) {
+                    cursor.moveToFirst();
                     int drinkId = cursor.getColumnIndex(BarBroContract.HistoryEntry._ID);
                     int historyId = cursor.getColumnIndex(BarBroContract.HistoryEntry.COLUMN_HISTORYID);
-                    cursor.moveToFirst();
+
                     String hid = cursor.getString(historyId);
                     String d_id = cursor.getString(drinkId);
-                    if(Integer.parseInt(hid) == drink){
-                        ContentValues values = new ContentValues();
-                        values.put(BarBroContract.HistoryEntry.COLUMN_DATE, getDateTime());
-                        Uri newuri = BarBroContract.HistoryEntry.CONTENT_URI;
-                        newuri = newuri.buildUpon().appendPath(d_id).build();
-                        context.getContentResolver().update(newuri, values, null, null);
-                    }
+
+                    ContentValues values = new ContentValues();
+                    values.put(BarBroContract.HistoryEntry.COLUMN_DATE, getDateTime());
+                    Uri newuri = BarBroContract.HistoryEntry.CONTENT_URI;
+                    newuri = newuri.buildUpon().appendPath(d_id).build();
+                    context.getContentResolver().update(newuri, values, null, null);
+
 
                 }
                 else if(cursor.getCount() == 0){
+
                     Uri newuri = BarBroContract.HistoryEntry.CONTENT_URI;
+                    Log.d("insert history tag", newuri.toString());
                     ContentValues values = new ContentValues();
                     values.put(BarBroContract.HistoryEntry.COLUMN_HISTORYID, drink);
                     context.getContentResolver().insert(newuri, values);

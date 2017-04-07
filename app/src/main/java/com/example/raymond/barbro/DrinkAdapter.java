@@ -52,16 +52,13 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
     public void onBindViewHolder(DrinkAdapterViewHolder holder, int position) {
         int drinkId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry._ID);
         int drinkName = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
-        int ingredients = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS);
         int drinkPicId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC);
         int faveId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_FAVORITE);
 
         mDrinkData.moveToPosition(position);
 
         final int id = mDrinkData.getInt(drinkId);
-        final String stringID = Integer.toString(id);
         String _drinkName = mDrinkData.getString(drinkName);
-        String drinkIngredients = mDrinkData.getString(ingredients);
         String drinkPic = mDrinkData.getString(drinkPicId);
         int fave = mDrinkData.getInt(faveId);
         holder.itemView.setTag(id);
@@ -108,18 +105,17 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
             int adapterPosition = getAdapterPosition();
             mDrinkData.moveToPosition(adapterPosition);
             int drinkId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry._ID);
-            int drinkName = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
-            int ingredients = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS);
-            int drinkPicId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC);
             int faveId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_FAVORITE);
             int videoId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_VIDEO);
+            int idh = mDrinkData.getColumnIndex(BarBroContract.HistoryEntry.COLUMN_HISTORYID);
 
             int id = mDrinkData.getInt(drinkId);
-            String _drinkName = mDrinkData.getString(drinkName);
-            String drinkIngredients = mDrinkData.getString(ingredients);
-            String drinkPic = mDrinkData.getString(drinkPicId);
             int fave = mDrinkData.getInt(faveId);
             String video = mDrinkData.getString(videoId);
+            int history_id = 0;
+            if(idh != -1){
+                history_id = mDrinkData.getInt(idh);
+            }
             final String stringID = Integer.toString(id);
 
             if (view.getId() == mFaveButtonView.getId()) {
@@ -142,9 +138,10 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
                 }.execute(fave);
 
             } else {
-                Drink drink = new Drink(_drinkName, drinkIngredients, drinkPic);
-                drink.setVideo(video);
-                mClickHandler.onClick(id, video);
+                if(idh != -1)
+                    mClickHandler.onClick(history_id, video);
+                else
+                    mClickHandler.onClick(id, video);
             }
         }
     }

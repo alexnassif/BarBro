@@ -16,6 +16,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -223,6 +224,7 @@ public class ResultsFragment extends Fragment implements
                 String stringId = Integer.toString(drinkId);
                 Uri uri = BarBroContract.BarBroEntry.CONTENT_URI;
                 uri = uri.buildUpon().appendPath(stringId).build();
+                Log.d("drink_id tag", uri.toString());
                 return new CursorLoader(getContext(),
                         uri,
                         null,
