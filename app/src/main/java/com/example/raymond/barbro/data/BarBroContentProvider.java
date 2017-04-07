@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import java.io.IOException;
 
@@ -85,7 +86,8 @@ public class BarBroContentProvider extends ContentProvider {
                         BarBroContract.BarBroEntry.TABLE_NAME + " INNER JOIN "
                         + BarBroContract.HistoryEntry.TABLE_NAME + " ON ("
                         + BarBroContract.BarBroEntry.TABLE_NAME + "._id"
-                        + " = " + BarBroContract.HistoryEntry.TABLE_NAME + ".idh)", null);
+                        + " = " + BarBroContract.HistoryEntry.TABLE_NAME + ".idh) ORDER BY datetime("
+                        + BarBroContract.HistoryEntry.TABLE_NAME + ".date) DESC ", null);
                 break;
             case DRINKS_WITH_ID: {
                 String id = uri.getPathSegments().get(1);
@@ -233,7 +235,7 @@ public class BarBroContentProvider extends ContentProvider {
             }
             case HISTORY_WITH_ID: {
                 String id = uri.getPathSegments().get(1);
-                retInt = db.update(BarBroContract.HistoryEntry.TABLE_NAME, values, "idh=?", new String[]{id});
+                retInt = db.update(BarBroContract.HistoryEntry.TABLE_NAME, values, "_id=?", new String[]{id});
                 break;
             }
             default:
@@ -242,6 +244,7 @@ public class BarBroContentProvider extends ContentProvider {
         }
         if (retInt != 0) {
             //set notifications if a task was updated
+            Log.d("insert tag", retInt + "");
             getContext().getContentResolver().notifyChange(uri, null);
         }
         return retInt;

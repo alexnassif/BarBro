@@ -43,9 +43,10 @@ public class HistoryUtils {
 
                     String hid = cursor.getString(historyId);
                     String d_id = cursor.getString(drinkId);
-
+                    String date = getDateTime();
+                    Log.d("date tag", date);
                     ContentValues values = new ContentValues();
-                    values.put(BarBroContract.HistoryEntry.COLUMN_DATE, getDateTime());
+                    values.put(BarBroContract.HistoryEntry.COLUMN_DATE, date);
                     Uri newuri = BarBroContract.HistoryEntry.CONTENT_URI;
                     newuri = newuri.buildUpon().appendPath(d_id).build();
                     context.getContentResolver().update(newuri, values, null, null);
