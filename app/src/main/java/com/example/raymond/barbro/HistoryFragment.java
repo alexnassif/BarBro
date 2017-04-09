@@ -296,7 +296,7 @@ public class HistoryFragment extends Fragment implements
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
-        inflater.inflate(R.menu.video, menu);
+        inflater.inflate(R.menu.history, menu);
 
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -318,6 +318,18 @@ public class HistoryFragment extends Fragment implements
                 intent.putExtra("video", videoURL);
                 startActivity(intent);
             }
+        }
+        else if(id == R.id.history_item){
+            AsyncQueryHandler deleteHistory = new AsyncQueryHandler(getContext().getContentResolver()){};
+            Uri uriAllDrinks = BarBroContract.HistoryEntry.CONTENT_URI;
+            deleteHistory.startDelete(-1, null, uriAllDrinks, null, null);
+
+            Loader<Cursor> loaderM = getLoaderManager().getLoader(HISTORY_SEARCH_LOADER);
+            if(loaderM == null)
+                getLoaderManager().initLoader(HISTORY_SEARCH_LOADER, null, this);
+            else
+                getLoaderManager().restartLoader(HISTORY_SEARCH_LOADER, null, this);
+
         }
         else
             Toast.makeText(getContext(), "No Drink Chosen", Toast.LENGTH_LONG).show();

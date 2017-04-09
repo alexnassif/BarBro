@@ -87,7 +87,7 @@ public class BarBroContentProvider extends ContentProvider {
                         + BarBroContract.HistoryEntry.TABLE_NAME + " ON ("
                         + BarBroContract.BarBroEntry.TABLE_NAME + "._id"
                         + " = " + BarBroContract.HistoryEntry.TABLE_NAME + ".idh) ORDER BY datetime("
-                        + BarBroContract.HistoryEntry.TABLE_NAME + ".date, 'localtime') DESC ", null);
+                        + BarBroContract.HistoryEntry.TABLE_NAME + ".date) DESC ", null);
                 break;
             case DRINKS_WITH_ID: {
                 String id = uri.getPathSegments().get(1);
@@ -204,6 +204,9 @@ public class BarBroContentProvider extends ContentProvider {
             case MYDRINKS_WITH_ID:
                 String id = uri.getPathSegments().get(1);
                 retInt = db.delete(BarBroContract.MyDrinkEntry.TABLE_NAME, "_id=?", new String[]{id});
+                break;
+            case HISTORY:
+                retInt = db.delete(BarBroContract.HistoryEntry.TABLE_NAME, null, null);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
