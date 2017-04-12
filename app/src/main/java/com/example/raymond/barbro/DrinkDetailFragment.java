@@ -39,6 +39,7 @@ public class DrinkDetailFragment extends Fragment implements LoaderManager.Loade
     private ImageView mImageView;
     private TextView mDrinkTitle;
     private TextView mIngredients;
+    private TextView mRecipe;
     private static final int DRINK_SEARCH_LOADER = 1;
     private String videoURL;
 
@@ -72,6 +73,7 @@ public class DrinkDetailFragment extends Fragment implements LoaderManager.Loade
         mDrinkTitle = (TextView) myView.findViewById(R.id.drink_name_novideo);
         mIngredients = (TextView) myView.findViewById(R.id.drink_ingredients_novideo);
         mImageView = (ImageView) myView.findViewById(R.id.drink_pic_novideo);
+        mRecipe = (TextView) myView.findViewById(R.id.drink_recipe_novideo);
         // mDrinkVideo = (VideoView) myView.findViewById(R.id.drink_video);
         return myView;
     }
@@ -110,9 +112,11 @@ public class DrinkDetailFragment extends Fragment implements LoaderManager.Loade
         int ingredients = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS);
         int drinkPic = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC);
         int videoId = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_VIDEO);
+        int description = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DESCRIPTION);
 
         mDrinkTitle.setText(data.getString(drinkName));
         mIngredients.setText(data.getString(ingredients));
+        mRecipe.setText(data.getString(description));
         Glide.with(mImageView.getContext()).load("http://assets.absolutdrinks.com/drinks/300x400/" + data.getString(drinkPic) + ".png").into(mImageView);
         videoURL = data.getString(videoId);
 

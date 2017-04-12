@@ -76,9 +76,9 @@ public class LiquorFragment extends Fragment implements
         super.onActivityCreated(savedInstanceState);
         View detailsFrame = getActivity().findViewById(R.id.drink_detail_fragment);
         mDualPane = detailsFrame != null && detailsFrame.getVisibility() == View.VISIBLE;
-        if(!mDualPane){
-            getActivity().setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
+
+        getActivity().setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
@@ -92,24 +92,8 @@ public class LiquorFragment extends Fragment implements
         boolean[] selectedItems = new boolean[adapter.getCount()];
         //selectedItems[1] = true; // select second item
         mLiquorSpinner.setSelected(selectedItems);
-        mLiquorSpinner.setDefaultText("Pick your flavor");
-        /*mLiquorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                liqType = (String) adapterView.getItemAtPosition(i);
-                Loader<Cursor> githubSearchLoader = getLoaderManager().getLoader(GITHUB_SEARCH_LOADER);
-                if (githubSearchLoader == null) {
-                    getLoaderManager().initLoader(GITHUB_SEARCH_LOADER, null, LiquorFragment.this);
-                } else {
-                    getLoaderManager().restartLoader(GITHUB_SEARCH_LOADER, null, LiquorFragment.this);
-                }
-            }
+        mLiquorSpinner.setText("Pick your flavor");
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });*/
         if (savedInstanceState != null) {
             // Restore last state for checked position.
             mCurCheckPosition = savedInstanceState.getInt("curChoice", 1);
@@ -188,6 +172,8 @@ public class LiquorFragment extends Fragment implements
         mRecyclerView = (RecyclerView) myView.findViewById(R.id.recyclerview_drinks);
         mAutoCompleteTextView = (AutoCompleteTextView) myView.findViewById(R.id.drink_autoCompleteTextView);
         mLiquorSpinner = (MultiSpinner) myView.findViewById(R.id.liquor_spinner);
+        mAutoCompleteTextView.setVisibility(View.INVISIBLE);
+        mRecyclerView.setVisibility(View.INVISIBLE);
         getActivity().setTitle("Search by Type");
         if (!mDualPane) {
             viewHeader = (TextView) myView.findViewById(R.id.header);
@@ -266,6 +252,9 @@ public class LiquorFragment extends Fragment implements
          //When we finish loading, we want to hide the loading indicator from the user.
         //mLoadingIndicator.setVisibility(View.INVISIBLE);
         if(loader.getId() == GITHUB_SEARCH_LOADER) {
+            if(data.getCount() == 0){
+                Toast.makeText(getContext(), "No Drinks with those Flavors", Toast.LENGTH_LONG).show();
+            }
             int drinkId = data.getColumnIndex(BarBroContract.BarBroEntry._ID);
             int drinkName = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
             int ingredients = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS);
@@ -284,6 +273,8 @@ public class LiquorFragment extends Fragment implements
             }
             //mLoadingIndicator.setVisibility(View.INVISIBLE);
             if (data != null) {
+                mAutoCompleteTextView.setVisibility(View.VISIBLE);
+                mRecyclerView.setVisibility(View.VISIBLE);
                 mDrinkAdapter.swapCursor(data);
                 ArrayAdapter<Drink> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, array);
                 mAutoCompleteTextView.setAdapter(adapter);

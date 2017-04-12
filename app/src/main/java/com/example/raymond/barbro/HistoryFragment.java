@@ -94,9 +94,8 @@ public class HistoryFragment extends Fragment implements
         mRecyclerView.setAdapter(mDrinkAdapter);
         View detailsFrame = getActivity().findViewById(R.id.drink_detail_fragment);
         mDualPane = detailsFrame != null && detailsFrame.getVisibility() == View.VISIBLE;
-        if(!mDualPane ){
-            getActivity().setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
+
+        getActivity().setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         getLoaderManager().initLoader(HISTORY_SEARCH_LOADER, null, this);
         getActivity().setTitle("History");
@@ -169,7 +168,7 @@ public class HistoryFragment extends Fragment implements
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        myView = inflater.inflate(R.layout.results_layout, container, false);
+        myView = inflater.inflate(R.layout.fragment_history, container, false);
         mRecyclerView = (RecyclerView) myView.findViewById(R.id.recyclerview_drinks);
 
         acDrinkTextView = (AutoCompleteTextView) myView.findViewById(R.id.search_drinks);
@@ -218,6 +217,9 @@ public class HistoryFragment extends Fragment implements
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
         if(loader.getId() == HISTORY_SEARCH_LOADER) {
+            if(data.getCount() == 0 && loader.getId() == HISTORY_SEARCH_LOADER){
+                Toast.makeText(getContext(), "No history yet", Toast.LENGTH_LONG).show();
+            }
             final int drinkId = data.getColumnIndex(BarBroContract.BarBroEntry._ID);
             int drinkName = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
             int ingredients = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS);

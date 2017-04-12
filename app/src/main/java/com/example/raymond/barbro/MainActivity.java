@@ -22,6 +22,7 @@ import com.example.raymond.barbro.sync.BarBroSyncUtils;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private FloatingActionButton fab;
+    private FragmentManager fragmentManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        final FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager = getSupportFragmentManager();
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,9 +54,12 @@ public class MainActivity extends AppCompatActivity
         if (savedInstanceState == null) {
             fragmentManager
                     .beginTransaction()
-                    .replace(R.id.content_frame, new MainFragment())
+                    .add(R.id.content_frame, new ResultsFragment())
+                    //.addToBackStack(null)
                     .commit();
         }
+
+
     }
 
     @Override
@@ -97,30 +101,29 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        FragmentTransaction fragmentManager = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         int id = item.getItemId();
 
         if (id == R.id.nav_results_layout) {
-            fragmentManager
+            fragmentTransaction
                     .replace(R.id.content_frame, new ResultsFragment());
         } else if (id == R.id.nav_favorite_type) {
-            fragmentManager
+            fragmentTransaction
                     .replace(R.id.content_frame, ResultsFragment.newInstance(true));
 
         } else if (id == R.id.nav_liquor_type){
-            fragmentManager
+            fragmentTransaction
                     .replace(R.id.content_frame, new LiquorFragment());
         } else if (id == R.id.nav_my_drinks){
-            fragmentManager
+            fragmentTransaction
                     .replace(R.id.content_frame, new MyDrinkFragment());
         }
         else if (id == R.id.nav_history){
-            fragmentManager
+            fragmentTransaction
                     .replace(R.id.content_frame, new HistoryFragment());
         }
-        fragmentManager.addToBackStack(null);
-        fragmentManager.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        fragmentManager.commit();
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        fragmentTransaction.commit();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

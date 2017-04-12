@@ -40,7 +40,7 @@ import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 
 
 public class ResultsFragment extends Fragment implements
-        LoaderCallbacks<Cursor>, DrinkAdapter.DrinkAdapterOnClickHandler {
+        LoaderCallbacks<Cursor>, DrinkAdapter.DrinkAdapterOnClickHandler, SmallDrinkAdapter.SmallDrinkAdapterOnClickHandler {
 
     private static final String ARG_PARAM1 = "param1";
     private boolean mParam1 = false;
@@ -51,9 +51,11 @@ public class ResultsFragment extends Fragment implements
     private static final int GITHUB_SEARCH_LOADER = 22;
     private static final int FAVE_LOADER = 23;
     private static final int DRINK_BY_ID_LOADER = 24;
+    private static final int RANDOM_DRINKS_LOADER = 20;
+    private RecyclerView mRecyclerView_Randoms;
 
     private RecyclerView mRecyclerView;
-
+    private SmallDrinkAdapter mDrinkAdapter_Randoms;
     private DrinkAdapter mDrinkAdapter;
     private View myView;
     private AutoCompleteTextView acDrinkTextView;
@@ -98,11 +100,15 @@ public class ResultsFragment extends Fragment implements
         mRecyclerView.setHasFixedSize(true);
         mDrinkAdapter = new DrinkAdapter(getContext(), this);
         mRecyclerView.setAdapter(mDrinkAdapter);
+        LinearLayoutManager layoutManager_randoms
+                = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        mRecyclerView_Randoms.setLayoutManager(layoutManager_randoms);
+        mRecyclerView_Randoms.setHasFixedSize(true);
+        mDrinkAdapter_Randoms = new SmallDrinkAdapter(getContext(), this);
+        mRecyclerView_Randoms.setAdapter(mDrinkAdapter_Randoms);
         View detailsFrame = getActivity().findViewById(R.id.drink_detail_fragment);
         mDualPane = detailsFrame != null && detailsFrame.getVisibility() == View.VISIBLE;
-        if(!mDualPane ){
-            getActivity().setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
+        getActivity().setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         if(mParam1 == false) {
             getLoaderManager().initLoader(GITHUB_SEARCH_LOADER, null, this);
             getActivity().setTitle("All Drinks");
@@ -110,6 +116,7 @@ public class ResultsFragment extends Fragment implements
         else{
             getLoaderManager().initLoader(FAVE_LOADER, null, this);
             getActivity().setTitle("Favorites");}
+        getLoaderManager().initLoader(RANDOM_DRINKS_LOADER, null, this);
 
         if (savedInstanceState != null) {
             // Restore last state for checked position.
@@ -187,7 +194,7 @@ public class ResultsFragment extends Fragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.results_layout, container, false);
         mRecyclerView = (RecyclerView) myView.findViewById(R.id.recyclerview_drinks);
-
+        mRecyclerView_Randoms = (RecyclerView) myView.findViewById(R.id.random_recyclerView);
         acDrinkTextView = (AutoCompleteTextView) myView.findViewById(R.id.search_drinks);
         if (!mDualPane) {
             viewHeader = (TextView) myView.findViewById(R.id.header);
@@ -203,6 +210,14 @@ public class ResultsFragment extends Fragment implements
     public Loader<Cursor> onCreateLoader(int id, final Bundle args) {
 
         switch (id){
+            case RANDOM_DRINKS_LOADER:{
+                Uri uriAllDrinks = BarBroContract.BarBroEntry.CONTENT_URI;
+                return new CursorLoader(getContext(),
+                        uriAllDrinks,
+                        null,
+                        null,
+                        null,
+                        " RANDOM() LIMIT 3");}
             case GITHUB_SEARCH_LOADER:{
                 Uri uriAllDrinks = BarBroContract.BarBroEntry.CONTENT_URI;
                 return new CursorLoader(getContext(),
@@ -244,6 +259,9 @@ public class ResultsFragment extends Fragment implements
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
         if(loader.getId() == GITHUB_SEARCH_LOADER || loader.getId() == FAVE_LOADER) {
+            if(data.getCount() == 0 && loader.getId() == FAVE_LOADER){
+                Toast.makeText(getContext(), "No Favorites added yet", Toast.LENGTH_LONG).show();
+            }
             final int drinkId = data.getColumnIndex(BarBroContract.BarBroEntry._ID);
             int drinkName = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
             int ingredients = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS);
@@ -298,6 +316,9 @@ public class ResultsFragment extends Fragment implements
             videoURL = data.getString(videoId);
             youtubeLayout.setVisibility(View.VISIBLE);
             youtubeLayout.maximize();
+        }
+        if(loader.getId() == RANDOM_DRINKS_LOADER){
+            mDrinkAdapter_Randoms.swapCursor(data);
         }
 
         /*
@@ -382,4 +403,8 @@ public class ResultsFragment extends Fragment implements
 //        startActivity(intent);
     }
 
+    @Override
+    public void onClick(int drink) {
+        drinkDetail(drink);
+    }
 }

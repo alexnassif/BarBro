@@ -117,7 +117,7 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        myView = inflater.inflate(R.layout.results_layout, container, false);
+        myView = inflater.inflate(R.layout.fragment_history, container, false);
         mRecyclerView = (RecyclerView) myView.findViewById(R.id.recyclerview_drinks);
         //mErrorMessageDisplay = (TextView) myView.findViewById(R.id.tv_error_message_display);
         acDrinkTextView = (AutoCompleteTextView) myView.findViewById(R.id.search_drinks);
@@ -145,6 +145,10 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+        if(data.getCount() == 0){
+            Toast.makeText(getContext(), "You haven't added your own recipe yet", Toast.LENGTH_LONG).show();
+        }
         int drinkId = data.getColumnIndex(BarBroContract.MyDrinkEntry._ID);
         int drinkName = data.getColumnIndex(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_NAME);
         int ingredients = data.getColumnIndex(BarBroContract.MyDrinkEntry.COLUMN_MYINGREDIENTS);
