@@ -52,7 +52,9 @@
         <activity android:name=".AddDrinkActivity" />
         <activity android:name=".VideoActivity" />
         <activity android:name=".MyDrinkDetailActivity" />
-        <activity android:name=".EditDrinkActivity"></activity>
+        <activity android:name=".EditDrinkActivity" />
+        <activity android:name=".SearchWeb"></activity>
+        <meta-data android:name="com.google.android.gms.vision.DEPENDENCIES" android:value="ocr"/>
     </application>
 
 </manifest>

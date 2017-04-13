@@ -101,31 +101,38 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        int id = item.getItemId();
+        if(item.getItemId() == R.id.nav_webview){
+            Intent intent = new Intent(MainActivity.this, SearchWeb.class);
+            startActivity(intent);
 
-        if (id == R.id.nav_results_layout) {
-            fragmentTransaction
-                    .replace(R.id.content_frame, new ResultsFragment());
-        } else if (id == R.id.nav_favorite_type) {
-            fragmentTransaction
-                    .replace(R.id.content_frame, ResultsFragment.newInstance(true));
+        }
+        else {
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            int id = item.getItemId();
 
-        } else if (id == R.id.nav_liquor_type){
-            fragmentTransaction
-                    .replace(R.id.content_frame, new LiquorFragment());
-        } else if (id == R.id.nav_my_drinks){
-            fragmentTransaction
-                    .replace(R.id.content_frame, new MyDrinkFragment());
+            if (id == R.id.nav_results_layout) {
+                fragmentTransaction
+                        .replace(R.id.content_frame, new ResultsFragment());
+            } else if (id == R.id.nav_favorite_type) {
+                fragmentTransaction
+                        .replace(R.id.content_frame, ResultsFragment.newInstance(true));
+
+            } else if (id == R.id.nav_liquor_type) {
+                fragmentTransaction
+                        .replace(R.id.content_frame, new LiquorFragment());
+            } else if (id == R.id.nav_my_drinks) {
+                fragmentTransaction
+                        .replace(R.id.content_frame, new MyDrinkFragment());
+            } else if (id == R.id.nav_history) {
+                fragmentTransaction
+                        .replace(R.id.content_frame, new HistoryFragment());
+            }
+
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            fragmentTransaction.commit();
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
         }
-        else if (id == R.id.nav_history){
-            fragmentTransaction
-                    .replace(R.id.content_frame, new HistoryFragment());
-        }
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        fragmentTransaction.commit();
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 }
