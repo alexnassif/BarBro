@@ -14,8 +14,10 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.raymond.barbro.utilities.SearchDrinkView;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
@@ -36,6 +38,7 @@ public class SearchWeb extends AppCompatActivity implements View.OnClickListener
         mButtonPreview.setOnClickListener(this);
         mImagePreview = (ImageView) findViewById(R.id.drink_preview);
         mWebView = (WebView) findViewById(R.id.webView);
+
         mWebView.setWebViewClient(new MyBrowser());
         mWebView.loadUrl("http://www.google.com");
 
@@ -74,7 +77,9 @@ public class SearchWeb extends AppCompatActivity implements View.OnClickListener
             mWebView.setVisibility(View.GONE);
             Frame frame = new Frame.Builder().setBitmap(bitmap).build();
             results = textRecognizer.detect(frame);
-
+            SearchDrinkView mDrawingView=new SearchDrinkView(this, bitmap);
+            LinearLayout mDrawingPad=(LinearLayout)findViewById(R.id.view_drawing_pad);
+            mDrawingPad.addView(mDrawingView);
             for (int i = 0; i < results.size(); ++i) {
                 TextBlock item = results.valueAt(i);
                 Log.d("textblock result", item.getValue());
