@@ -25,10 +25,10 @@ import com.google.android.gms.vision.text.TextRecognizer;
 public class SearchWeb extends AppCompatActivity implements View.OnClickListener{
     private static final String TAG = "OcrCaptureActivity";
     private Button mButtonPreview;
-    private ImageView mImagePreview;
     private WebView mWebView;
     private TextRecognizer textRecognizer;
     private SparseArray<TextBlock> results;
+    LinearLayout mDrawingPad;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,8 +36,8 @@ public class SearchWeb extends AppCompatActivity implements View.OnClickListener
 
         mButtonPreview = (Button) findViewById(R.id.click_preview);
         mButtonPreview.setOnClickListener(this);
-        mImagePreview = (ImageView) findViewById(R.id.drink_preview);
         mWebView = (WebView) findViewById(R.id.webView);
+        mDrawingPad=(LinearLayout)findViewById(R.id.view_drawing_pad);
 
         mWebView.setWebViewClient(new MyBrowser());
         mWebView.loadUrl("http://www.google.com");
@@ -73,10 +73,10 @@ public class SearchWeb extends AppCompatActivity implements View.OnClickListener
             mWebView.setDrawingCacheEnabled(true);
             Bitmap bitmap = Bitmap.createBitmap(mWebView.getDrawingCache());
             mWebView.setDrawingCacheEnabled(false);
-            mImagePreview.setImageBitmap(bitmap);
-            mWebView.setVisibility(View.GONE);
+            //mWebView.setVisibility(View.GONE);
             SearchDrinkView mDrawingView=new SearchDrinkView(this, bitmap);
-            LinearLayout mDrawingPad=(LinearLayout)findViewById(R.id.view_drawing_pad);
+            if(mDrawingPad.getChildCount() != 0){
+            mDrawingPad.removeAllViewsInLayout();}
             mDrawingPad.addView(mDrawingView);
 
         }
