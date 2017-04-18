@@ -75,15 +75,10 @@ public class SearchWeb extends AppCompatActivity implements View.OnClickListener
             mWebView.setDrawingCacheEnabled(false);
             mImagePreview.setImageBitmap(bitmap);
             mWebView.setVisibility(View.GONE);
-            Frame frame = new Frame.Builder().setBitmap(bitmap).build();
-            results = textRecognizer.detect(frame);
             SearchDrinkView mDrawingView=new SearchDrinkView(this, bitmap);
             LinearLayout mDrawingPad=(LinearLayout)findViewById(R.id.view_drawing_pad);
             mDrawingPad.addView(mDrawingView);
-            for (int i = 0; i < results.size(); ++i) {
-                TextBlock item = results.valueAt(i);
-                Log.d("textblock result", item.getValue());
-            }
+
         }
     }
 
