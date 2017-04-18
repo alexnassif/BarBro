@@ -136,7 +136,7 @@ public class SearchDrinkView extends View {
             dx = Math.abs(initialLeft) + dx;
            initialLeft = 0;
         }
-        if(initialRight > mBitmap.getWidth()) {
+        /*if(initialRight > mBitmap.getWidth()) {
 
             dx = mBitmap.getWidth() - dx;
             initialRight = mBitmap.getWidth();
@@ -144,17 +144,17 @@ public class SearchDrinkView extends View {
         if(initialBottom > mBitmap.getHeight()) {
             dy = mBitmap.getHeight() - dy;
             initialBottom = mBitmap.getHeight();
-        }
+        }*/
         rect.offset(dx, dy);
     }
     private void touch_up(float x, float y) {
-       /* Bitmap bitmap = Bitmap.createBitmap(mBitmap, (int) initialLeft, (int)initialTop, 500, 500);
+        Bitmap bitmap = Bitmap.createBitmap(mBitmap, (int) initialLeft, (int)initialTop, width - (int)initialLeft - 10, (int)initialTop + 10);
         Frame frame = new Frame.Builder().setBitmap(bitmap).build();
         results = textRecognizer.detect(frame);
         for (int i = 0; i < results.size(); ++i) {
             TextBlock item = results.valueAt(i);
             Log.d("textblock result", item.getValue());
-        }*/
+        }
 
     }
 
