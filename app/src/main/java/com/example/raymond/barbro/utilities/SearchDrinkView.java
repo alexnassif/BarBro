@@ -91,8 +91,8 @@ public class SearchDrinkView extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        mBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-        mBitmap = myBitmap.copy(Bitmap.Config.ARGB_8888, true);
+        //mBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        //mBitmap = myBitmap.copy(Bitmap.Config.ARGB_8888, true);
         Log.d("iB2 and iright2", mBitmap.getHeight() + " " + mBitmap.getWidth());
         //mCanvas = new Canvas(mBitmap);
 
@@ -101,7 +101,7 @@ public class SearchDrinkView extends View {
     public void draw(Canvas canvas) {
         // TODO Auto-generated method stub
         super.draw(canvas);
-        canvas.drawBitmap(mBitmap, 0, 0, null);
+        canvas.drawBitmap(myBitmap, 0, 0, null);
         canvas.drawRect(rect, mBitmapPaint);
         //canvas.drawPath(mPath, mPaint);
         invalidate();
@@ -126,8 +126,8 @@ public class SearchDrinkView extends View {
         initialLeft += dx;
         initialBottom += dy;
         initialRight += dx;
-        Log.d("initRight&iniBottom", initialRight + " " + initialBottom);
-        Log.d("dx1 and dy1", dx + " " + dy);
+        //Log.d("initRight&iniBottom", initialRight + " " + initialBottom);
+       // Log.d("dx1 and dy1", dx + " " + dy);
         if(initialTop < 0f && dy < 0) {
             dy = Math.abs(initialTop) + dy;
             initialTop = 0;
@@ -153,8 +153,11 @@ public class SearchDrinkView extends View {
         results = textRecognizer.detect(frame);
         for (int i = 0; i < results.size(); ++i) {
             TextBlock item = results.valueAt(i);
-            Log.d("textblock result", item.getValue());
+            //Log.d("textblock result", item.getValue());
         }
+        int [] location = new int[2];
+        getLocationOnScreen(location);
+        Log.d("location of view", location[0] + " " + location[1]);
 
     }
 
@@ -162,6 +165,8 @@ public class SearchDrinkView extends View {
     public boolean onTouchEvent(MotionEvent event) {
         float x = event.getX();
         float y = event.getY();
+        Log.d("rawX, rawY", event.getRawX() + " " + event.getRawY());
+        Log.d("X, Y", x + " " + y);
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
