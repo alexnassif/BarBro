@@ -60,8 +60,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
         android:background="@android:color/holo_blue_bright"
@@ -84,6 +84,37 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/new_drink_ingredients"
         tools:text="@string/cancel_edit" />
+
+    <Button
+        android:id="@+id/searchWeb"
+        android:layout_width="215dp"
+        android:layout_height="48dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="62dp"
+        android:text="@string/searchweb"
+        app:layout_constraintLeft_toRightOf="@+id/take_drink_pic"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/new_drink_ingredients"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
+
+    <LinearLayout
+        android:id="@+id/view_drawing_pad"
+        android:layout_width="418dp"
+        android:layout_height="301dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.285"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchWeb"
+        app:layout_constraintVertical_bias="0.533" />
 
 
 </android.support.constraint.ConstraintLayout>

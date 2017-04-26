@@ -76,7 +76,7 @@ public class EditDrinkFragment extends Fragment implements View.OnClickListener,
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_new_drink, container, false);
+        View view = inflater.inflate(R.layout.fragment_edit_drink, container, false);
         mNewDrink = (EditText) view.findViewById(R.id.edit_drink);
         mNewIngredients = (EditText) view.findViewById(R.id.new_drink_ingredients);
         mAddImage = (ImageView) view.findViewById(R.id.take_drink_pic);

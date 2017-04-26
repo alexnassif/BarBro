@@ -2,7 +2,9 @@ package com.example.raymond.barbro;
 
 import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,13 +14,22 @@ import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.SparseArray;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.raymond.barbro.data.BarBroContract;
+import com.example.raymond.barbro.utilities.GraphicOverlay;
+import com.google.android.gms.vision.Frame;
+import com.google.android.gms.vision.text.TextBlock;
+import com.google.android.gms.vision.text.TextRecognizer;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,8 +42,17 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
     private ImageView mAddImage;
     private Button mSubmit;
     private Button mCancel;
+    private Button mSearchWeb;
     private String mCurrentPhotoPath;
-    static final int REQUEST_TAKE_PHOTO = 1;
+    private static final int REQUEST_TAKE_PHOTO = 1;
+    private static final int REQUEST_BITMAP = 2;
+    private GraphicOverlay<OcrGraphic> mGraphicOverlay;
+    LinearLayout mDrawingPad;
+    TextRecognizer textRecognizer;
+    private GestureDetector gestureDetector;
+    private static final String TAG = "OcrCaptureActivity";
+    private Bitmap bitmap;
+    private SparseArray<TextBlock> results;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -43,10 +63,42 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
         mAddImage = (ImageView) findViewById(R.id.take_drink_pic);
         mSubmit = (Button) findViewById(R.id.submit_button);
         mCancel = (Button) findViewById(R.id.cancel_button);
+        mSearchWeb = (Button) findViewById(R.id.searchWeb);
+        mDrawingPad=(LinearLayout)findViewById(R.id.view_drawing_pad);
         mCancel.setOnClickListener(this);
         mAddImage.setOnClickListener(this);
         mSubmit.setOnClickListener(this);
+        mSearchWeb.setOnClickListener(this);
         setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        gestureDetector = new GestureDetector(this, new AddDrinkActivity.CaptureGestureListener());
+        Context context = getApplicationContext();
+
+        // A text recognizer is created to find text.  An associated processor instance
+        // is set to receive the text recognition results and display graphics for each text block
+        // on screen.
+        textRecognizer = new TextRecognizer.Builder(context).build();
+        if (!textRecognizer.isOperational()) {
+            // Note: The first time that an app using a Vision API is installed on a
+            // device, GMS will download a native libraries to the device in order to do detection.
+            // Usually this completes before the app is run for the first time.  But if that
+            // download has not yet completed, then the above call will not detect any text,
+            // barcodes, or faces.
+            //
+            // isOperational() can be used to check if the required native libraries are currently
+            // available.  The detectors will automatically become operational once the library
+            // downloads complete on device.
+            Log.w(TAG, "Detector dependencies are not yet available.");
+
+            // Check for low storage.  If there is low storage, the native library will not be
+            // downloaded, so detection will not become operational.
+            IntentFilter lowstorageFilter = new IntentFilter(Intent.ACTION_DEVICE_STORAGE_LOW);
+            boolean hasLowStorage = registerReceiver(null, lowstorageFilter) != null;
+
+            if (hasLowStorage) {
+                Toast.makeText(this, R.string.low_storage_error, Toast.LENGTH_LONG).show();
+                Log.w(TAG, getString(R.string.low_storage_error));
+            }
+        }
     }
 
     @Override
@@ -78,6 +130,10 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
 
             }
 
+        }
+        else if(view.getId() == R.id.searchWeb){
+            Intent intent = new Intent(this, SearchWeb.class);
+            startActivityForResult(intent, REQUEST_BITMAP);
         }
     }
     private void setPic(Uri uri) {
@@ -154,7 +210,18 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
             // RESIZE BITMAP, see section below
             // Load the taken image into a preview
             //Toast.makeText(this, takenPhotoUri.toString(), Toast.LENGTH_LONG).show();
-        } else { // Result was a failure
+        }
+        if(requestCode == REQUEST_BITMAP && resultCode == RESULT_OK){
+            byte[] bitmapArray = data.getByteArrayExtra("bitmap");
+            bitmap = BitmapFactory.decodeByteArray(bitmapArray, 0, bitmapArray.length);
+            mGraphicOverlay = new GraphicOverlay<>(getApplicationContext(), null, bitmap);
+            Frame frame = new Frame.Builder().setBitmap(bitmap).build();
+            results = textRecognizer.detect(frame);
+            OcrDetector ocrDetector = new OcrDetector(mGraphicOverlay, results);
+            mDrawingPad.addView(mGraphicOverlay);
+            mDrawingPad.setVisibility(View.VISIBLE);
+        }
+        else { // Result was a failure
             Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             File file = new File(mCurrentPhotoPath);
             file.delete();
@@ -166,5 +233,39 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
     private boolean isExternalStorageAvailable() {
         String state = Environment.getExternalStorageState();
         return state.equals(Environment.MEDIA_MOUNTED);
+    }
+    @Override
+    public boolean onTouchEvent(MotionEvent e) {;
+
+        boolean c = gestureDetector.onTouchEvent(e);
+
+        return c || super.onTouchEvent(e);
+    }
+    private boolean onTap(float rawX, float rawY) {
+        OcrGraphic graphic = mGraphicOverlay.getGraphicAtLocation(rawX, rawY);
+        TextBlock text = null;
+        if (graphic != null) {
+            text = graphic.getTextBlock();
+            if (text != null && text.getValue() != null) {
+
+                Log.d("block text", text.getValue());
+
+            }
+            else {
+                Log.d(TAG, "text data is null");
+            }
+        }
+        else {
+            Log.d(TAG,"no text detected");
+        }
+        return text != null;
+    }
+
+    private class CaptureGestureListener extends GestureDetector.SimpleOnGestureListener {
+
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent e) {
+            return onTap(e.getRawX(), e.getRawY()) || super.onSingleTapConfirmed(e);
+        }
     }
 }

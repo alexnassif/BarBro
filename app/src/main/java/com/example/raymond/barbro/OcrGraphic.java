@@ -97,11 +97,11 @@ public class OcrGraphic extends GraphicOverlay.Graphic {
         canvas.drawRect(rect, sRectPaint);
 
         // Break the text into multiple lines and draw each one according to its own bounding box.
-        List<? extends Text> textComponents = text.getComponents();
+        /*List<? extends Text> textComponents = text.getComponents();
         for(Text currentText : textComponents) {
             float left = translateX(currentText.getBoundingBox().left);
             float bottom = translateY(currentText.getBoundingBox().bottom);
             canvas.drawText(currentText.getValue(), left, bottom, sTextPaint);
-        }
+        }*/
     }
 }
