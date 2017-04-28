@@ -87,17 +87,18 @@
 
     <Button
         android:id="@+id/searchWeb"
-        android:layout_width="215dp"
+        android:layout_width="200dp"
         android:layout_height="48dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="62dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="64dp"
         android:text="@string/searchweb"
+        app:layout_constraintHorizontal_bias="0.533"
         app:layout_constraintLeft_toRightOf="@+id/take_drink_pic"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/new_drink_ingredients"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp" />
+        app:layout_constraintTop_toBottomOf="@+id/new_drink_ingredients" />
 
     <LinearLayout
         android:id="@+id/view_drawing_pad"
@@ -107,8 +108,8 @@
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
         android:layout_marginTop="8dp"
-        android:visibility="gone"
         android:orientation="vertical"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.285"
         app:layout_constraintLeft_toLeftOf="parent"
