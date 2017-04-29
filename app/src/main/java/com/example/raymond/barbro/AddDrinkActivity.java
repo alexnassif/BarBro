@@ -290,7 +290,7 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
                     ClipData dragData = new ClipData(textToDrag, new String[]{ClipDescription.MIMETYPE_TEXT_PLAIN}, item);
 
                     // Instantiates the drag shadow builder.
-                    View.DragShadowBuilder myShadow = new MyDragShadowBuilder(mGraphicOverlay, textToDrag, text.getBoundingBox().width());
+                    View.DragShadowBuilder myShadow = new MyDragShadowBuilder(mGraphicOverlay, textToDrag);
 
                     // Starts the drag
 
@@ -315,17 +315,15 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
 
         // The drag shadow image, defined as a drawable thing
         private static TextDrawable shadow;
-        private static int width;
 
         // Defines the constructor for myDragShadowBuilder
-        public MyDragShadowBuilder(View v, String text, int width) {
+        public MyDragShadowBuilder(View v, String text) {
 
             // Stores the View parameter passed to myDragShadowBuilder.
             super(v);
 
             // Creates a draggable image that will fill the Canvas provided by the system.
             shadow = new TextDrawable(text);
-            this.width = width;
         }
 
         // Defines a callback that sends the drag shadow dimensions and touch point back to the
@@ -333,10 +331,10 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
         @Override
         public void onProvideShadowMetrics (Point size, Point touch) {
             // Defines local variables
-            int height;
+            int width, height;
 
             // Sets the width of the shadow to half the width of the original View
-            //width = getView().getWidth() / 2;
+            width = getView().getWidth() / 2;
 
             // Sets the height of the shadow to half the height of the original View
             height = getView().getHeight() / 2;
@@ -351,7 +349,7 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
             size.set(width, height);
 
             // Sets the touch point's position to be in the middle of the drag shadow
-            touch.set(50, 50);
+            touch.set(width / 2, height / 2);
         }
 
         // Defines a callback that draws the drag shadow in a Canvas that the system constructs
