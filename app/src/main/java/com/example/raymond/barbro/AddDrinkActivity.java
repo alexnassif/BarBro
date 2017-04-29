@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -59,9 +60,7 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
     TextRecognizer textRecognizer;
     private GestureDetector gestureDetector;
     private static final String TAG = "OcrCaptureActivity";
-    private Bitmap bitmap;
     private SparseArray<TextBlock> results;
-    private String textToDrag;
     MyDragEventListener mDragListen;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -226,11 +225,21 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
         }
         if(requestCode == REQUEST_BITMAP && resultCode == RESULT_OK){
             byte[] bitmapArray = data.getByteArrayExtra("bitmap");
-            bitmap = BitmapFactory.decodeByteArray(bitmapArray, 0, bitmapArray.length);
-            mGraphicOverlay = new GraphicOverlay<>(getApplicationContext(), null, bitmap);
+
+            Bitmap bitmap = BitmapFactory.decodeByteArray(bitmapArray, 0, bitmapArray.length);
+
+            if(mGraphicOverlay == null)
+                mGraphicOverlay = new GraphicOverlay<>(getApplicationContext(), null, bitmap);
+            else {
+                mGraphicOverlay.clear();
+                mGraphicOverlay.setBitmap(bitmap);
+            }
+
             Frame frame = new Frame.Builder().setBitmap(bitmap).build();
             results = textRecognizer.detect(frame);
             OcrDetector ocrDetector = new OcrDetector(mGraphicOverlay, results);
+            if(mDrawingPad.getChildCount() > 0)
+                mDrawingPad.removeAllViews();
             mDrawingPad.addView(mGraphicOverlay);
             mDrawingPad.setVisibility(View.VISIBLE);
 
@@ -257,49 +266,7 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
 
         return c || super.onTouchEvent(e);
     }
-    private boolean onTap(float rawX, float rawY) {
-        OcrGraphic graphic = mGraphicOverlay.getGraphicAtLocation(rawX, rawY);
-        TextBlock text = null;
-        if (graphic != null) {
-            text = graphic.getTextBlock();
-            if (text != null && text.getValue() != null) {
 
-                textToDrag = text.getValue();
-                Log.d("text to drag", textToDrag);
-                mGraphicOverlay.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View view) {
-                        ClipData.Item item = new ClipData.Item(textToDrag);
-
-                        // Create a new ClipData using the tag as a label, the plain text MIME type, and
-                        // the already-created item. This will create a new ClipDescription object within the
-                        // ClipData, and set its MIME type entry to "text/plain"
-                        ClipData dragData = new ClipData(textToDrag,new String[]{ ClipDescription.MIMETYPE_TEXT_PLAIN },item);
-
-                        // Instantiates the drag shadow builder.
-                        View.DragShadowBuilder myShadow = new MyDragShadowBuilder(mGraphicOverlay);
-
-                        // Starts the drag
-
-                        view.startDrag(dragData,  // the data to be dragged
-                                myShadow,  // the drag shadow builder
-                                null,      // no need to use local data
-                                0          // flags (not currently used, set to 0)
-                        );
-                        return true;
-                    }
-                });
-
-            }
-            else {
-                Log.d(TAG, "text data is null");
-            }
-        }
-        else {
-            Log.d(TAG,"no text detected");
-        }
-        return text != null;
-    }
 
     private class CaptureGestureListener extends GestureDetector.SimpleOnGestureListener {
 
@@ -312,57 +279,53 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
                 text = graphic.getTextBlock();
                 if (text != null && text.getValue() != null) {
 
-                    textToDrag = text.getValue();
+                    String textToDrag = text.getValue();
                     Log.d("text to drag", textToDrag);
 
-                            ClipData.Item item = new ClipData.Item(textToDrag);
+                    ClipData.Item item = new ClipData.Item(textToDrag);
 
-                            // Create a new ClipData using the tag as a label, the plain text MIME type, and
-                            // the already-created item. This will create a new ClipDescription object within the
-                            // ClipData, and set its MIME type entry to "text/plain"
-                            ClipData dragData = new ClipData(textToDrag,new String[]{ ClipDescription.MIMETYPE_TEXT_PLAIN },item);
+                    // Create a new ClipData using the tag as a label, the plain text MIME type, and
+                    // the already-created item. This will create a new ClipDescription object within the
+                    // ClipData, and set its MIME type entry to "text/plain"
+                    ClipData dragData = new ClipData(textToDrag, new String[]{ClipDescription.MIMETYPE_TEXT_PLAIN}, item);
 
-                            // Instantiates the drag shadow builder.
-                            View.DragShadowBuilder myShadow = new MyDragShadowBuilder(mGraphicOverlay);
+                    // Instantiates the drag shadow builder.
+                    View.DragShadowBuilder myShadow = new MyDragShadowBuilder(mGraphicOverlay, textToDrag, text.getBoundingBox().width());
 
-                            // Starts the drag
+                    // Starts the drag
 
-                            mGraphicOverlay.startDrag(dragData,  // the data to be dragged
-                                    myShadow,  // the drag shadow builder
-                                    null,      // no need to use local data
-                                    0          // flags (not currently used, set to 0)
-                            );
+                    mGraphicOverlay.startDrag(dragData,  // the data to be dragged
+                            myShadow,  // the drag shadow builder
+                            null,      // no need to use local data
+                            0          // flags (not currently used, set to 0)
+                    );
 
-                }
-                else {
+                } else {
                     Log.d(TAG, "text data is null");
                 }
-            }
-            else {
-                Log.d(TAG,"no text detected");
+            } else {
+                Log.d(TAG, "no text detected");
             }
 
         }
 
-        @Override
-        public boolean onSingleTapConfirmed(MotionEvent e) {
-            return onTap(e.getRawX(), e.getRawY()) || super.onSingleTapConfirmed(e);
-        }
     }
 
     private static class MyDragShadowBuilder extends View.DragShadowBuilder {
 
         // The drag shadow image, defined as a drawable thing
-        private static Drawable shadow;
+        private static TextDrawable shadow;
+        private static int width;
 
         // Defines the constructor for myDragShadowBuilder
-        public MyDragShadowBuilder(View v) {
+        public MyDragShadowBuilder(View v, String text, int width) {
 
             // Stores the View parameter passed to myDragShadowBuilder.
             super(v);
 
             // Creates a draggable image that will fill the Canvas provided by the system.
-            shadow = new ColorDrawable(Color.LTGRAY);
+            shadow = new TextDrawable(text);
+            this.width = width;
         }
 
         // Defines a callback that sends the drag shadow dimensions and touch point back to the
@@ -370,10 +333,10 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
         @Override
         public void onProvideShadowMetrics (Point size, Point touch) {
             // Defines local variables
-            int width, height;
+            int height;
 
             // Sets the width of the shadow to half the width of the original View
-            width = getView().getWidth() / 2;
+            //width = getView().getWidth() / 2;
 
             // Sets the height of the shadow to half the height of the original View
             height = getView().getHeight() / 2;
@@ -388,7 +351,7 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
             size.set(width, height);
 
             // Sets the touch point's position to be in the middle of the drag shadow
-            touch.set(width / 2, height / 2);
+            touch.set(50, 50);
         }
 
         // Defines a callback that draws the drag shadow in a Canvas that the system constructs
@@ -397,6 +360,7 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
         public void onDrawShadow(Canvas canvas) {
 
             // Draws the ColorDrawable in the Canvas passed in from the system.
+
             shadow.draw(canvas);
         }
     }
