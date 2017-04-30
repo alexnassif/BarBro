@@ -32,6 +32,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.example.raymond.barbro.data.BarBroContract;
@@ -67,13 +68,15 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_new_drink);
+        //views
         mNewDrink = (EditText) findViewById(R.id.edit_drink);
         mNewIngredients = (EditText) findViewById(R.id.new_drink_ingredients);
         mAddImage = (ImageView) findViewById(R.id.take_drink_pic);
         mSubmit = (Button) findViewById(R.id.submit_button);
         mCancel = (Button) findViewById(R.id.cancel_button);
         mSearchWeb = (Button) findViewById(R.id.searchWeb);
-        mDrawingPad=(LinearLayout)findViewById(R.id.view_drawing_pad);
+        mDrawingPad = (LinearLayout) findViewById(R.id.view_drawing_pad);
+        //listeners
         mCancel.setOnClickListener(this);
         mAddImage.setOnClickListener(this);
         mSubmit.setOnClickListener(this);
@@ -215,42 +218,49 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
-            Uri takenPhotoUri = Uri.fromFile(new File(mCurrentPhotoPath));
-            // by this point we have the camera photo on disk
-            setPic(takenPhotoUri);
-            // RESIZE BITMAP, see section below
-            // Load the taken image into a preview
-            //Toast.makeText(this, takenPhotoUri.toString(), Toast.LENGTH_LONG).show();
-        }
-        if(requestCode == REQUEST_BITMAP && resultCode == RESULT_OK){
-            byte[] bitmapArray = data.getByteArrayExtra("bitmap");
+        if (requestCode == REQUEST_TAKE_PHOTO ) {
 
-            Bitmap bitmap = BitmapFactory.decodeByteArray(bitmapArray, 0, bitmapArray.length);
-
-            if(mGraphicOverlay == null)
-                mGraphicOverlay = new GraphicOverlay<>(getApplicationContext(), null, bitmap);
-            else {
-                mGraphicOverlay.clear();
-                mGraphicOverlay.setBitmap(bitmap);
+            if(resultCode == RESULT_OK) {
+                Uri takenPhotoUri = Uri.fromFile(new File(mCurrentPhotoPath));
+                // by this point we have the camera photo on disk
+                setPic(takenPhotoUri);
+                // RESIZE BITMAP, see section below
+                // Load the taken image into a preview
+                //Toast.makeText(this, takenPhotoUri.toString(), Toast.LENGTH_LONG).show();
             }
-
-            Frame frame = new Frame.Builder().setBitmap(bitmap).build();
-            results = textRecognizer.detect(frame);
-            OcrDetector ocrDetector = new OcrDetector(mGraphicOverlay, results);
-            if(mDrawingPad.getChildCount() > 0)
-                mDrawingPad.removeAllViews();
-            mDrawingPad.addView(mGraphicOverlay);
-            mDrawingPad.setVisibility(View.VISIBLE);
-
-
-            mGraphicOverlay.setOnDragListener(mDragListen);
+            else{
+                Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+                File file = new File(mCurrentPhotoPath);
+                file.delete();
+                mCurrentPhotoPath = null;
+            }
         }
-        else { // Result was a failure
-            Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
-            File file = new File(mCurrentPhotoPath);
-            file.delete();
-            mCurrentPhotoPath = null;
+        if(requestCode == REQUEST_BITMAP ){
+
+            if(resultCode == RESULT_OK) {
+                byte[] bitmapArray = data.getByteArrayExtra("bitmap");
+
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bitmapArray, 0, bitmapArray.length);
+
+                if (mGraphicOverlay == null)
+                    mGraphicOverlay = new GraphicOverlay<>(getApplicationContext(), null, bitmap);
+                else {
+                    mGraphicOverlay.clear();
+                    mGraphicOverlay.setBitmap(bitmap);
+                }
+
+                Frame frame = new Frame.Builder().setBitmap(bitmap).build();
+                results = textRecognizer.detect(frame);
+                OcrDetector ocrDetector = new OcrDetector(mGraphicOverlay, results);
+                if (mDrawingPad.getChildCount() > 0)
+                    mDrawingPad.removeAllViews();
+                mDrawingPad.addView(mGraphicOverlay);
+                mDrawingPad.setVisibility(View.VISIBLE);
+                mGraphicOverlay.setOnDragListener(mDragListen);
+            }
+            else{
+                Toast.makeText(this, "bitmap not passed", Toast.LENGTH_SHORT).show();
+            }
         }
 
     }
