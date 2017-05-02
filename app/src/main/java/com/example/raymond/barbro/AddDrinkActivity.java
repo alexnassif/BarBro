@@ -314,6 +314,8 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
                             0          // flags (not currently used, set to 0)
                     );
 
+                    scrollView.smoothScrollTo(0, 0);
+
                 } else {
                     Log.d(TAG, "text data is null");
                 }
@@ -363,7 +365,7 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
             size.set(width, height);
 
             // Sets the touch point's position to be in the middle of the drag shadow
-            touch.set(width / 2, height / 2);
+            touch.set(50, 50);
         }
 
         // Defines a callback that draws the drag shadow in a Canvas that the system constructs
@@ -425,11 +427,6 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
 
                 case DragEvent.ACTION_DRAG_LOCATION:
 
-                    // Ignore the event
-                    Log.d("eventtype", String.valueOf(x));
-                    if(x < 0){
-                        scrollView.scrollTo(0, 0);
-                    }
                     return true;
 
                 case DragEvent.ACTION_DRAG_EXITED:
