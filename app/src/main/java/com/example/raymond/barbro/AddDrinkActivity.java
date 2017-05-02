@@ -57,13 +57,13 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
     private static final int REQUEST_TAKE_PHOTO = 1;
     private static final int REQUEST_BITMAP = 2;
     private GraphicOverlay<OcrGraphic> mGraphicOverlay;
-    LinearLayout mDrawingPad;
-    TextRecognizer textRecognizer;
+    private LinearLayout mDrawingPad;
+    private TextRecognizer textRecognizer;
     private GestureDetector gestureDetector;
     private static final String TAG = "OcrCaptureActivity";
     private SparseArray<TextBlock> results;
-    MyDragEventListener mDragListen;
-    ScrollView scrollView;
+    private MyDragEventListener mDragListen;
+    private ScrollView scrollView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -419,7 +419,7 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
 
                     // Applies a green tint to the View. Return true; the return value is ignored.
 
-                    v.setBackgroundColor(Color.BLUE);
+                    v.setBackgroundColor(Color.GRAY);
                     // Invalidate the view to force a redraw in the new tint
                     v.invalidate();
 
