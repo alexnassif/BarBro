@@ -63,6 +63,7 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
     private static final String TAG = "OcrCaptureActivity";
     private SparseArray<TextBlock> results;
     MyDragEventListener mDragListen;
+    ScrollView scrollView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -81,6 +82,7 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
         mAddImage.setOnClickListener(this);
         mSubmit.setOnClickListener(this);
         mSearchWeb.setOnClickListener(this);
+        scrollView = (ScrollView) findViewById(R.id.scroll_view);
         setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         gestureDetector = new GestureDetector(this, new AddDrinkActivity.CaptureGestureListener());
         Context context = getApplicationContext();
@@ -270,11 +272,13 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
         return state.equals(Environment.MEDIA_MOUNTED);
     }
     @Override
-    public boolean onTouchEvent(MotionEvent e) {;
+    public boolean dispatchTouchEvent(MotionEvent ev){
 
-        boolean c = gestureDetector.onTouchEvent(e);
+        // Let ScrollView handle it
+        super.dispatchTouchEvent(ev);
 
-        return c || super.onTouchEvent(e);
+        // Otherwise, I'll handle it
+        return gestureDetector.onTouchEvent(ev);
     }
 
 
@@ -381,6 +385,8 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
 
             // Defines a variable to store the action type for the incoming event
             final int action = event.getAction();
+            final float x = event.getX();
+            final float y = event.getY();
 
             // Handles each of the expected events
             switch(action) {
@@ -420,6 +426,10 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
                 case DragEvent.ACTION_DRAG_LOCATION:
 
                     // Ignore the event
+                    Log.d("eventtype", String.valueOf(x));
+                    if(x < 0){
+                        scrollView.scrollTo(0, 0);
+                    }
                     return true;
 
                 case DragEvent.ACTION_DRAG_EXITED:
