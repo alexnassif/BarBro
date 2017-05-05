@@ -22,7 +22,7 @@ public class TextDrawable extends Drawable {
         mText = text;
         paint = new Paint();
         paint.setColor(Color.BLACK);
-        paint.setTextSize(50f);
+        paint.setTextSize(40f);
 
     }
     @Override

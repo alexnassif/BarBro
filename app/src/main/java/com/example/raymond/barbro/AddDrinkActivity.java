@@ -350,10 +350,10 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
             int width, height;
 
             // Sets the width of the shadow to half the width of the original View
-            width = getView().getWidth() / 2;
+            width = getView().getWidth();
 
             // Sets the height of the shadow to half the height of the original View
-            height = getView().getHeight() / 2;
+            height = getView().getHeight();
 
             // The drag shadow is a ColorDrawable. This sets its dimensions to be the same as the
             // Canvas that the system will provide. As a result, the drag shadow will fill the
