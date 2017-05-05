@@ -21,6 +21,7 @@ public class EditDrinkActivity extends AppCompatActivity {
         fragmentManager
                 .replace(R.id.edit_drink_fragment, EditDrinkFragment.newInstance(drinkId))
                 .commit();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override

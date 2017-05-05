@@ -33,6 +33,7 @@ public class SearchWeb extends AppCompatActivity implements View.OnClickListener
 
         mWebView.setWebViewClient(new MyBrowser());
         mWebView.loadUrl("http://www.google.com");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
 

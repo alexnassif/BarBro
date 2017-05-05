@@ -86,6 +86,7 @@ public class VideoActivity extends AppCompatActivity {
             Toast.makeText(this, "No Video Available for this Drink", Toast.LENGTH_LONG).show();
             finish();
         }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override

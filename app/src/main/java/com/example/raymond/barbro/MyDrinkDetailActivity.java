@@ -21,5 +21,6 @@ public class MyDrinkDetailActivity extends AppCompatActivity {
         fragmentManager
                 .replace(R.id.my_drink_detail_fragment, MyDrinkDetailFragment.newInstance(drinkId))
                 .commit();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }

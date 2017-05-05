@@ -49,11 +49,16 @@
             android:name=".sync.BarBroSyncIntentService"
             android:exported="false" />
 
-        <activity android:name=".AddDrinkActivity" />
-        <activity android:name=".VideoActivity" />
-        <activity android:name=".MyDrinkDetailActivity" />
-        <activity android:name=".EditDrinkActivity" />
-        <activity android:name=".SearchWeb"></activity>
+        <activity android:name=".AddDrinkActivity"
+            android:parentActivityName=".MainActivity"/>
+        <activity android:name=".VideoActivity"
+            android:parentActivityName=".MainActivity"/>
+        <activity android:name=".MyDrinkDetailActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".EditDrinkActivity"
+            android:parentActivityName=".MyDrinkDetailActivity"/>
+        <activity android:name=".SearchWeb"
+            android:parentActivityName=".AddDrinkActivity"></activity>
         <meta-data android:name="com.google.android.gms.vision.DEPENDENCIES" android:value="ocr"/>
     </application>
 

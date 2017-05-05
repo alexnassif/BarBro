@@ -89,6 +89,7 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
         mDragListen = new MyDragEventListener();
         mNewDrink.setOnDragListener(mDragListen);
         mNewIngredients.setOnDragListener(mDragListen);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // A text recognizer is created to find text.  An associated processor instance
         // is set to receive the text recognition results and display graphics for each text block
