@@ -13,11 +13,12 @@
         android:layout_weight="1"
         android:background="#ffffff">
 
-        <Spinner
+        <com.thomashaertel.widget.MultiSpinner
             android:id="@+id/liquor_spinner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:prompt="@string/liquor_prompt" />
+            android:layout_height="48dp"
+            android:text="@string/pick_flavor"
+            />
 
         <AutoCompleteTextView
             android:id="@+id/drink_autoCompleteTextView"

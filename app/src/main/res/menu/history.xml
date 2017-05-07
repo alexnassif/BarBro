@@ -6,8 +6,5 @@
         android:title="Clear History"
         android:id="@+id/history_item"
         app:showAsAction="always" />
-    <item android:title="Video"
-        android:id="@+id/video_item"
-        android:icon="@android:drawable/ic_menu_slideshow"
-        app:showAsAction="always" />
+
 </menu>

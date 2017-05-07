@@ -58,6 +58,9 @@ public class HistoryFragment extends Fragment implements
     private TextView viewDesc;
     private TextView mMixView;
     private boolean whichFragment = true;
+    private Menu mMenu;
+    private MenuInflater mMenuInflater;
+    private boolean isMenu = false;
 
     public HistoryFragment() {
         // Required empty public constructor
@@ -297,8 +300,11 @@ public class HistoryFragment extends Fragment implements
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
         inflater.inflate(R.menu.history, menu);
+
+        mMenu = menu;
+        mMenuInflater = inflater;
+
 
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -347,6 +353,10 @@ public class HistoryFragment extends Fragment implements
         ContentValues newValue = new ContentValues();
         newValue.put(BarBroContract.HistoryEntry.COLUMN_HISTORYID, drink);
         historyDrink.startInsert(-1, null, uriHistory, newValue);*/
+        if(!isMenu) {
+            mMenuInflater.inflate(R.menu.video, mMenu);
+            isMenu = true;
+        }
         mCurCheckPosition = drink;
         videoURL = video;
         if (mDualPane) {

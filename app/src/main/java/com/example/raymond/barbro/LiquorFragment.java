@@ -63,6 +63,9 @@ public class LiquorFragment extends Fragment implements
     private VideoFragment videoFragment;
     private DrinkDetailFragment drinkDetailFragment;
     ArrayAdapter<CharSequence> adapter;
+    private Menu mMenu;
+    private MenuInflater mMenuInflater;
+    private boolean isMenu = false;
 
 
     @Override
@@ -187,7 +190,12 @@ public class LiquorFragment extends Fragment implements
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
-        inflater.inflate(R.menu.video, menu);
+        if (mDualPane) {
+            inflater.inflate(R.menu.video, menu);
+        } else {
+            mMenu = menu;
+            mMenuInflater = inflater;
+        }
 
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -336,6 +344,10 @@ public class LiquorFragment extends Fragment implements
     }
     public void drinkDetail(int drink){
         drinkId = drink;
+        if(!isMenu) {
+            mMenuInflater.inflate(R.menu.video, mMenu);
+            isMenu = true;
+        }
         Loader<Cursor> loaderM = getLoaderManager().getLoader(DRINK_BY_ID_LOADER);
         if(loaderM == null)
             getLoaderManager().initLoader(DRINK_BY_ID_LOADER, null, this);
@@ -370,7 +382,6 @@ public class LiquorFragment extends Fragment implements
                     builder.append(sList.get(i));
             }
             liqType = builder.toString();
-            Toast.makeText(getContext(), builder.toString(), Toast.LENGTH_SHORT).show();
             Loader<Cursor> githubSearchLoader = getLoaderManager().getLoader(GITHUB_SEARCH_LOADER);
             if (githubSearchLoader == null) {
                 getLoaderManager().initLoader(GITHUB_SEARCH_LOADER, null, LiquorFragment.this);

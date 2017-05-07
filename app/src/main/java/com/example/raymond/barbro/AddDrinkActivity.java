@@ -261,9 +261,6 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
                 mDrawingPad.setVisibility(View.VISIBLE);
                 mGraphicOverlay.setOnDragListener(mDragListen);
             }
-            else{
-                Toast.makeText(this, "bitmap not passed", Toast.LENGTH_SHORT).show();
-            }
         }
 
     }

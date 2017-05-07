@@ -71,6 +71,10 @@ public class ResultsFragment extends Fragment implements
     private TextView viewDesc;
     private TextView mMixView;
     private boolean whichFragment = true;
+    private Menu mMenu;
+    private MenuInflater mMenuInflater;
+    private boolean isMenu = false;
+
 
 
     public static ResultsFragment newInstance(boolean param1) {
@@ -343,8 +347,13 @@ public class ResultsFragment extends Fragment implements
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
-        inflater.inflate(R.menu.video, menu);
+        if (mDualPane) {
+            inflater.inflate(R.menu.video, menu);
+        } else {
+            mMenu = menu;
+            mMenuInflater = inflater;
+        }
+        //inflater.inflate(R.menu.video, menu);
 
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -387,12 +396,17 @@ public class ResultsFragment extends Fragment implements
         if (mDualPane) {
             showDetails(drink);
         }
-        else
+        else {
             drinkDetail(drink);
+        }
 
     }
     public void drinkDetail(int drink){
         drinkId = drink;
+        if(!isMenu) {
+            mMenuInflater.inflate(R.menu.video, mMenu);
+            isMenu = true;
+        }
         Loader<Cursor> loaderM = getLoaderManager().getLoader(DRINK_BY_ID_LOADER);
         if(loaderM == null)
             getLoaderManager().initLoader(DRINK_BY_ID_LOADER, null, this);
@@ -405,6 +419,8 @@ public class ResultsFragment extends Fragment implements
 
     @Override
     public void onClick(int drink) {
+        HistoryUtils.addToHistory(getContext(), drink);
+        mCurCheckPosition = drink;
         drinkDetail(drink);
     }
 }
