@@ -27,7 +27,14 @@ public class TextDrawable extends Drawable {
     }
     @Override
     public void draw(@NonNull Canvas canvas) {
-        canvas.drawText(mText, 50, 50, paint);
+
+        int x = 0, y = 50;
+        for (String line: mText.split("\n")) {
+            canvas.drawText(line, x, y, paint);
+            y += 45;
+        }
+
+
     }
 
     @Override

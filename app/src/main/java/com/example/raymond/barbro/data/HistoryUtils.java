@@ -59,6 +59,7 @@ public class HistoryUtils {
                     Log.d("insert history tag", newuri.toString());
                     ContentValues values = new ContentValues();
                     values.put(BarBroContract.HistoryEntry.COLUMN_HISTORYID, drink);
+                    values.put(BarBroContract.HistoryEntry.COLUMN_DATE, getDateTime());
                     context.getContentResolver().insert(newuri, values);
                 }
 
