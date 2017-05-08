@@ -32,7 +32,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.raymond.barbro.data.BarBroContract;
 import com.example.raymond.barbro.data.Drink;
-
+import com.example.raymond.barbro.data.HistoryUtils;
 
 
 public class HistoryFragment extends Fragment implements
@@ -347,12 +347,7 @@ public class HistoryFragment extends Fragment implements
     }
     @Override
     public void onClick(int drink, String video) {
-        /*AsyncQueryHandler historyDrink = new AsyncQueryHandler(getActivity().getContentResolver()) {
-        };
-        Uri uriHistory = BarBroContract.HistoryEntry.CONTENT_URI;
-        ContentValues newValue = new ContentValues();
-        newValue.put(BarBroContract.HistoryEntry.COLUMN_HISTORYID, drink);
-        historyDrink.startInsert(-1, null, uriHistory, newValue);*/
+        HistoryUtils.addToHistory(getContext(), drink);
         if(!isMenu) {
             mMenuInflater.inflate(R.menu.video, mMenu);
             isMenu = true;
