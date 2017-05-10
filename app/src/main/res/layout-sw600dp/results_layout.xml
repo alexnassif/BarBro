@@ -16,7 +16,7 @@
             android:id="@+id/featured_drinks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Featured"
+            android:text="Random"
             android:textColor="@color/colorPrimaryDark" />
 
         <android.support.v7.widget.RecyclerView

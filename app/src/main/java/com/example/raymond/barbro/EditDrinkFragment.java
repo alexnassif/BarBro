@@ -120,9 +120,11 @@ public class EditDrinkFragment extends Fragment implements View.OnClickListener,
                 newValue.put(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_NAME, mNewDrink.getText().toString().trim());
                 newValue.put(BarBroContract.MyDrinkEntry.COLUMN_MYINGREDIENTS, mNewIngredients.getText().toString().trim());
                 if (mNewPhotoPath != null) {
-                    File file = new File(mCurrentPhotoPath);
-                    if(file.exists())
-                        file.delete();
+                    if(mCurrentPhotoPath != null) {
+                        File file = new File(mCurrentPhotoPath);
+                        if (file.exists())
+                            file.delete();
+                    }
                     newValue.put(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_PIC, mNewPhotoPath);
                 }
                 putDrink.startUpdate(-1, null, uri, newValue, null, null);
