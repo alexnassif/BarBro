@@ -363,7 +363,7 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
             size.set(width, height);
 
             // Sets the touch point's position to be in the middle of the drag shadow
-            touch.set(width / 2, 50);
+            touch.set(200, 50);
         }
 
         // Defines a callback that draws the drag shadow in a Canvas that the system constructs
