@@ -26,6 +26,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -74,6 +76,7 @@ public class ResultsFragment extends Fragment implements
     private Menu mMenu;
     private MenuInflater mMenuInflater;
     private boolean isMenu = false;
+    private ImageButton minimize;
 
 
 
@@ -110,6 +113,19 @@ public class ResultsFragment extends Fragment implements
         mRecyclerView_Randoms.setHasFixedSize(true);
         mDrinkAdapter_Randoms = new SmallDrinkAdapter(getContext(), this);
         mRecyclerView_Randoms.setAdapter(mDrinkAdapter_Randoms);
+        minimize.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mRecyclerView_Randoms.getVisibility() == View.GONE) {
+                    mRecyclerView_Randoms.setVisibility(View.VISIBLE);
+                    minimize.setImageResource(android.R.drawable.arrow_up_float);
+                }
+                else {
+                    mRecyclerView_Randoms.setVisibility(View.GONE);
+                    minimize.setImageResource(android.R.drawable.arrow_down_float);
+                }
+            }
+        });
         View detailsFrame = getActivity().findViewById(R.id.drink_detail_fragment);
         mDualPane = detailsFrame != null && detailsFrame.getVisibility() == View.VISIBLE;
         getActivity().setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -200,6 +216,7 @@ public class ResultsFragment extends Fragment implements
         mRecyclerView = (RecyclerView) myView.findViewById(R.id.recyclerview_drinks);
         mRecyclerView_Randoms = (RecyclerView) myView.findViewById(R.id.random_recyclerView);
         acDrinkTextView = (AutoCompleteTextView) myView.findViewById(R.id.search_drinks);
+        minimize = (ImageButton) myView.findViewById(R.id.minimize_button);
         if (!mDualPane) {
             viewHeader = (TextView) myView.findViewById(R.id.header);
             viewDesc = (TextView) myView.findViewById(R.id.desc);
