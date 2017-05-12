@@ -66,9 +66,10 @@
 
             <ImageButton
                 android:id="@+id/minimize_button"
-                android:layout_width="25dp"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
+                android:background="@color/cardview_light_background"
                 app:srcCompat="@android:drawable/arrow_up_float" />
         </FrameLayout>
 
