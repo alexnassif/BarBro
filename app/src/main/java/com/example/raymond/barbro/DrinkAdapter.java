@@ -1,11 +1,13 @@
 package com.example.raymond.barbro;
 
+import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -119,23 +121,21 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
             final String stringID = Integer.toString(id);
 
             if (view.getId() == mFaveButtonView.getId()) {
-                new AsyncTask<Integer, Void, Void>() {
-                    @Override
-                    protected Void doInBackground(Integer... params) {
-                        ContentValues mUpdateValues = new ContentValues();
-                        Uri uri = BarBroContract.BarBroEntry.CONTENT_URI;
-                        uri = uri.buildUpon().appendPath(stringID).build();
-                        if (params[0] == 1) {
-                            mUpdateValues.put(BarBroContract.BarBroEntry.COLUMN_FAVORITE, 0);
+                AsyncQueryHandler putDrink = new AsyncQueryHandler(context.getContentResolver()) {
+                };
+                ContentValues mUpdateValues = new ContentValues();
+                Uri uri = BarBroContract.BarBroEntry.CONTENT_URI;
+                if(idh == -1)
+                    uri = uri.buildUpon().appendPath(stringID).build();
+                else
+                    uri = uri.buildUpon().appendPath(history_id + "").build();
+                if (fave == 1) {
+                    mUpdateValues.put(BarBroContract.BarBroEntry.COLUMN_FAVORITE, 0);
+                } else {
+                    mUpdateValues.put(BarBroContract.BarBroEntry.COLUMN_FAVORITE, 1);
 
-                        } else {
-                            mUpdateValues.put(BarBroContract.BarBroEntry.COLUMN_FAVORITE, 1);
-
-                        }
-                        context.getContentResolver().update(uri, mUpdateValues, null, null);
-                        return null;
-                    }
-                }.execute(fave);
+                }
+                putDrink.startUpdate(-1, null, uri, mUpdateValues, null, null);
 
             } else {
                 if(idh != -1)
