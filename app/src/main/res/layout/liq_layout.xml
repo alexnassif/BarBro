@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.constraint.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/background_light"
@@ -12,69 +12,59 @@
 
         <com.thomashaertel.widget.MultiSpinner
             android:id="@+id/liquor_spinner"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:text="@string/pick_flavor"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerview_drinks"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="@+id/liquor_spinner"
-            app:layout_constraintRight_toRightOf="@+id/liquor_spinner"
-            app:layout_constraintTop_toBottomOf="@+id/drink_autoCompleteTextView" />
+            android:text="@string/pick_flavor" />
 
         <AutoCompleteTextView
             android:id="@+id/drink_autoCompleteTextView"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/search_drink_string"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintLeft_toLeftOf="@+id/liquor_spinner"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/liquor_spinner" />
+            android:hint="@string/search_drink_string" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview_drinks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
 
-    </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
 
     <com.example.raymond.barbro.YouTubeLayout
+        android:id="@+id/dragLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/dragLayout"
         android:orientation="vertical"
-        android:visibility="gone"
-        >
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/header"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:textSize="35sp"
-            android:textColor="@color/colorPrimaryDark"
-            android:text="Drag me to the bottom"
-            android:tag="text"
+            android:background="@android:color/holo_blue_bright"
             android:gravity="center"
-            android:background="@android:color/holo_blue_bright"/>
+            android:tag="text"
+            android:text="Drag me to the bottom"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="35sp" />
 
         <TextView
             android:id="@+id/desc"
-            android:tag="desc"
-            android:textSize="25sp"
-            android:textColor="#FFFFFF"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#286db7"
             android:gravity="center"
+            android:tag="desc"
             android:text=""
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#286db7"/>
-        <TextView
             android:textColor="#FFFFFF"
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/desc_view_youtube"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/desc_view_youtube"
-            android:background="#000000"/>
+            android:background="#000000"
+            android:textColor="#FFFFFF" />
 
 
     </com.example.raymond.barbro.YouTubeLayout>
