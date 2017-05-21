@@ -88,7 +88,18 @@ public class VideoActivity extends AppCompatActivity {
         }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
-
+    @Override
+    public void onPause() {
+        super.onPause();
+        videoPoint = videoView.getCurrentPosition(); //stopPosition is an int
+        videoView.pause();
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        videoView.seekTo(videoPoint);
+        videoView.start(); //Or use resume() if it doesn't work. I'm not sure
+    }
     @Override
     public void onSaveInstanceState(Bundle outState) {
 
