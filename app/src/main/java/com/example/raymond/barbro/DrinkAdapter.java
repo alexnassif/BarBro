@@ -109,7 +109,7 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
             int drinkId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry._ID);
             int faveId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_FAVORITE);
             int videoId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_VIDEO);
-            int idh = mDrinkData.getColumnIndex(BarBroContract.HistoryEntry.COLUMN_HISTORYID);
+            final int idh = mDrinkData.getColumnIndex(BarBroContract.HistoryEntry.COLUMN_HISTORYID);
 
             int id = mDrinkData.getInt(drinkId);
             int fave = mDrinkData.getInt(faveId);
@@ -122,6 +122,13 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
 
             if (view.getId() == mFaveButtonView.getId()) {
                 AsyncQueryHandler putDrink = new AsyncQueryHandler(context.getContentResolver()) {
+
+                    @Override
+                    protected void onUpdateComplete(int token, Object cookie, int result) {
+                        super.onUpdateComplete(token, cookie, result);
+                        if(idh != -1)
+                            context.getContentResolver().notifyChange(BarBroContract.HistoryEntry.CONTENT_URI, null);
+                    }
                 };
                 ContentValues mUpdateValues = new ContentValues();
                 Uri uri = BarBroContract.BarBroEntry.CONTENT_URI;
@@ -136,6 +143,7 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
 
                 }
                 putDrink.startUpdate(-1, null, uri, mUpdateValues, null, null);
+
 
             } else {
                 if(idh != -1)
