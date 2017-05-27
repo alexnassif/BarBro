@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal">
 
     <LinearLayout
@@ -11,12 +12,30 @@
         android:id="@+id/drink_list"
         android:layout_weight="1"
         android:background="#ffffff">
-        <TextView
-            android:id="@+id/featured_drinks"
+        <FrameLayout
+            android:id="@+id/featured_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Random"
-            android:textColor="@color/colorPrimaryDark" />
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:id="@+id/featured_drinks"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Random"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16dp" />
+
+            <ImageButton
+                android:id="@+id/minimize_button"
+                android:layout_width="64dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:background="@color/cardview_light_background"
+                app:srcCompat="@android:drawable/arrow_up_float" />
+        </FrameLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/random_recyclerView"

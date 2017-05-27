@@ -382,7 +382,7 @@ public class ResultsFragment extends Fragment implements
             if(mDualPane) {
                 whichFragment = false;
                 FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
-                videoFragment = videoFragment.newInstance(videoURL);
+                videoFragment = videoFragment.newInstance(mCurCheckPosition);
                 fragmentManager
                         .replace(R.id.drink_detail_fragment, videoFragment)
                         .commit();
@@ -398,25 +398,6 @@ public class ResultsFragment extends Fragment implements
 
 
         return true;
-    }
-    @Override
-    public void onClick(int drink, String video) {
-        /*AsyncQueryHandler historyDrink = new AsyncQueryHandler(getActivity().getContentResolver()) {
-        };
-        Uri uriHistory = BarBroContract.HistoryEntry.CONTENT_URI;
-        ContentValues newValue = new ContentValues();
-        newValue.put(BarBroContract.HistoryEntry.COLUMN_HISTORYID, drink);
-        historyDrink.startInsert(-1, null, uriHistory, newValue);*/
-        HistoryUtils.addToHistory(getContext(), drink);
-        mCurCheckPosition = drink;
-        videoURL = video;
-        if (mDualPane) {
-            showDetails(drink);
-        }
-        else {
-            drinkDetail(drink);
-        }
-
     }
     public void drinkDetail(int drink){
         drinkId = drink;
@@ -438,6 +419,11 @@ public class ResultsFragment extends Fragment implements
     public void onClick(int drink) {
         HistoryUtils.addToHistory(getContext(), drink);
         mCurCheckPosition = drink;
-        drinkDetail(drink);
+        if (mDualPane) {
+            showDetails(drink);
+        }
+        else {
+            drinkDetail(drink);
+        }
     }
 }

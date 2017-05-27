@@ -37,7 +37,7 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
     }
 
     public interface DrinkAdapterOnClickHandler{
-        void onClick(int drink, String video);
+        void onClick(int drink);
     }
 
     @Override
@@ -108,12 +108,10 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
             mDrinkData.moveToPosition(adapterPosition);
             int drinkId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry._ID);
             int faveId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_FAVORITE);
-            int videoId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_VIDEO);
             final int idh = mDrinkData.getColumnIndex(BarBroContract.HistoryEntry.COLUMN_HISTORYID);
 
             int id = mDrinkData.getInt(drinkId);
             int fave = mDrinkData.getInt(faveId);
-            String video = mDrinkData.getString(videoId);
             int history_id = 0;
             if(idh != -1){
                 history_id = mDrinkData.getInt(idh);
@@ -147,9 +145,9 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
 
             } else {
                 if(idh != -1)
-                    mClickHandler.onClick(history_id, video);
+                    mClickHandler.onClick(history_id);
                 else
-                    mClickHandler.onClick(id, video);
+                    mClickHandler.onClick(id);
             }
         }
     }

@@ -316,7 +316,7 @@ public class HistoryFragment extends Fragment implements
             if(mDualPane) {
                 whichFragment = false;
                 FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
-                videoFragment = videoFragment.newInstance(videoURL);
+                videoFragment = videoFragment.newInstance(mCurCheckPosition);
                 fragmentManager
                         .replace(R.id.drink_detail_fragment, videoFragment)
                         .commit();
@@ -346,14 +346,13 @@ public class HistoryFragment extends Fragment implements
         return true;
     }
     @Override
-    public void onClick(int drink, String video) {
+    public void onClick(int drink) {
         HistoryUtils.addToHistory(getContext(), drink);
         if(!isMenu) {
             mMenuInflater.inflate(R.menu.video, mMenu);
             isMenu = true;
         }
         mCurCheckPosition = drink;
-        videoURL = video;
         if (mDualPane) {
             showDetails(drink);
         }

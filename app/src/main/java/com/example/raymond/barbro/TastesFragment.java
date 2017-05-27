@@ -206,7 +206,7 @@ public class TastesFragment extends Fragment implements
             if(mDualPane) {
                 whichFragment = false;
                 FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
-                videoFragment = videoFragment.newInstance(videoURL);
+                videoFragment = videoFragment.newInstance(mCurCheckPosition);
                 fragmentManager
                         .replace(R.id.drink_detail_fragment, videoFragment)
                         .commit();
@@ -325,10 +325,9 @@ public class TastesFragment extends Fragment implements
     }
 
     @Override
-    public void onClick(int drink, String video) {
+    public void onClick(int drink) {
         HistoryUtils.addToHistory(getContext(), drink);
         mCurCheckPosition = drink;
-        videoURL = video;
         if (mDualPane) {
             showDetails(drink);
         }
