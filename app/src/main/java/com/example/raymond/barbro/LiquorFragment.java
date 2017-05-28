@@ -204,19 +204,11 @@ public class LiquorFragment extends Fragment implements
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.video_item && mCurCheckPosition != 0) {
-            if(mDualPane) {
-                whichFragment = false;
-                FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
-                videoFragment = videoFragment.newInstance(mCurCheckPosition);
-                fragmentManager
-                        .replace(R.id.drink_detail_fragment, videoFragment)
-                        .commit();
-            }
-            else {
-                Intent intent = new Intent(getContext(), VideoActivity.class);
-                intent.putExtra("video", videoURL);
-                startActivity(intent);
-            }
+
+            Intent intent = new Intent(getContext(), VideoActivity.class);
+            intent.putExtra("video", mCurCheckPosition);
+            startActivity(intent);
+
         }
         else
             Toast.makeText(getContext(), "No Drink Chosen", Toast.LENGTH_LONG).show();

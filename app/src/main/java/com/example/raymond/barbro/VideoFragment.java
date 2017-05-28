@@ -85,7 +85,7 @@ public class VideoFragment extends Fragment implements LoaderManager.LoaderCallb
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        getLoaderManager().initLoader(DRINK_BY_ID_LOADER, null, this);;
+        getLoaderManager().initLoader(DRINK_BY_ID_LOADER, null, this);
         ConnectivityManager cm =
                 (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
 

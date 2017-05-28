@@ -379,7 +379,7 @@ public class ResultsFragment extends Fragment implements
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.video_item && mCurCheckPosition != 0) {
-            if(mDualPane) {
+           /* if(mDualPane) {
                 whichFragment = false;
                 FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
                 videoFragment = videoFragment.newInstance(mCurCheckPosition);
@@ -387,11 +387,11 @@ public class ResultsFragment extends Fragment implements
                         .replace(R.id.drink_detail_fragment, videoFragment)
                         .commit();
             }
-            else {
+            else {*/
                 Intent intent = new Intent(getContext(), VideoActivity.class);
-                intent.putExtra("video", videoURL);
+                intent.putExtra("video", mCurCheckPosition);
                 startActivity(intent);
-            }
+            //}
         }
         else
             Toast.makeText(getContext(), "No Drink Chosen", Toast.LENGTH_LONG).show();
