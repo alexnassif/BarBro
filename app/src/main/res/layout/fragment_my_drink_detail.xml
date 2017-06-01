@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyDrinkDetailFragment">
+    tools:context=".MyDrinkDetailFragment"
+    android:background="#000000"
+    android:textColor="#FFFFFF">
 
     <TextView
         android:id="@+id/my_drink_name_view"
@@ -15,8 +17,9 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="TextView"
+        android:background="@android:color/holo_blue_bright"
         android:textAlignment="center"
-        android:textSize="18sp"
+        android:textSize="36sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -29,13 +32,15 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="0dp"
         android:text="TextView"
+        android:background="#286db7"
         android:textAlignment="center"
         android:textSize="22sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/my_drink_name_view" />
+        app:layout_constraintTop_toBottomOf="@+id/my_drink_name_view"
+        app:layout_constraintHorizontal_bias="0.0" />
 
     <ImageView
         android:id="@+id/my_drink_pic_view"

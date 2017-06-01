@@ -75,7 +75,7 @@
             android:tag="text"
             android:text="Drag me to the bottom"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="35sp" />
+            android:textSize="36sp" />
 
         <TextView
             android:id="@+id/desc"
