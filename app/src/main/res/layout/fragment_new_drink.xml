@@ -108,7 +108,7 @@
 
         <LinearLayout
             android:id="@+id/view_drawing_pad"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="500dp"
             android:orientation="vertical"
             android:visibility="invisible"

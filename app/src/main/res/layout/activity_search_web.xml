@@ -5,7 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
+    <Button
+        android:id="@+id/click_preview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_blue_bright"
+        android:text="Detect Drink"
+        />
     <WebView
         android:id="@+id/webView"
         android:layout_width="match_parent"
@@ -13,14 +19,5 @@
         >
 
     </WebView>
-    <Button
-        android:id="@+id/click_preview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:background="@android:color/holo_blue_bright"
-        android:text="Detect Drink"
-         />
 
 </LinearLayout>
