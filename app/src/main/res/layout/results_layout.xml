@@ -92,9 +92,10 @@
             android:id="@+id/desc_view_youtube"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:background="#000000"
             android:textColor="#FFFFFF"
-            android:textSize="16sp" />
+            android:textSize="25sp" />
 
 
     </com.example.raymond.barbro.YouTubeLayout>

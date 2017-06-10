@@ -7,6 +7,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -65,13 +66,25 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
     private SparseArray<TextBlock> results;
     private MyDragEventListener mDragListen;
     private ScrollView scrollView;
-    private boolean showTip = true;
+    private SharedPreferences sp;
+    private boolean showTip;
+    private static final String show_Tip = "showTip";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_new_drink);
         //views
+        sp = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        if(sp.contains(show_Tip)){
+            showTip = sp.getBoolean(show_Tip, true);
+        }
+        else{
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putBoolean(show_Tip, true);
+            editor.apply();
+            showTip = true;
+        }
         mNewDrink = (EditText) findViewById(R.id.edit_drink);
         mNewIngredients = (EditText) findViewById(R.id.new_drink_ingredients);
         mAddImage = (ImageView) findViewById(R.id.take_drink_pic);
@@ -270,7 +283,10 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
                             .setAction("Don't Show Again", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    showTip = false;
+
+                                    SharedPreferences.Editor editor = sp.edit();
+                                    editor.putBoolean(show_Tip, false);
+                                    editor.apply();
                                 }
                             });
 
