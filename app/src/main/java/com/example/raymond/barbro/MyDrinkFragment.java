@@ -2,12 +2,15 @@ package com.example.raymond.barbro;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -45,6 +48,9 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
     private MyDrinkAdapter mDrinkAdapter;
     private View myView;
     private AutoCompleteTextView acDrinkTextView;
+    private SharedPreferences sp;
+    private boolean showTip;
+    private static final String show_Tip = "showTipMyDrink";
 
     public MyDrinkFragment() {
         // Required empty public constructor
@@ -71,7 +77,16 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        sp = getContext().getSharedPreferences("MyPrefs", getContext().MODE_PRIVATE);
+        if(sp.contains(show_Tip)){
+            showTip = sp.getBoolean(show_Tip, true);
+        }
+        else{
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putBoolean(show_Tip, true);
+            editor.apply();
+            showTip = true;
+        }
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
@@ -111,6 +126,23 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
 
             }
         }).attachToRecyclerView(mRecyclerView);
+
+        if(showTip) {
+            Snackbar snackbar = Snackbar
+                    .make(getActivity().findViewById(R.id.fragmentHistory), "Swipe to delete",
+                            Snackbar.LENGTH_SHORT)
+                    .setAction("Don't Show Again", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            SharedPreferences.Editor editor = sp.edit();
+                            editor.putBoolean(show_Tip, false);
+                            editor.apply();
+                        }
+                    });
+
+            snackbar.show();
+        }
 
 
     }
