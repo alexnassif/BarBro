@@ -127,24 +127,6 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
             }
         }).attachToRecyclerView(mRecyclerView);
 
-        if(showTip) {
-            Snackbar snackbar = Snackbar
-                    .make(getActivity().findViewById(R.id.fragmentHistory), "Swipe to delete",
-                            Snackbar.LENGTH_SHORT)
-                    .setAction("Don't Show Again", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-
-                            SharedPreferences.Editor editor = sp.edit();
-                            editor.putBoolean(show_Tip, false);
-                            editor.apply();
-                        }
-                    });
-
-            snackbar.show();
-        }
-
-
     }
     @Nullable
     @Override
@@ -180,23 +162,23 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
 
         if(data.getCount() == 0){
             Toast.makeText(getContext(), "You haven't added your own recipe yet", Toast.LENGTH_LONG).show();
-        }
-        int drinkId = data.getColumnIndex(BarBroContract.MyDrinkEntry._ID);
-        int drinkName = data.getColumnIndex(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_NAME);
-        int ingredients = data.getColumnIndex(BarBroContract.MyDrinkEntry.COLUMN_MYINGREDIENTS);
-        int drinkPicId = data.getColumnIndex(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_PIC);
-        Drink[] array = new Drink[data.getCount()];
-        int i = 0;
-        data.moveToFirst();
-        while(!data.isAfterLast()){
+        } else {
+            int drinkId = data.getColumnIndex(BarBroContract.MyDrinkEntry._ID);
+            int drinkName = data.getColumnIndex(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_NAME);
+            int ingredients = data.getColumnIndex(BarBroContract.MyDrinkEntry.COLUMN_MYINGREDIENTS);
+            int drinkPicId = data.getColumnIndex(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_PIC);
+            Drink[] array = new Drink[data.getCount()];
+            int i = 0;
+            data.moveToFirst();
+            while (!data.isAfterLast()) {
 
-            Drink drink = new Drink(data.getString(drinkName), data.getString(ingredients), data.getString(drinkPicId));
-            drink.setDbId(data.getInt(drinkId));
-            array[i] = drink;
-            i++;
-            data.moveToNext();
-        }
-        if(data != null) {
+                Drink drink = new Drink(data.getString(drinkName), data.getString(ingredients), data.getString(drinkPicId));
+                drink.setDbId(data.getInt(drinkId));
+                array[i] = drink;
+                i++;
+                data.moveToNext();
+            }
+
             mDrinkAdapter.swapCursor(data);
             ArrayAdapter<Drink> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, array);
             acDrinkTextView.setAdapter(adapter);
@@ -209,6 +191,24 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
 
                 }
             });
+            if(showTip) {
+                Snackbar snackbar = Snackbar
+                        .make(getActivity().findViewById(R.id.fragmentHistory), "Swipe to delete",
+                                Snackbar.LENGTH_LONG)
+                        .setAction("Don't Show Again", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                                SharedPreferences.Editor editor = sp.edit();
+                                editor.putBoolean(show_Tip, false);
+                                editor.apply();
+                            }
+                        });
+
+                snackbar.show();
+            }
+
+
         }
     }
 
