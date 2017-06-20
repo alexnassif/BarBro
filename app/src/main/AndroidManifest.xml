@@ -45,10 +45,6 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <service
-            android:name=".sync.BarBroSyncIntentService"
-            android:exported="false" />
-
         <activity android:name=".AddDrinkActivity"
             android:parentActivityName=".MainActivity"/>
         <activity android:name=".VideoActivity"
