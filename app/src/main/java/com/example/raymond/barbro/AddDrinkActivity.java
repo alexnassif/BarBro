@@ -13,10 +13,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.Point;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -24,7 +21,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.DragEvent;
 import android.view.GestureDetector;
@@ -121,7 +117,6 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
             // isOperational() can be used to check if the required native libraries are currently
             // available.  The detectors will automatically become operational once the library
             // downloads complete on device.
-            Log.w(TAG, "Detector dependencies are not yet available.");
 
             // Check for low storage.  If there is low storage, the native library will not be
             // downloaded, so detection will not become operational.
@@ -130,7 +125,6 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
 
             if (hasLowStorage) {
                 Toast.makeText(this, R.string.low_storage_error, Toast.LENGTH_LONG).show();
-                Log.w(TAG, getString(R.string.low_storage_error));
             }
         }
     }
@@ -146,7 +140,6 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View view) {
         if(view.getId() == R.id.take_drink_pic) {
             dispatchTakePictureIntent();
-            //setPic();
         }
         else if (view.getId() == R.id.cancel_button) {
             finish();
@@ -225,7 +218,6 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
             File photoFile = null;
             try {
                 photoFile = createImageFile();
-                //Toast.makeText(this, mCurrentPhotoPath, Toast.LENGTH_LONG).show();
             } catch (IOException ex) {
                 // Error occurred while creating the File
 
@@ -332,8 +324,6 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
                 if (text != null && text.getValue() != null) {
 
                     String textToDrag = text.getValue();
-                    Log.d("text to drag", textToDrag);
-
                     ClipData.Item item = new ClipData.Item(textToDrag);
 
                     // Create a new ClipData using the tag as a label, the plain text MIME type, and
@@ -355,10 +345,10 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
                     scrollView.smoothScrollTo(0, 0);
 
                 } else {
-                    Log.d(TAG, "text data is null");
+                    Toast.makeText(AddDrinkActivity.this, "Text data is null", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Log.d(TAG, "no text detected");
+                Toast.makeText(AddDrinkActivity.this, "No text detected", Toast.LENGTH_SHORT).show();
             }
 
         }
@@ -512,7 +502,6 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
 
                 // An unknown action type was received.
                 default:
-                    Log.e("DragDrop Example","Unknown action type received by OnDragListener.");
                     break;
             }
 

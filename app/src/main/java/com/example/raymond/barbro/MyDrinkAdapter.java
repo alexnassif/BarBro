@@ -51,7 +51,6 @@ public class MyDrinkAdapter extends RecyclerView.Adapter<MyDrinkAdapter.MyDrinkA
         mDrinkData.moveToPosition(position);
 
         final int id = mDrinkData.getInt(drinkId);
-        final String stringID = Integer.toString(id);
         final String _drinkName = mDrinkData.getString(drinkName);
         final String _drinkIngredients = mDrinkData.getString(drinkIngredients);
         final String _drinkPic = mDrinkData.getString(drinkPic);
@@ -105,8 +104,6 @@ public class MyDrinkAdapter extends RecyclerView.Adapter<MyDrinkAdapter.MyDrinkA
             int id = mDrinkData.getInt(drinkId);
             String _drinkName = mDrinkData.getString(drinkName);
             String drinkIngredients = mDrinkData.getString(ingredients);
-
-            final String stringID = Integer.toString(id);
 
             Drink drink = new Drink();
             drink.setDrinkName(_drinkName);

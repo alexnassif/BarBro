@@ -1,8 +1,6 @@
 package com.example.raymond.barbro;
 
 
-import android.content.AsyncQueryHandler;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
@@ -16,7 +14,6 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,19 +23,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.bumptech.glide.Glide;
 import com.example.raymond.barbro.data.BarBroContract;
 import com.example.raymond.barbro.data.Drink;
 import com.example.raymond.barbro.data.HistoryUtils;
-
-import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 
 
 public class ResultsFragment extends Fragment implements
@@ -157,7 +147,6 @@ public class ResultsFragment extends Fragment implements
                 showDetails(mCurCheckPosition);
             else {
                 FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
-                //videoFragment = videoFragment.newInstance(videoURL);
                 fragmentManager
                         .replace(R.id.drink_detail_fragment, videoFragment)
                         .commit();
@@ -260,7 +249,6 @@ public class ResultsFragment extends Fragment implements
                 String stringId = Integer.toString(drinkId);
                 Uri uri = BarBroContract.BarBroEntry.CONTENT_URI;
                 uri = uri.buildUpon().appendPath(stringId).build();
-                Log.d("drink_id tag", uri.toString());
                 return new CursorLoader(getContext(),
                         uri,
                         null,
@@ -300,7 +288,6 @@ public class ResultsFragment extends Fragment implements
                 i++;
                 data.moveToNext();
             }
-            // mLoadingIndicator.setVisibility(View.INVISIBLE);
             if (data != null) {
                 mDrinkAdapter.swapCursor(data);
                 ArrayAdapter<Drink> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, array);
@@ -312,7 +299,6 @@ public class ResultsFragment extends Fragment implements
                         HistoryUtils.addToHistory(getContext(), drink.getDbId());
                         videoURL = drink.getVideo();
                         mCurCheckPosition = drink.getDbId();
-                        //drinkDetail(drink.getDbId());
                         if (mDualPane) {
                             showDetails(drink.getDbId());
                         } else
@@ -355,11 +341,7 @@ public class ResultsFragment extends Fragment implements
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        /*
-         * We aren't using this method in our example application, but we are required to Override
-         * it to implement the LoaderCallbacks<String> interface
-         */
-        //mLoadingIndicator.setVisibility(View.INVISIBLE);
+
     }
 
     @Override
@@ -370,7 +352,6 @@ public class ResultsFragment extends Fragment implements
             mMenu = menu;
             mMenuInflater = inflater;
         }
-        //inflater.inflate(R.menu.video, menu);
 
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -379,21 +360,10 @@ public class ResultsFragment extends Fragment implements
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.video_item && mCurCheckPosition != 0) {
-           /* if(mDualPane) {
-                whichFragment = false;
-                FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
-                videoFragment = videoFragment.newInstance(mCurCheckPosition);
-                fragmentManager
-                        .replace(R.id.drink_detail_fragment, videoFragment)
-                        .commit();
-            }
-            else {*/
-                Intent intent = new Intent(getContext(), VideoActivity.class);
-                intent.putExtra("video", mCurCheckPosition);
-                startActivity(intent);
-            //}
-        }
-        else
+            Intent intent = new Intent(getContext(), VideoActivity.class);
+            intent.putExtra("video", mCurCheckPosition);
+            startActivity(intent);
+        } else
             Toast.makeText(getContext(), "No Drink Chosen", Toast.LENGTH_LONG).show();
 
 
@@ -410,9 +380,7 @@ public class ResultsFragment extends Fragment implements
             getLoaderManager().initLoader(DRINK_BY_ID_LOADER, null, this);
         else
             getLoaderManager().restartLoader(DRINK_BY_ID_LOADER, null, this);
-//        Intent intent = new Intent(getContext(), DrinkDetailActivity.class);
-//        intent.putExtra("drink", drink);
-//        startActivity(intent);
+
     }
 
     @Override

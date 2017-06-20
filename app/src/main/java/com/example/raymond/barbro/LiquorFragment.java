@@ -158,7 +158,7 @@ public class LiquorFragment extends Fragment implements
             // Execute a transaction, replacing any existing fragment
             // with this one inside the frame.
             FragmentTransaction ft = getFragmentManager().beginTransaction();
-            drinkDetailFragment = drinkDetailFragment.newInstance(index);
+            drinkDetailFragment = DrinkDetailFragment.newInstance(index);
             ft.replace(R.id.drink_detail_fragment, drinkDetailFragment);
 
 

@@ -1,8 +1,6 @@
 package com.example.raymond.barbro;
 
 import android.content.AsyncQueryHandler;
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
@@ -25,11 +23,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.bumptech.glide.Glide;
 import com.example.raymond.barbro.data.BarBroContract;
 import com.example.raymond.barbro.data.Drink;
 import com.example.raymond.barbro.data.HistoryUtils;
@@ -68,20 +63,12 @@ public class HistoryFragment extends Fragment implements
 
     public static HistoryFragment newInstance() {
         HistoryFragment fragment = new HistoryFragment();
-        /*Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);*/
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }*/
         setHasOptionsMenu(true);
     }
 
@@ -122,7 +109,6 @@ public class HistoryFragment extends Fragment implements
                 showDetails(mCurCheckPosition);
             else {
                 FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
-                //videoFragment = videoFragment.newInstance(videoURL);
                 fragmentManager
                         .replace(R.id.drink_detail_fragment, videoFragment)
                         .commit();
@@ -158,11 +144,8 @@ public class HistoryFragment extends Fragment implements
             // Execute a transaction, replacing any existing fragment
             // with this one inside the frame.
             FragmentTransaction ft = getFragmentManager().beginTransaction();
-            drinkDetailFragment = drinkDetailFragment.newInstance(index);
+            drinkDetailFragment = DrinkDetailFragment.newInstance(index);
             ft.replace(R.id.drink_detail_fragment, drinkDetailFragment);
-
-
-            //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ft.commit();
 
 
@@ -180,7 +163,6 @@ public class HistoryFragment extends Fragment implements
             viewDesc = (TextView) myView.findViewById(R.id.desc);
             mMixView = (TextView) myView.findViewById(R.id.desc_view_youtube);
             youtubeLayout = (YouTubeLayout) myView.findViewById(R.id.dragLayout);
-            //youtubeLayout.setVisibility(View.GONE);
         }
         return myView;
     }
@@ -240,7 +222,6 @@ public class HistoryFragment extends Fragment implements
                 i++;
                 data.moveToNext();
             }
-            // mLoadingIndicator.setVisibility(View.INVISIBLE);
             if (data != null) {
                 mDrinkAdapter.swapCursor(data);
                 ArrayAdapter<Drink> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, array);
@@ -251,7 +232,6 @@ public class HistoryFragment extends Fragment implements
                         Drink drink = (Drink) adapterView.getAdapter().getItem(i);
                         videoURL = drink.getVideo();
                         mCurCheckPosition = drink.getDbId();
-                        //drinkDetail(drink.getDbId());
                         if (mDualPane) {
                             showDetails(drink.getDbId());
                         } else
@@ -291,11 +271,7 @@ public class HistoryFragment extends Fragment implements
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        /*
-         * We aren't using this method in our example application, but we are required to Override
-         * it to implement the LoaderCallbacks<String> interface
-         */
-        //mLoadingIndicator.setVisibility(View.INVISIBLE);
+
     }
 
     @Override
@@ -359,9 +335,6 @@ public class HistoryFragment extends Fragment implements
             getLoaderManager().initLoader(DRINK_BY_ID_LOADER, null, this);
         else
             getLoaderManager().restartLoader(DRINK_BY_ID_LOADER, null, this);
-//        Intent intent = new Intent(getContext(), DrinkDetailActivity.class);
-//        intent.putExtra("drink", drink);
-//        startActivity(intent);
     }
 
 }

@@ -2,7 +2,6 @@ package com.example.raymond.barbro;
 
 import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -22,7 +21,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.raymond.barbro.data.BarBroContract;
@@ -160,7 +158,6 @@ public class EditDrinkFragment extends Fragment implements View.OnClickListener,
             File photoFile = null;
             try {
                 photoFile = createImageFile();
-                Toast.makeText(getContext(), mNewPhotoPath, Toast.LENGTH_LONG).show();
             } catch (IOException ex) {
                 // Error occurred while creating the File
 

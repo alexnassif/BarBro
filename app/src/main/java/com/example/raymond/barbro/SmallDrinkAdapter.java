@@ -1,22 +1,18 @@
 package com.example.raymond.barbro;
 
-import android.content.ContentValues;
+
 import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 
 import com.bumptech.glide.Glide;
 import com.example.raymond.barbro.data.BarBroContract;
-import com.example.raymond.barbro.data.Drink;
 
 public class SmallDrinkAdapter extends RecyclerView.Adapter<SmallDrinkAdapter.SmallDrinkAdapterViewHolder> {
 

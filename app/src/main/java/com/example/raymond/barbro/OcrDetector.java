@@ -15,15 +15,11 @@
  */
 package com.example.raymond.barbro;
 
-import android.graphics.Bitmap;
+
 import android.util.SparseArray;
 
 import com.example.raymond.barbro.utilities.GraphicOverlay;
-import com.example.raymond.barbro.OcrGraphic;
-import com.google.android.gms.vision.Detector;
-import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.text.TextBlock;
-import com.google.android.gms.vision.text.TextRecognizer;
 
 /**
  * A very simple Processor which receives detected TextBlocks and adds them to the overlay

@@ -9,9 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * Created by Flavien Laurent (flavienlaurent.com) on 23/08/13.
- */
+
 public class YouTubeLayout extends ViewGroup {
 
     private final ViewDragHelper mDragHelper;

@@ -7,13 +7,11 @@ import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
@@ -119,7 +117,6 @@ public class VideoActivity extends AppCompatActivity implements LoaderManager.Lo
                 String stringId = Integer.toString(drinkVideoId);
                 Uri uri = BarBroContract.BarBroEntry.CONTENT_URI;
                 uri = uri.buildUpon().appendPath(stringId).build();
-                Log.d("drink_id tag", uri.toString());
                 return new CursorLoader(this,
                         uri,
                         null,

@@ -6,7 +6,6 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 
 import com.example.raymond.barbro.utilities.GraphicOverlay;
-import com.google.android.gms.vision.text.Text;
 import com.google.android.gms.vision.text.TextBlock;
 
 import java.util.List;

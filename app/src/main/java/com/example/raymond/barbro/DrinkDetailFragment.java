@@ -1,33 +1,20 @@
 package com.example.raymond.barbro;
 
-import android.content.Context;
 import android.database.Cursor;
-import android.media.MediaPlayer;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.MediaController;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
 import com.example.raymond.barbro.data.BarBroContract;
-import com.example.raymond.barbro.data.Drink;
 
 
 
@@ -74,7 +61,6 @@ public class DrinkDetailFragment extends Fragment implements LoaderManager.Loade
         mIngredients = (TextView) myView.findViewById(R.id.drink_ingredients_novideo);
         mImageView = (ImageView) myView.findViewById(R.id.drink_pic_novideo);
         mRecipe = (TextView) myView.findViewById(R.id.drink_recipe_novideo);
-        // mDrinkVideo = (VideoView) myView.findViewById(R.id.drink_video);
         return myView;
     }
 

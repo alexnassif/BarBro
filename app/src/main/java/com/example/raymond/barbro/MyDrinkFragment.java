@@ -33,14 +33,7 @@ import java.io.File;
 
 
 public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, MyDrinkAdapter.MyDrinkAdapterOnClickHandler {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     private static final int MY_DRINK_LOADER = 23;
 
     private RecyclerView mRecyclerView;
@@ -59,8 +52,6 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
     public static MyDrinkFragment newInstance(String param1, String param2) {
         MyDrinkFragment fragment = new MyDrinkFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -68,10 +59,6 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
         getActivity().setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
     @Override
@@ -115,8 +102,9 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
                 uri = uri.buildUpon().appendPath(stringId).build();
                 if(drink.getId() != null){
                     File file = new File(drink.getId());
-                    if(file.exists())
+                    if(file.exists()) {
                         file.delete();
+                    }
 
                 }
 
@@ -133,9 +121,7 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.fragment_history, container, false);
         mRecyclerView = (RecyclerView) myView.findViewById(R.id.recyclerview_drinks);
-        //mErrorMessageDisplay = (TextView) myView.findViewById(R.id.tv_error_message_display);
         acDrinkTextView = (AutoCompleteTextView) myView.findViewById(R.id.search_drinks);
-        //mLoadingIndicator = (ProgressBar) myView.findViewById(R.id.pb_loading_indicator);
         return myView;
     }
 

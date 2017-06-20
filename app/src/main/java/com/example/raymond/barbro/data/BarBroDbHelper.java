@@ -5,9 +5,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
-
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,7 +25,6 @@ public class BarBroDbHelper extends SQLiteOpenHelper {
     public BarBroDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         c = context;
-        //DB_PATH = "/data/data/" + context.getPackageName() + "/" + "databases/";
         DB_PATH = context.getDatabasePath(DATABASE_NAME).getAbsolutePath();
     }
 
@@ -70,7 +66,6 @@ public class BarBroDbHelper extends SQLiteOpenHelper {
         SQLiteDatabase checkDB = null;
 
         try {
-            //String myPath = DB_PATH + DATABASE_NAME;
             checkDB = SQLiteDatabase.openDatabase(DB_PATH, null, SQLiteDatabase.OPEN_READONLY);
 
         } catch (SQLiteException e) {

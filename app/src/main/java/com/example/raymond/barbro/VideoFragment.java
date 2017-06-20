@@ -8,19 +8,16 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -139,7 +136,6 @@ public class VideoFragment extends Fragment implements LoaderManager.LoaderCallb
                 String stringId = Integer.toString(mParam1);
                 Uri uri = BarBroContract.BarBroEntry.CONTENT_URI;
                 uri = uri.buildUpon().appendPath(stringId).build();
-                Log.d("drink_id tag", uri.toString());
                 return new CursorLoader(getContext(),
                         uri,
                         null,
