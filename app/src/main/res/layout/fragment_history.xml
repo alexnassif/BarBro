@@ -28,7 +28,7 @@
 
     </LinearLayout>
 
-    <com.example.raymond.barbro.YouTubeLayout
+    <com.alexnassif.mobile.barbro.YouTubeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/dragLayout"
@@ -65,6 +65,6 @@
             android:background="#000000"/>
 
 
-    </com.example.raymond.barbro.YouTubeLayout>
+    </com.alexnassif.mobile.barbro.YouTubeLayout>
 
 </FrameLayout>

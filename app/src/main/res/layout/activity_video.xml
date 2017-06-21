@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/common_google_signin_btn_text_dark_focused"
-    tools:context="com.example.raymond.barbro.VideoActivity">
+    tools:context="com.alexnassif.mobile.barbro.VideoActivity">
 
     <VideoView
         android:id="@+id/video_view_activity"
