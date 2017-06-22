@@ -11,7 +11,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import java.io.IOException;
 
@@ -246,8 +245,6 @@ public class BarBroContentProvider extends ContentProvider {
 
         }
         if (retInt != 0) {
-            //set notifications if a task was updated
-            Log.d("insert tag", retInt + "");
             getContext().getContentResolver().notifyChange(uri, null);
         }
         return retInt;

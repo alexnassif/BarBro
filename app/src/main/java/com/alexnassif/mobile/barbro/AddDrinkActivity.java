@@ -225,7 +225,7 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
             // Continue only if the File was successfully created
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.example.mobile.barbro.fileprovider",
+                        "com.alexnassif.mobile.barbro.fileprovider",
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);

@@ -1,5 +1,6 @@
 package com.alexnassif.mobile.barbro;
 
+import android.content.AsyncQueryHandler;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -105,9 +106,16 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
 
                 }
 
-                getContext().getContentResolver().delete(uri, null, null);
+                AsyncQueryHandler deleteDrink = new AsyncQueryHandler(getContext().getContentResolver()) {
 
-                getLoaderManager().restartLoader(MY_DRINK_LOADER, null, MyDrinkFragment.this);
+                    @Override
+                    protected void onDeleteComplete(int token, Object cookie, int result) {
+                        super.onDeleteComplete(token, cookie, result);
+                        getLoaderManager().restartLoader(MY_DRINK_LOADER, null, MyDrinkFragment.this);
+
+                    }
+                };
+                deleteDrink.startDelete(-1, null, uri, null, null);
 
             }
         }).attachToRecyclerView(mRecyclerView);

@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -29,7 +30,7 @@ public class SearchWeb extends AppCompatActivity implements View.OnClickListener
         mWebView = (WebView) findViewById(R.id.webView);
 
         mWebView.setWebViewClient(new MyBrowser());
-        mWebView.loadUrl("http://www.google.com");
+        mWebView.loadUrl("https://www.google.com");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }

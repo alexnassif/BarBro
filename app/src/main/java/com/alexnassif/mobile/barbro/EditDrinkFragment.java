@@ -165,7 +165,7 @@ public class EditDrinkFragment extends Fragment implements View.OnClickListener,
             // Continue only if the File was successfully created
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(getContext(),
-                        "com.example.mobile.barbro.fileprovider",
+                        "com.alexnassif.mobile.barbro.fileprovider",
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);

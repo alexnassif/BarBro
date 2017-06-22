@@ -54,7 +54,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/my_ingredients_view"
-        app:srcCompat="@drawable/nophoto"
+        app:srcCompat="@drawable/noimage"
         app:layout_constraintHorizontal_bias="0.502" />
 
     <Button
