@@ -97,17 +97,7 @@ public class MyDrinkAdapter extends RecyclerView.Adapter<MyDrinkAdapter.MyDrinkA
             int adapterPosition = getAdapterPosition();
             mDrinkData.moveToPosition(adapterPosition);
             int drinkId = mDrinkData.getColumnIndex(BarBroContract.MyDrinkEntry._ID);
-            int drinkName = mDrinkData.getColumnIndex(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_NAME);
-            int ingredients = mDrinkData.getColumnIndex(BarBroContract.MyDrinkEntry.COLUMN_MYINGREDIENTS);
-
-
             int id = mDrinkData.getInt(drinkId);
-            String _drinkName = mDrinkData.getString(drinkName);
-            String drinkIngredients = mDrinkData.getString(ingredients);
-
-            Drink drink = new Drink();
-            drink.setDrinkName(_drinkName);
-            drink.setIngredients(drinkIngredients);
             mClickHandler.onClick(id);
 
         }
