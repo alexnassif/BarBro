@@ -124,7 +124,7 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        myView = inflater.inflate(R.layout.fragment_history, container, false);
+        myView = inflater.inflate(R.layout.fragment_mydrink, container, false);
         mRecyclerView = (RecyclerView) myView.findViewById(R.id.recyclerview_drinks);
         acDrinkTextView = (AutoCompleteTextView) myView.findViewById(R.id.search_drinks);
         return myView;
