@@ -123,7 +123,6 @@ public class MyDrinkDetailFragment extends Fragment implements LoaderManager.Loa
                 @Override
                 protected void onDeleteComplete(int token, Object cookie, int result) {
                     super.onDeleteComplete(token, cookie, result);
-                    getActivity().finish();
                 }
             };
             deleteDrink.startDelete(-1, null, uri, null, null);
