@@ -57,4 +57,6 @@
     <string name="ocr_failure">No text captured</string>
     <string name="ocr_error">"Error reading text: %1$s"</string>
     <string name="searchweb">Search Web</string>
+    <string name="edit_drink">Edit Drink</string>
+    <string name="delete">Delete</string>
 </resources>

@@ -24,6 +24,7 @@
             android:text="TextView"
             android:textAlignment="center"
             android:textSize="36sp"
+            android:textColor="@color/colorPrimaryDark"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -39,6 +40,7 @@
             android:layout_marginTop="0dp"
             android:background="#286db7"
             android:text="TextView"
+            android:textColor="#FFFFFF"
             android:textAlignment="center"
             android:textSize="22sp"
             app:layout_constraintHorizontal_bias="0.0"
@@ -69,10 +71,9 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="7dp"
+            android:layout_marginTop="5dp"
             android:background="@android:color/holo_blue_bright"
-            android:text="Edit Drink"
-            app:layout_constraintHorizontal_bias="0.493"
+            android:text="@string/edit_drink"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/my_drink_pic_view" />
