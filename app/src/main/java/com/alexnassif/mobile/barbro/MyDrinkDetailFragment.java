@@ -123,6 +123,7 @@ public class MyDrinkDetailFragment extends Fragment implements LoaderManager.Loa
                 @Override
                 protected void onDeleteComplete(int token, Object cookie, int result) {
                     super.onDeleteComplete(token, cookie, result);
+                    getActivity().finish();
                 }
             };
             deleteDrink.startDelete(-1, null, uri, null, null);
@@ -156,23 +157,26 @@ public class MyDrinkDetailFragment extends Fragment implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        data.moveToFirst();
 
-        int drinkName = data.getColumnIndex(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_NAME);
-        int ingredients = data.getColumnIndex(BarBroContract.MyDrinkEntry.COLUMN_MYINGREDIENTS);
-        int picId = data.getColumnIndex(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_PIC);
+        if(data.getCount() > 0) {
+            data.moveToFirst();
 
-        mMyDrinkName.setText(data.getString(drinkName));
-        mMyDrinkIngredients.setText(data.getString(ingredients));
-        picFile = data.getString(picId);
-        if (picFile != null) {
-            Uri takenPhotoUri = Uri.fromFile(new File(picFile));
-            Glide.with(getContext()).load(takenPhotoUri.getPath()).into(mMyDrinkImage);
+            int drinkName = data.getColumnIndex(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_NAME);
+            int ingredients = data.getColumnIndex(BarBroContract.MyDrinkEntry.COLUMN_MYINGREDIENTS);
+            int picId = data.getColumnIndex(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_PIC);
+
+            mMyDrinkName.setText(data.getString(drinkName));
+            mMyDrinkIngredients.setText(data.getString(ingredients));
+            picFile = data.getString(picId);
+            if (picFile != null) {
+                Uri takenPhotoUri = Uri.fromFile(new File(picFile));
+                Glide.with(getContext()).load(takenPhotoUri.getPath()).into(mMyDrinkImage);
+            }
         }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-
+        loader = null;
     }
 }

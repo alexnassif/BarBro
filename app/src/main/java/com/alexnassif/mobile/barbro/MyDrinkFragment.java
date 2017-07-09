@@ -129,7 +129,6 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
         return myView;
     }
 
-
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id){
