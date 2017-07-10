@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -60,6 +61,9 @@ public class MyDrinkDetailFragment extends Fragment implements LoaderManager.Loa
         if (getArguments() != null) {
             drinkId = getArguments().getInt(drink_param);
         }
+        AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
+        appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         setHasOptionsMenu(true);
     }
     @Override
@@ -106,29 +110,6 @@ public class MyDrinkDetailFragment extends Fragment implements LoaderManager.Loa
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.delete) {
-
-            Uri uri = BarBroContract.MyDrinkEntry.CONTENT_URI;
-            uri = uri.buildUpon().appendPath(Integer.toString(drinkId)).build();
-            if(picFile != null){
-                File file = new File(picFile);
-                if(file.exists()) {
-                    file.delete();
-                }
-
-            }
-
-            AsyncQueryHandler deleteDrink = new AsyncQueryHandler(getContext().getContentResolver()) {
-
-                @Override
-                protected void onDeleteComplete(int token, Object cookie, int result) {
-                    super.onDeleteComplete(token, cookie, result);
-                    getActivity().finish();
-                }
-            };
-            deleteDrink.startDelete(-1, null, uri, null, null);
-
-        }
         if(id == R.id.edit_drink_menu){
             Intent intent = new Intent(getContext(), EditDrinkActivity.class);
             intent.putExtra("drink", drinkId);

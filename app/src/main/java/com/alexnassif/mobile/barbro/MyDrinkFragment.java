@@ -59,6 +59,13 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
         super.onCreate(savedInstanceState);
         getActivity().setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        getLoaderManager().initLoader(MY_DRINK_LOADER, null, this);
+    }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
