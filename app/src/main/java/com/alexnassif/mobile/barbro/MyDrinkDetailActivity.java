@@ -54,6 +54,7 @@ public class MyDrinkDetailActivity extends AppCompatActivity implements LoaderMa
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportLoaderManager().initLoader(MY_DRINK_DETAIL_LOADER, null, this);
     }
 
     @Override
