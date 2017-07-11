@@ -118,6 +118,7 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
                     @Override
                     protected void onDeleteComplete(int token, Object cookie, int result) {
                         super.onDeleteComplete(token, cookie, result);
+                        mRecyclerView.removeAllViews();
                         getLoaderManager().restartLoader(MY_DRINK_LOADER, null, MyDrinkFragment.this);
                     }
                 };

@@ -30,7 +30,6 @@ public class MyDrinkAdapter extends RecyclerView.Adapter<MyDrinkAdapter.MyDrinkA
     public interface MyDrinkAdapterOnClickHandler{
         void onClick(int drinkId);
     }
-
     @Override
     public MyDrinkAdapter.MyDrinkAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
