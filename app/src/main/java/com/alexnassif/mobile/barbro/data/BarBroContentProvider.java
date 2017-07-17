@@ -12,6 +12,8 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.google.firebase.crash.FirebaseCrash;
+
 import java.io.IOException;
 
 /**
@@ -142,8 +144,10 @@ public class BarBroContentProvider extends ContentProvider {
                         + " = " + BarBroContract.HistoryEntry.TABLE_NAME + ".idh) WHERE "
                         + BarBroContract.HistoryEntry.TABLE_NAME + "._id=" + id, null);*/
                 break;}
-            default:
+            default: {
+                FirebaseCrash.report(new Exception("query uri doesn't match " + uri));
                 throw new UnsupportedOperationException("Uri doesn't match " + uri);
+            }
 
         }
         retCursor.setNotificationUri(getContext().getContentResolver(), uri);
@@ -185,8 +189,10 @@ public class BarBroContentProvider extends ContentProvider {
                 else
                     throw new SQLException("Failed to insert row into " + uri);
                 break;}
-            default:
+            default: {
+                FirebaseCrash.report(new Exception("insert uri is unknown " + uri));
                 throw new UnsupportedOperationException("Unknown uri " + uri);
+            }
 
         }
         getContext().getContentResolver().notifyChange(uri, null);
@@ -207,8 +213,10 @@ public class BarBroContentProvider extends ContentProvider {
             case HISTORY:
                 retInt = db.delete(BarBroContract.HistoryEntry.TABLE_NAME, null, null);
                 break;
-            default:
+            default: {
+                FirebaseCrash.report(new Exception("delete uri is unknown " + uri));
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
+            }
 
         }
         if (retInt != 0) {
@@ -240,8 +248,10 @@ public class BarBroContentProvider extends ContentProvider {
                 retInt = db.update(BarBroContract.HistoryEntry.TABLE_NAME, values, "_id=?", new String[]{id});
                 break;
             }
-            default:
+            default: {
+                FirebaseCrash.report(new Exception("update uri is unknown " + uri));
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
+            }
 
         }
         if (retInt != 0) {

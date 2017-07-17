@@ -71,7 +71,6 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        FirebaseCrash.report(new Exception("My first Android non-fatal error"));
         setContentView(R.layout.fragment_new_drink);
         //views
         sp = getSharedPreferences("MyPrefs", MODE_PRIVATE);

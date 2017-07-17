@@ -5,6 +5,9 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.google.firebase.crash.FirebaseCrash;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,7 +51,7 @@ public class BarBroDbHelper extends SQLiteOpenHelper {
                 copyDataBase();
 
             } catch (IOException e) {
-
+                FirebaseCrash.report(new Exception(e));
                 throw new Error("Error copying database");
 
             }
