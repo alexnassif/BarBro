@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "46458570871",
+    "firebase_url": "https://bar-bro.firebaseio.com",
+    "project_id": "bar-bro",
+    "storage_bucket": "bar-bro.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:46458570871:android:49ef10601144a682",
+        "android_client_info": {
+          "package_name": "com.alexnassif.mobile.barbro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "46458570871-61np7er96m870im7gelt7399e0c3941k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzdMRU0RH8fc9muwEHIOscGyqDZoJddfQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

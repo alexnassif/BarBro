@@ -39,6 +39,7 @@ import com.alexnassif.mobile.barbro.utilities.GraphicOverlay;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
+import com.google.firebase.crash.FirebaseCrash;
 
 import java.io.File;
 import java.io.IOException;
@@ -70,6 +71,7 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        FirebaseCrash.report(new Exception("My first Android non-fatal error"));
         setContentView(R.layout.fragment_new_drink);
         //views
         sp = getSharedPreferences("MyPrefs", MODE_PRIVATE);
