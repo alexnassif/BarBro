@@ -78,7 +78,7 @@ public class VideoActivity extends AppCompatActivity implements LoaderManager.Lo
                  * and set its position on screen
                  */
                         mediaController.setAnchorView(videoView);
-                        progressBar.setVisibility(View.GONE);
+                        progressBar.setVisibility(View.INVISIBLE);
 
                     }
                 });

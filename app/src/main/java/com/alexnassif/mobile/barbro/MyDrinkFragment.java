@@ -98,10 +98,9 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
 
             // Called when a user swipes left or right on a ViewHolder
             @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+            public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
 
                 Drink drink = (Drink) viewHolder.itemView.getTag();
-
                 String stringId = Integer.toString(drink.getDbId());
                 Uri uri = BarBroContract.MyDrinkEntry.CONTENT_URI;
                 uri = uri.buildUpon().appendPath(stringId).build();
@@ -113,13 +112,12 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
 
                 }
 
-                AsyncQueryHandler deleteDrink = new AsyncQueryHandler(getContext().getContentResolver()) {
+                AsyncQueryHandler deleteDrink = new AsyncQueryHandler(getActivity().getContentResolver()) {
 
                     @Override
                     protected void onDeleteComplete(int token, Object cookie, int result) {
                         super.onDeleteComplete(token, cookie, result);
-                        mRecyclerView.removeAllViews();
-                        getLoaderManager().restartLoader(MY_DRINK_LOADER, null, MyDrinkFragment.this);
+                        mRecyclerView.removeAllViewsInLayout();
                     }
                 };
                 deleteDrink.startDelete(-1, null, uri, null, null);
