@@ -92,7 +92,7 @@ public class LiquorFragment extends Fragment implements
         boolean[] selectedItems = new boolean[adapter.getCount()];
         //selectedItems[1] = true; // select second item
         mLiquorSpinner.setSelected(selectedItems);
-        mLiquorSpinner.setText("Pick your flavor");
+        mLiquorSpinner.setText("Pick your Flavor");
 
         if (savedInstanceState != null) {
             // Restore last state for checked position.
@@ -345,7 +345,14 @@ public class LiquorFragment extends Fragment implements
 //        intent.putExtra("drink", drink);
 //        startActivity(intent);
     }
+    private boolean checkForTastes(boolean[] tastes){
 
+        for(int i = 0; i < tastes.length; i++) {
+            if (tastes[i] == true)
+                return true;
+        }
+        return false;
+    }
     private MultiSpinner.MultiSpinnerListener onSelectedListener = new MultiSpinner.MultiSpinnerListener() {
        // Resources res = getResources();
         //String[] sArray = res.getStringArray(R.array.liquor_array);
@@ -356,25 +363,30 @@ public class LiquorFragment extends Fragment implements
             String[] sArray = res.getStringArray(R.array.liquor_array);
             ArrayList<String> sList = new ArrayList<>();
             StringBuilder builder = new StringBuilder();
+            if(checkForTastes(selected)) {
+                for (int i = 0; i < selected.length; i++) {
+                    if (selected[i]) {
+                        sList.add(adapter.getItem(i).toString());
+                    }
+                }
 
-            for (int i = 0; i < selected.length; i++) {
-                if (selected[i]) {
-                    sList.add(adapter.getItem(i).toString());
+                for (int i = 0; i < sList.size(); i++) {
+                    if (i != sList.size() - 1)
+                        builder.append(sList.get(i)).append(" AND ");
+                    else
+                        builder.append(sList.get(i));
+                }
+                liqType = builder.toString();
+                Loader<Cursor> githubSearchLoader = getLoaderManager().getLoader(GITHUB_SEARCH_LOADER);
+                if (githubSearchLoader == null) {
+                    getLoaderManager().initLoader(GITHUB_SEARCH_LOADER, null, LiquorFragment.this);
+                } else {
+                    getLoaderManager().restartLoader(GITHUB_SEARCH_LOADER, null, LiquorFragment.this);
                 }
             }
-
-            for(int i = 0; i < sList.size(); i++){
-                if(i != sList.size()-1)
-                    builder.append(sList.get(i)).append(" AND ");
-                else
-                    builder.append(sList.get(i));
-            }
-            liqType = builder.toString();
-            Loader<Cursor> githubSearchLoader = getLoaderManager().getLoader(GITHUB_SEARCH_LOADER);
-            if (githubSearchLoader == null) {
-                getLoaderManager().initLoader(GITHUB_SEARCH_LOADER, null, LiquorFragment.this);
-            } else {
-                getLoaderManager().restartLoader(GITHUB_SEARCH_LOADER, null, LiquorFragment.this);
+            else{
+                Toast.makeText(getContext(), "Nothing Selected", Toast.LENGTH_LONG).show();
+                mLiquorSpinner.setText("Pick your Flavor");
             }
         }
     };
