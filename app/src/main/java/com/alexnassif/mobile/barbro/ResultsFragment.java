@@ -158,6 +158,8 @@ public class ResultsFragment extends Fragment implements
             @Override
             public void onClick(View view) {
                 youtubeLayout.setVisibility(View.GONE);
+                mMenu.clear();
+                isMenu = false;
             }
         });
 
