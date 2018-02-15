@@ -42,7 +42,7 @@ public class YouTubeLayout extends ViewGroup {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mHeaderView = findViewById(R.id.header);
+        mHeaderView = findViewById(R.id.header_layout);
         mDescView = findViewById(R.id.desc);
         mMixView = findViewById(R.id.desc_view_youtube);
     }
@@ -145,7 +145,7 @@ public class YouTubeLayout extends ViewGroup {
             case MotionEvent.ACTION_DOWN: {
                 mInitialMotionX = x;
                 mInitialMotionY = y;
-                interceptTap = mDragHelper.isViewUnder(mHeaderView, (int) x, (int) y);
+                //interceptTap = mDragHelper.isViewUnder(mHeaderView, (int) x, (int) y);
                 break;
             }
 
@@ -158,6 +158,9 @@ public class YouTubeLayout extends ViewGroup {
                     mDragHelper.cancel();
                     return false;
                 }
+            }
+            case MotionEvent.ACTION_UP: {
+                return false;
             }
         }
 

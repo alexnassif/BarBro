@@ -80,6 +80,7 @@ public class VideoActivity extends AppCompatActivity implements LoaderManager.Lo
                         mediaController.setAnchorView(videoView);
                         progressBar.setVisibility(View.INVISIBLE);
 
+
                     }
                 });
 

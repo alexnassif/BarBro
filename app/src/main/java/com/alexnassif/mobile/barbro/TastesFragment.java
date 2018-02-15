@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,6 +58,7 @@ public class TastesFragment extends Fragment implements
     private boolean whichFragment = true;
     private VideoFragment videoFragment;
     private DrinkDetailFragment drinkDetailFragment;
+    private ImageView mArrowExit;
 
 
     @Override
@@ -127,6 +129,13 @@ public class TastesFragment extends Fragment implements
         }
 
 
+        mArrowExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                youtubeLayout.setVisibility(View.GONE);
+            }
+        });
+
     }
 
     @Override
@@ -184,6 +193,7 @@ public class TastesFragment extends Fragment implements
             viewDesc = (TextView) myView.findViewById(R.id.desc);
             mMixView = (TextView) myView.findViewById(R.id.desc_view_youtube);
             youtubeLayout = (YouTubeLayout) myView.findViewById(R.id.dragLayout);
+            mArrowExit = (ImageView) myView.findViewById(R.id.arrowUpExit);
         }
         return myView;
     }
@@ -274,8 +284,10 @@ public class TastesFragment extends Fragment implements
                         videoURL = drink.getVideo();
                         if (mDualPane) {
                             showDetails(drink.getDbId());
-                        } else
+                        } else {
                             drinkDetail(drink.getDbId());
+
+                        }
                         mAutoCompleteTextView.setText("");
                     }
                 });
@@ -295,6 +307,7 @@ public class TastesFragment extends Fragment implements
             videoURL = data.getString(videoId);
             youtubeLayout.setVisibility(View.VISIBLE);
             youtubeLayout.maximize();
+
         }
 
     }
@@ -322,6 +335,13 @@ public class TastesFragment extends Fragment implements
             getLoaderManager().initLoader(DRINK_BY_ID_LOADER, null, this);
         else
             getLoaderManager().restartLoader(DRINK_BY_ID_LOADER, null, this);
+
+        mArrowExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                youtubeLayout.setVisibility(View.GONE);
+            }
+        });
     }
 
 }

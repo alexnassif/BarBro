@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.alexnassif.mobile.barbro.data.BarBroContract;
@@ -56,6 +57,7 @@ public class HistoryFragment extends Fragment implements
     private Menu mMenu;
     private MenuInflater mMenuInflater;
     private boolean isMenu = false;
+    private ImageView mArrowExit;
 
     public HistoryFragment() {
         // Required empty public constructor
@@ -114,6 +116,12 @@ public class HistoryFragment extends Fragment implements
                         .commit();
             }
         }
+        mArrowExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                youtubeLayout.setVisibility(View.GONE);
+            }
+        });
 
     }
 
@@ -163,6 +171,7 @@ public class HistoryFragment extends Fragment implements
             viewDesc = (TextView) myView.findViewById(R.id.desc);
             mMixView = (TextView) myView.findViewById(R.id.desc_view_youtube);
             youtubeLayout = (YouTubeLayout) myView.findViewById(R.id.dragLayout);
+            mArrowExit = (ImageView) youtubeLayout.findViewById(R.id.arrowUpExit);
         }
         return myView;
     }

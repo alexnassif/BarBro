@@ -66,16 +66,10 @@
         android:orientation="vertical"
         android:visibility="gone">
 
-        <TextView
-            android:id="@+id/header"
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"
-            android:background="@android:color/holo_blue_bright"
-            android:gravity="center"
-            android:tag="text"
-            android:text="Drag me to the bottom"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="36sp" />
+        <include layout="@layout/header_exit"
+            android:id="@+id/header_layout"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"/>
 
         <TextView
             android:id="@+id/desc"

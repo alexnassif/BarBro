@@ -24,6 +24,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.alexnassif.mobile.barbro.data.BarBroContract;
@@ -62,6 +63,7 @@ public class ResultsFragment extends Fragment implements
     private int drinkId;
     private TextView viewDesc;
     private TextView mMixView;
+    private ImageView mArrowExit;
     private boolean whichFragment = true;
     private Menu mMenu;
     private MenuInflater mMenuInflater;
@@ -152,6 +154,12 @@ public class ResultsFragment extends Fragment implements
                         .commit();
             }
         }
+        mArrowExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                youtubeLayout.setVisibility(View.GONE);
+            }
+        });
 
     }
 
@@ -211,6 +219,7 @@ public class ResultsFragment extends Fragment implements
             viewDesc = (TextView) myView.findViewById(R.id.desc);
             mMixView = (TextView) myView.findViewById(R.id.desc_view_youtube);
             youtubeLayout = (YouTubeLayout) myView.findViewById(R.id.dragLayout);
+            mArrowExit = (ImageView) myView.findViewById(R.id.arrowUpExit);
             //youtubeLayout.setVisibility(View.GONE);
         }
         return myView;

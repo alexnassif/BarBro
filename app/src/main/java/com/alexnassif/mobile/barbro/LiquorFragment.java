@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,6 +64,7 @@ public class LiquorFragment extends Fragment implements
     private Menu mMenu;
     private MenuInflater mMenuInflater;
     private boolean isMenu = false;
+    private ImageView mArrowExit;
 
 
     @Override
@@ -119,6 +121,13 @@ public class LiquorFragment extends Fragment implements
                         .commit();
             }
         }
+
+        mArrowExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                youtubeLayout.setVisibility(View.GONE);
+            }
+        });
 
 
     }
@@ -180,6 +189,7 @@ public class LiquorFragment extends Fragment implements
             viewDesc = (TextView) myView.findViewById(R.id.desc);
             mMixView = (TextView) myView.findViewById(R.id.desc_view_youtube);
             youtubeLayout = (YouTubeLayout) myView.findViewById(R.id.dragLayout);
+            mArrowExit = (ImageView) myView.findViewById(R.id.arrowUpExit);
             //youtubeLayout.setVisibility(View.GONE);
         }
         return myView;

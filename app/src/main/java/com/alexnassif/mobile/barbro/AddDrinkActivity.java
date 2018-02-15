@@ -21,6 +21,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.DragEvent;
 import android.view.GestureDetector;
@@ -64,7 +65,7 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
     private TextRecognizer textRecognizer;
     private GestureDetector gestureDetector;
     private static final String TAG = "OcrCaptureActivity";
-    private SparseArray<TextBlock> results;
+
     private MyDragEventListener mDragListen;
     private ScrollView scrollView;
     private SharedPreferences sp;
@@ -74,8 +75,6 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
-
         setContentView(R.layout.fragment_new_drink);
         //views
         sp = getSharedPreferences("MyPrefs", MODE_PRIVATE);
@@ -167,7 +166,9 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
                     Toast.makeText(this, R.string.low_storage_error, Toast.LENGTH_LONG).show();
                 }
             }
-            dispatchTakePictureIntent();
+            if(textRecognizer.isOperational()) {
+                dispatchTakePictureIntent();
+            }
         }
         else if (view.getId() == R.id.cancel_button) {
             finish();
@@ -296,8 +297,12 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
 
                 Frame frame = new Frame.Builder().setBitmap(bitmap).build();
                 try {
-                    results = textRecognizer.detect(frame);
-                    OcrDetector ocrDetector = new OcrDetector(mGraphicOverlay, results);
+
+
+
+
+                   SparseArray<TextBlock> results = textRecognizer.detect(frame);
+                   OcrDetector ocrDetector = new OcrDetector(mGraphicOverlay, results);
                     if (mDrawingPad.getChildCount() > 0)
                         mDrawingPad.removeAllViews();
                     mDrawingPad.addView(mGraphicOverlay);
@@ -321,7 +326,8 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
                         snackbar.show();
                     }
                 } catch (Exception e) {
-                    Toast.makeText(this, "Text Recognizer is not available right now", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    Log.d("frame", e.getMessage());
                 }
             }
 
