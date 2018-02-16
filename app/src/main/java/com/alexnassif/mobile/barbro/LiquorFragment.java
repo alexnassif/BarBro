@@ -122,14 +122,16 @@ public class LiquorFragment extends Fragment implements
             }
         }
 
-        mArrowExit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                youtubeLayout.setVisibility(View.GONE);
-                mMenu.clear();
-                isMenu = false;
-            }
-        });
+        if(!mDualPane) {
+            mArrowExit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    youtubeLayout.setVisibility(View.GONE);
+                    mMenu.clear();
+                    isMenu = false;
+                }
+            });
+        }
 
 
     }
