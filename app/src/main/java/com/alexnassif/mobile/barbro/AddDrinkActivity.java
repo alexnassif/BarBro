@@ -326,8 +326,7 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
                         snackbar.show();
                     }
                 } catch (Exception e) {
-                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-                    Log.d("frame", e.getMessage());
+                    Toast.makeText(this, "Text Recognizer is not available right now", Toast.LENGTH_LONG).show();
                 }
             }
 
