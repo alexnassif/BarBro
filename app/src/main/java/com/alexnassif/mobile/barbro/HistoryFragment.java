@@ -213,12 +213,14 @@ public class HistoryFragment extends Fragment implements
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
-        if(loader.getId() == HISTORY_SEARCH_LOADER) {
-            if(data.getCount() == 0 && loader.getId() == HISTORY_SEARCH_LOADER){
+        if (loader.getId() == HISTORY_SEARCH_LOADER) {
+            if (data.getCount() == 0 && loader.getId() == HISTORY_SEARCH_LOADER) {
                 Toast.makeText(getContext(), "No history yet", Toast.LENGTH_LONG).show();
+                return;
             }
-            final int drinkId = data.getColumnIndex(BarBroContract.BarBroEntry._ID);
-            int drinkName = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
+            mDrinkAdapter.swapCursor(data);
+            final int idh = data.getColumnIndex(BarBroContract.HistoryEntry.COLUMN_HISTORYID);
+            final int drinkName = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
             int ingredients = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS);
             int drinkPicId = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC);
             int videoId = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_VIDEO);
@@ -229,30 +231,32 @@ public class HistoryFragment extends Fragment implements
 
                 Drink drink = new Drink(data.getString(drinkName), data.getString(ingredients), data.getString(drinkPicId));
                 drink.setVideo(data.getString(videoId));
-                drink.setDbId(data.getInt(drinkId));
+                drink.setDbId(data.getInt(idh));
                 array[i] = drink;
                 i++;
                 data.moveToNext();
             }
-            if (data != null) {
-                mDrinkAdapter.swapCursor(data);
-                ArrayAdapter<Drink> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, array);
-                acDrinkTextView.setAdapter(adapter);
-                acDrinkTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        Drink drink = (Drink) adapterView.getAdapter().getItem(i);
-                        videoURL = drink.getVideo();
-                        mCurCheckPosition = drink.getDbId();
-                        if (mDualPane) {
-                            showDetails(drink.getDbId());
-                        } else
-                            drinkDetail(drink.getDbId());
-                        acDrinkTextView.setText("");
+
+            ArrayAdapter<Drink> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, array);
+            acDrinkTextView.setAdapter(adapter);
+            acDrinkTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Drink drink = (Drink) adapterView.getAdapter().getItem(i);
+                    HistoryUtils.addToHistory(getContext(), drink.getDbId());
+                    videoURL = drink.getVideo();
+                    mCurCheckPosition = drink.getDbId();
+                    if (mDualPane) {
+                        showDetails(drink.getDbId());
+                    } else {
+                        drinkDetail(drink.getDbId());
 
                     }
-                });
-            }
+                    acDrinkTextView.setText("");
+
+                }
+            });
+
         }
         if(loader.getId() == DRINK_BY_ID_LOADER){
             data.moveToFirst();
@@ -327,12 +331,12 @@ public class HistoryFragment extends Fragment implements
     }
     @Override
     public void onClick(int drink) {
+
         HistoryUtils.addToHistory(getContext(), drink);
         if(!isMenu) {
             mMenuInflater.inflate(R.menu.video, mMenu);
             isMenu = true;
         }
-        mCurCheckPosition = drink;
         if (mDualPane) {
             showDetails(drink);
         }
@@ -341,6 +345,7 @@ public class HistoryFragment extends Fragment implements
 
     }
     public void drinkDetail(int drink){
+        mCurCheckPosition = drink;
         drinkId = drink;
         Loader<Cursor> loaderM = getLoaderManager().getLoader(DRINK_BY_ID_LOADER);
         if(loaderM == null)

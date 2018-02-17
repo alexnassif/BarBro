@@ -262,10 +262,11 @@ public class LiquorFragment extends Fragment implements
 
          //When we finish loading, we want to hide the loading indicator from the user.
         //mLoadingIndicator.setVisibility(View.INVISIBLE);
-        if(loader.getId() == GITHUB_SEARCH_LOADER) {
-            if(data.getCount() == 0){
+        if (loader.getId() == GITHUB_SEARCH_LOADER) {
+            if (data.getCount() == 0) {
                 Toast.makeText(getContext(), "No Drinks with those Flavors", Toast.LENGTH_LONG).show();
             }
+            mDrinkAdapter.swapCursor(data);
             int drinkId = data.getColumnIndex(BarBroContract.BarBroEntry._ID);
             int drinkName = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
             int ingredients = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS);
@@ -282,29 +283,26 @@ public class LiquorFragment extends Fragment implements
                 i++;
                 data.moveToNext();
             }
-            //mLoadingIndicator.setVisibility(View.INVISIBLE);
-            if (data != null) {
-                mAutoCompleteTextView.setVisibility(View.VISIBLE);
-                mRecyclerView.setVisibility(View.VISIBLE);
-                mDrinkAdapter.swapCursor(data);
-                ArrayAdapter<Drink> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, array);
-                mAutoCompleteTextView.setAdapter(adapter);
-                mRecyclerView.scrollToPosition(0);
-                mAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        Drink drink = (Drink) adapterView.getAdapter().getItem(i);
-                        HistoryUtils.addToHistory(getContext(), drink.getDbId());
-                        videoURL = drink.getVideo();
-                        //drinkDetail(drink.getDbId());
-                        if (mDualPane) {
-                            showDetails(drink.getDbId());
-                        } else
-                            drinkDetail(drink.getDbId());
-                        mAutoCompleteTextView.setText("");
-                    }
-                });
-            }
+
+            mAutoCompleteTextView.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.VISIBLE);
+            ArrayAdapter<Drink> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, array);
+            mAutoCompleteTextView.setAdapter(adapter);
+            mRecyclerView.scrollToPosition(0);
+            mAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Drink drink = (Drink) adapterView.getAdapter().getItem(i);
+                    HistoryUtils.addToHistory(getContext(), drink.getDbId());
+                    videoURL = drink.getVideo();
+                    if (mDualPane) {
+                        showDetails(drink.getDbId());
+                    } else
+                        drinkDetail(drink.getDbId());
+                    mAutoCompleteTextView.setText("");
+                }
+            });
+
         }
         if(loader.getId() == DRINK_BY_ID_LOADER){
             data.moveToFirst();
@@ -336,7 +334,6 @@ public class LiquorFragment extends Fragment implements
     @Override
     public void onClick(int drink) {
         HistoryUtils.addToHistory(getContext(), drink);
-        mCurCheckPosition = drink;
         if (mDualPane) {
             showDetails(drink);
         }
@@ -345,6 +342,7 @@ public class LiquorFragment extends Fragment implements
 
     }
     public void drinkDetail(int drink){
+        mCurCheckPosition = drink;
         drinkId = drink;
         if(!isMenu) {
             mMenuInflater.inflate(R.menu.video, mMenu);

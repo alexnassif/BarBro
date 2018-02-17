@@ -281,10 +281,11 @@ public class ResultsFragment extends Fragment implements
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
-        if(loader.getId() == GITHUB_SEARCH_LOADER || loader.getId() == FAVE_LOADER) {
-            if(data.getCount() == 0 && loader.getId() == FAVE_LOADER){
+        if (loader.getId() == GITHUB_SEARCH_LOADER || loader.getId() == FAVE_LOADER) {
+            if (data.getCount() == 0 && loader.getId() == FAVE_LOADER) {
                 Toast.makeText(getContext(), "No Favorites added yet", Toast.LENGTH_LONG).show();
             }
+            mDrinkAdapter.swapCursor(data);
             final int drinkId = data.getColumnIndex(BarBroContract.BarBroEntry._ID);
             int drinkName = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
             int ingredients = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS);
@@ -302,26 +303,25 @@ public class ResultsFragment extends Fragment implements
                 i++;
                 data.moveToNext();
             }
-            if (data != null) {
-                mDrinkAdapter.swapCursor(data);
-                ArrayAdapter<Drink> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, array);
-                acDrinkTextView.setAdapter(adapter);
-                acDrinkTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        Drink drink = (Drink) adapterView.getAdapter().getItem(i);
-                        HistoryUtils.addToHistory(getContext(), drink.getDbId());
-                        videoURL = drink.getVideo();
-                        mCurCheckPosition = drink.getDbId();
-                        if (mDualPane) {
-                            showDetails(drink.getDbId());
-                        } else
-                            drinkDetail(drink.getDbId());
-                        acDrinkTextView.setText("");
 
-                    }
-                });
-            }
+            ArrayAdapter<Drink> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, array);
+            acDrinkTextView.setAdapter(adapter);
+            acDrinkTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Drink drink = (Drink) adapterView.getAdapter().getItem(i);
+                    HistoryUtils.addToHistory(getContext(), drink.getDbId());
+                    videoURL = drink.getVideo();
+                    mCurCheckPosition = drink.getDbId();
+                    if (mDualPane) {
+                        showDetails(drink.getDbId());
+                    } else
+                        drinkDetail(drink.getDbId());
+                    acDrinkTextView.setText("");
+
+                }
+            });
+
         }
         if(loader.getId() == DRINK_BY_ID_LOADER){
             data.moveToFirst();
@@ -385,6 +385,7 @@ public class ResultsFragment extends Fragment implements
     }
     public void drinkDetail(int drink){
         drinkId = drink;
+        mCurCheckPosition = drink;
         if(!isMenu) {
             mMenuInflater.inflate(R.menu.video, mMenu);
             isMenu = true;
@@ -400,7 +401,6 @@ public class ResultsFragment extends Fragment implements
     @Override
     public void onClick(int drink) {
         HistoryUtils.addToHistory(getContext(), drink);
-        mCurCheckPosition = drink;
         if (mDualPane) {
             showDetails(drink);
         }
