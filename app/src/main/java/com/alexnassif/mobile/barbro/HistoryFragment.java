@@ -333,10 +333,6 @@ public class HistoryFragment extends Fragment implements
     public void onClick(int drink) {
 
         HistoryUtils.addToHistory(getContext(), drink);
-        if(!isMenu) {
-            mMenuInflater.inflate(R.menu.video, mMenu);
-            isMenu = true;
-        }
         if (mDualPane) {
             showDetails(drink);
         }
@@ -345,6 +341,7 @@ public class HistoryFragment extends Fragment implements
 
     }
     public void drinkDetail(int drink){
+        showVideoIcon();
         mCurCheckPosition = drink;
         drinkId = drink;
         Loader<Cursor> loaderM = getLoaderManager().getLoader(DRINK_BY_ID_LOADER);
@@ -352,6 +349,14 @@ public class HistoryFragment extends Fragment implements
             getLoaderManager().initLoader(DRINK_BY_ID_LOADER, null, this);
         else
             getLoaderManager().restartLoader(DRINK_BY_ID_LOADER, null, this);
+    }
+    private void showVideoIcon(){
+
+        if(!isMenu) {
+            mMenuInflater.inflate(R.menu.video, mMenu);
+            isMenu = true;
+        }
+
     }
 
 }
