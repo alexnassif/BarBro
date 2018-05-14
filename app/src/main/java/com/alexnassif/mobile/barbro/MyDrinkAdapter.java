@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.alexnassif.mobile.barbro.data.BarBroContract;
-import com.alexnassif.mobile.barbro.data.Drink;
+import com.alexnassif.mobile.barbro.model.Drink;
 
 import java.io.File;
 
@@ -55,10 +55,10 @@ public class MyDrinkAdapter extends RecyclerView.Adapter<MyDrinkAdapter.MyDrinkA
         final String _drinkPic = mDrinkData.getString(drinkPic);
 
         final Drink drink = new Drink();
-        drink.setDbId(id);
+        drink.set_id(id);
         drink.setDrinkName(_drinkName);
         drink.setIngredients(_drinkIngredients);
-        drink.setId(_drinkPic);
+        drink.setPic(_drinkPic);
         if (_drinkPic != null) {
             Uri takenPhotoUri = Uri.fromFile(new File(_drinkPic));
             Glide.with(holder.mDrinkImage.getContext()).load(takenPhotoUri.getPath()).centerCrop().into(holder.mDrinkImage);

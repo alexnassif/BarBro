@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_video"
+    android:pic="@+pic/activity_video"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/common_google_signin_btn_text_dark_focused"
     tools:context="com.alexnassif.mobile.barbro.VideoActivity">
 
     <VideoView
-        android:id="@+id/video_view_activity"
+        android:pic="@+pic/video_view_activity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center" />
 
     <ProgressBar
-        android:id="@+id/video_progressbar"
+        android:pic="@+pic/video_progressbar"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_gravity="center"

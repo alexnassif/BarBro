@@ -25,7 +25,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import com.alexnassif.mobile.barbro.data.BarBroContract;
-import com.alexnassif.mobile.barbro.data.Drink;
+import com.alexnassif.mobile.barbro.model.Drink;
 
 import java.io.File;
 
@@ -101,11 +101,11 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
             public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
 
                 Drink drink = (Drink) viewHolder.itemView.getTag();
-                String stringId = Integer.toString(drink.getDbId());
+                String stringId = Integer.toString(drink.get_id());
                 Uri uri = BarBroContract.MyDrinkEntry.CONTENT_URI;
                 uri = uri.buildUpon().appendPath(stringId).build();
-                if(drink.getId() != null){
-                    File file = new File(drink.getId());
+                if(drink.getPic() != null){
+                    File file = new File(drink.getPic());
                     if(file.exists()) {
                         file.delete();
                     }
@@ -168,7 +168,7 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
             while (!data.isAfterLast()) {
 
                 Drink drink = new Drink(data.getString(drinkName), data.getString(ingredients), data.getString(drinkPicId));
-                drink.setDbId(data.getInt(drinkId));
+                drink.set_id(data.getInt(drinkId));
                 array[i] = drink;
                 i++;
                 data.moveToNext();
@@ -181,7 +181,7 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     Drink drink = (Drink) adapterView.getAdapter().getItem(i);
-                    drinkDetail(drink.getDbId());
+                    drinkDetail(drink.get_id());
                     acDrinkTextView.setText("");
 
                 }

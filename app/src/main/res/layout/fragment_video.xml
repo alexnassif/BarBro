@@ -8,9 +8,9 @@
     <VideoView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/video_fragment_view" />
+        android:pic="@+pic/video_fragment_view" />
     <ProgressBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/video_progressbar"/>
+        android:pic="@+pic/video_progressbar"/>
 </FrameLayout>

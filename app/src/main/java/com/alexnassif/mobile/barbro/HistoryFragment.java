@@ -27,7 +27,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.alexnassif.mobile.barbro.data.BarBroContract;
-import com.alexnassif.mobile.barbro.data.Drink;
+import com.alexnassif.mobile.barbro.model.Drink;
 import com.alexnassif.mobile.barbro.data.HistoryUtils;
 
 
@@ -231,7 +231,7 @@ public class HistoryFragment extends Fragment implements
 
                 Drink drink = new Drink(data.getString(drinkName), data.getString(ingredients), data.getString(drinkPicId));
                 drink.setVideo(data.getString(videoId));
-                drink.setDbId(data.getInt(idh));
+                drink.set_id(data.getInt(idh));
                 array[i] = drink;
                 i++;
                 data.moveToNext();
@@ -243,13 +243,13 @@ public class HistoryFragment extends Fragment implements
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     Drink drink = (Drink) adapterView.getAdapter().getItem(i);
-                    HistoryUtils.addToHistory(getContext(), drink.getDbId());
+                    HistoryUtils.addToHistory(getContext(), drink.get_id());
                     videoURL = drink.getVideo();
-                    mCurCheckPosition = drink.getDbId();
+                    mCurCheckPosition = drink.get_id();
                     if (mDualPane) {
-                        showDetails(drink.getDbId());
+                        showDetails(drink.get_id());
                     } else {
-                        drinkDetail(drink.getDbId());
+                        drinkDetail(drink.get_id());
 
                     }
                     acDrinkTextView.setText("");

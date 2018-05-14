@@ -9,11 +9,11 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:id="@+id/drink_list"
+        android:pic="@+pic/drink_list"
         android:layout_weight="1"
         android:background="#ffffff">
         <FrameLayout
-            android:id="@+id/featured_layout"
+            android:pic="@+pic/featured_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="0dp"
@@ -21,7 +21,7 @@
             android:layout_marginTop="8dp">
 
             <TextView
-                android:id="@+id/featured_drinks"
+                android:pic="@+pic/featured_drinks"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="Random"
@@ -29,7 +29,7 @@
                 android:textSize="16dp" />
 
             <ImageButton
-                android:id="@+id/minimize_button"
+                android:pic="@+pic/minimize_button"
                 android:layout_width="64dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
@@ -38,19 +38,19 @@
         </FrameLayout>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/random_recyclerView"
+            android:pic="@+pic/random_recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <AutoCompleteTextView
-            android:id="@+id/search_drinks"
+            android:pic="@+pic/search_drinks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/search_drink_string"
              />
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerview_drinks"
+            android:pic="@+pic/recyclerview_drinks"
             android:layout_height="wrap_content"
 
             android:layout_width="match_parent"
@@ -60,7 +60,7 @@
         android:paddingLeft="10dp"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:id="@+id/drink_detail_fragment"
+        android:pic="@+pic/drink_detail_fragment"
         android:layout_weight="1">
 
     </FrameLayout>

@@ -3,7 +3,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/fragmentHistory">
+    android:pic="@+pic/fragmentHistory">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,13 +14,13 @@
 
 
         <AutoCompleteTextView
-            android:id="@+id/search_drinks"
+            android:pic="@+pic/search_drinks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/search_drink_string" />
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerview_drinks"
+            android:pic="@+pic/recyclerview_drinks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />
@@ -31,18 +31,18 @@
     <com.alexnassif.mobile.barbro.YouTubeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/dragLayout"
+        android:pic="@+pic/dragLayout"
         android:orientation="vertical"
         android:visibility="gone"
         >
 
         <include layout="@layout/header_exit"
-            android:id="@+id/header_layout"
+            android:pic="@+pic/header_layout"
             android:layout_width="match_parent"
             android:layout_height="100dp"/>
 
         <TextView
-            android:id="@+id/desc"
+            android:pic="@+pic/desc"
             android:tag="desc"
             android:textSize="25sp"
             android:textColor="#FFFFFF"
@@ -55,7 +55,7 @@
             android:textColor="#FFFFFF"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/desc_view_youtube"
+            android:pic="@+pic/desc_view_youtube"
             android:background="#000000"/>
 
 

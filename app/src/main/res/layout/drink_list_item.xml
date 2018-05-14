@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <ImageView
-        android:id="@+id/drink_image"
+        android:pic="@+pic/drink_image"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginLeft="16dp"
@@ -19,19 +19,19 @@
         app:srcCompat="@android:color/background_light" />
 
     <TextView
-        android:id="@+id/drink_data"
+        android:pic="@+pic/drink_data"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:textColor="#ffffff"
-        app:layout_constraintBottom_toBottomOf="@+id/drink_image"
-        app:layout_constraintLeft_toRightOf="@+id/drink_image"
-        app:layout_constraintTop_toTopOf="@+id/drink_image"
+        app:layout_constraintBottom_toBottomOf="@+pic/drink_image"
+        app:layout_constraintLeft_toRightOf="@+pic/drink_image"
+        app:layout_constraintTop_toTopOf="@+pic/drink_image"
         tools:text="TextView" />
 
     <ImageButton
-        android:id="@+id/fave_button"
+        android:pic="@+pic/fave_button"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -39,11 +39,11 @@
         android:layout_marginRight="16dp"
         android:layout_marginStart="80dp"
         android:background="@android:color/transparent"
-        app:layout_constraintBottom_toBottomOf="@+id/drink_data"
+        app:layout_constraintBottom_toBottomOf="@+pic/drink_data"
         app:layout_constraintHorizontal_bias="0.91"
-        app:layout_constraintLeft_toRightOf="@+id/drink_data"
+        app:layout_constraintLeft_toRightOf="@+pic/drink_data"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/drink_data"
+        app:layout_constraintTop_toTopOf="@+pic/drink_data"
         app:layout_constraintVertical_bias="0.6"
         app:srcCompat="@android:drawable/star_big_off" />
 

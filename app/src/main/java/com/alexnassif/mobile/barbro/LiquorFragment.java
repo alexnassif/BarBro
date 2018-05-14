@@ -28,7 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alexnassif.mobile.barbro.data.BarBroContract;
-import com.alexnassif.mobile.barbro.data.Drink;
+import com.alexnassif.mobile.barbro.model.Drink;
 import com.alexnassif.mobile.barbro.data.HistoryUtils;
 import com.thomashaertel.widget.MultiSpinner;
 
@@ -278,7 +278,7 @@ public class LiquorFragment extends Fragment implements
             while (!data.isAfterLast()) {
                 Drink drink = new Drink(data.getString(drinkName), data.getString(ingredients), data.getString(drinkPicId));
                 drink.setVideo(data.getString(videoId));
-                drink.setDbId(data.getInt(drinkId));
+                drink.set_id(data.getInt(drinkId));
                 array[i] = drink;
                 i++;
                 data.moveToNext();
@@ -293,12 +293,12 @@ public class LiquorFragment extends Fragment implements
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     Drink drink = (Drink) adapterView.getAdapter().getItem(i);
-                    HistoryUtils.addToHistory(getContext(), drink.getDbId());
+                    HistoryUtils.addToHistory(getContext(), drink.get_id());
                     videoURL = drink.getVideo();
                     if (mDualPane) {
-                        showDetails(drink.getDbId());
+                        showDetails(drink.get_id());
                     } else
-                        drinkDetail(drink.getDbId());
+                        drinkDetail(drink.get_id());
                     mAutoCompleteTextView.setText("");
                 }
             });

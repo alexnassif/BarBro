@@ -11,19 +11,19 @@
         android:orientation="vertical">
 
         <com.thomashaertel.widget.MultiSpinner
-            android:id="@+id/liquor_spinner"
+            android:pic="@+pic/liquor_spinner"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:text="@string/pick_flavor" />
 
         <AutoCompleteTextView
-            android:id="@+id/drink_autoCompleteTextView"
+            android:pic="@+pic/drink_autoCompleteTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/search_drink_string" />
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerview_drinks"
+            android:pic="@+pic/recyclerview_drinks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -31,19 +31,19 @@
     </LinearLayout>
 
     <com.alexnassif.mobile.barbro.YouTubeLayout
-        android:id="@+id/dragLayout"
+        android:pic="@+pic/dragLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:visibility="gone">
 
         <include layout="@layout/header_exit"
-            android:id="@+id/header_layout"
+            android:pic="@+pic/header_layout"
             android:layout_width="match_parent"
             android:layout_height="100dp"/>
 
         <TextView
-            android:id="@+id/desc"
+            android:pic="@+pic/desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#286db7"
@@ -54,7 +54,7 @@
             android:textSize="25sp" />
 
         <TextView
-            android:id="@+id/desc_view_youtube"
+            android:pic="@+pic/desc_view_youtube"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#000000"

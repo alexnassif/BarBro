@@ -14,20 +14,20 @@
         android:background="#ffffff">
 
         <com.thomashaertel.widget.MultiSpinner
-            android:id="@+id/liquor_spinner"
+            android:pic="@+pic/liquor_spinner"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:text="@string/pick_flavor"
             />
 
         <AutoCompleteTextView
-            android:id="@+id/drink_autoCompleteTextView"
+            android:pic="@+pic/drink_autoCompleteTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/search_drink_string" />
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerview_drinks"
+            android:pic="@+pic/recyclerview_drinks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -37,7 +37,7 @@
         android:paddingLeft="10dp"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:id="@+id/drink_detail_fragment"
+        android:pic="@+pic/drink_detail_fragment"
         android:layout_weight="1">
 
     </FrameLayout>

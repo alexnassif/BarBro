@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '26.0.2'
+    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "com.alexnassif.mobile.barbro"
         minSdkVersion 14
@@ -46,6 +46,12 @@ dependencies {
     compile 'com.google.android.gms:play-services-vision:11.0.2'
     testCompile 'junit:junit:4.12'
     compile 'com.google.firebase:firebase-crash:11.0.2'
+
+
+    def room_version = "1.1.0"
+
+    implementation "android.arch.persistence.room:runtime:$room_version"
+    annotationProcessor "android.arch.persistence.room:compiler:$room_version"
 }
 
 apply plugin: 'com.google.gms.google-services'
