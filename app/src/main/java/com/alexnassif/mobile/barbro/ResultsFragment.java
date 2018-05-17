@@ -27,13 +27,15 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.alexnassif.mobile.barbro.data.BarBroContract;
+
+import com.alexnassif.mobile.barbro.data.AppDatabase;
 import com.alexnassif.mobile.barbro.model.Drink;
-import com.alexnassif.mobile.barbro.data.HistoryUtils;
+
+import java.util.List;
 
 
-public class ResultsFragment extends Fragment implements
-        LoaderCallbacks<Cursor>, DrinkAdapter.DrinkAdapterOnClickHandler, SmallDrinkAdapter.SmallDrinkAdapterOnClickHandler {
+public class ResultsFragment extends Fragment
+        implements DrinkAdapter.DrinkAdapterOnClickHandler, SmallDrinkAdapter.SmallDrinkAdapterOnClickHandler {
 
     private static final String ARG_PARAM1 = "param1";
     private boolean mParam1 = false;
@@ -69,6 +71,7 @@ public class ResultsFragment extends Fragment implements
     private MenuInflater mMenuInflater;
     private boolean isMenu = false;
     private ImageButton minimize;
+    private AppDatabase db;
 
 
 
@@ -86,7 +89,7 @@ public class ResultsFragment extends Fragment implements
         if (getArguments() != null) {
             mParam1 = getArguments().getBoolean(ARG_PARAM1);
         }
-
+        db.getsInstance(getContext());
         setHasOptionsMenu(true);
     }
     @Override
@@ -122,13 +125,13 @@ public class ResultsFragment extends Fragment implements
         mDualPane = detailsFrame != null && detailsFrame.getVisibility() == View.VISIBLE;
         getActivity().setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         if(mParam1 == false) {
-            getLoaderManager().initLoader(GITHUB_SEARCH_LOADER, null, this);
+            //getLoaderManager().initLoader(GITHUB_SEARCH_LOADER, null, this);
             getActivity().setTitle("All Drinks");
         }
         else{
-            getLoaderManager().initLoader(FAVE_LOADER, null, this);
+            //getLoaderManager().initLoader(FAVE_LOADER, null, this);
             getActivity().setTitle("Favorites");}
-        getLoaderManager().initLoader(RANDOM_DRINKS_LOADER, null, this);
+        //getLoaderManager().initLoader(RANDOM_DRINKS_LOADER, null, this);
 
         if (savedInstanceState != null) {
             // Restore last state for checked position.
@@ -165,6 +168,9 @@ public class ResultsFragment extends Fragment implements
                 }
             });
         }
+
+        List<Drink> list = db.drinkDao().loadAllDrinks();
+        mDrinkAdapter.swapCursor(list);
 
     }
 
@@ -230,7 +236,7 @@ public class ResultsFragment extends Fragment implements
         return myView;
     }
 
-    @Override
+    /*@Override
     public Loader<Cursor> onCreateLoader(int id, final Bundle args) {
 
         switch (id){
@@ -342,10 +348,10 @@ public class ResultsFragment extends Fragment implements
             mDrinkAdapter_Randoms.swapCursor(data);
         }
 
-        /*
+        *//*
          * If the results are null, we assume an error has occurred. There are much more robust
          * methods for checking errors, but we wanted to keep this particular example simple.
-         */
+         *//*
 
 
         if (null == data) {
@@ -396,16 +402,16 @@ public class ResultsFragment extends Fragment implements
         else
             getLoaderManager().restartLoader(DRINK_BY_ID_LOADER, null, this);
 
-    }
+    }*/
 
     @Override
     public void onClick(int drink) {
-        HistoryUtils.addToHistory(getContext(), drink);
+
         if (mDualPane) {
             showDetails(drink);
         }
         else {
-            drinkDetail(drink);
+            //drinkDetail(drink);
         }
     }
 }
