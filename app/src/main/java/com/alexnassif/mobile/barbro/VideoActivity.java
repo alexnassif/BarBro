@@ -18,9 +18,9 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.alexnassif.mobile.barbro.data.BarBroContract;
+//import com.alexnassif.mobile.barbro.data.BarBroContract;
 
-public class VideoActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class VideoActivity extends AppCompatActivity  {
     private int drinkVideoId;
     private VideoView videoView;
     private String videoUrl = "http://assets.absolutdrinks.com/videos/";
@@ -45,7 +45,7 @@ public class VideoActivity extends AppCompatActivity implements LoaderManager.Lo
         }
         videoView = (VideoView) findViewById(R.id.video_view_activity);
         progressBar = (ProgressBar) findViewById(R.id.video_progressbar);
-        getSupportLoaderManager().initLoader(DRINK_BY_ID_LOADER, null, this);
+        //getSupportLoaderManager().initLoader(DRINK_BY_ID_LOADER, null, this);
 
         ConnectivityManager cm =
                 (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -111,7 +111,7 @@ public class VideoActivity extends AppCompatActivity implements LoaderManager.Lo
         super.onSaveInstanceState(outState);
     }
 
-    @Override
+   /* @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
             case DRINK_BY_ID_LOADER: {
@@ -155,5 +155,5 @@ public class VideoActivity extends AppCompatActivity implements LoaderManager.Lo
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
-    }
+    }*/
 }

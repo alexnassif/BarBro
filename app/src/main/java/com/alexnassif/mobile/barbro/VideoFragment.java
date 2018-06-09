@@ -21,7 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.alexnassif.mobile.barbro.data.BarBroContract;
+
 
 
 /**
@@ -29,7 +29,7 @@ import com.alexnassif.mobile.barbro.data.BarBroContract;
  * Use the {@link VideoFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class VideoFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class VideoFragment extends Fragment {
     private VideoView videoView;
     private static final String video_url = "videoUrl";
     private String videoUrl = "http://assets.absolutdrinks.com/videos/";
@@ -82,7 +82,7 @@ public class VideoFragment extends Fragment implements LoaderManager.LoaderCallb
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        getLoaderManager().initLoader(DRINK_BY_ID_LOADER, null, this);
+        //getLoaderManager().initLoader(DRINK_BY_ID_LOADER, null, this);
         ConnectivityManager cm =
                 (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -129,7 +129,7 @@ public class VideoFragment extends Fragment implements LoaderManager.LoaderCallb
         outState.putInt("position", videoView.getCurrentPosition());
     }
 
-    @Override
+    /*@Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
             case DRINK_BY_ID_LOADER: {
@@ -172,5 +172,5 @@ public class VideoFragment extends Fragment implements LoaderManager.LoaderCallb
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
-    }
+    }*/
 }

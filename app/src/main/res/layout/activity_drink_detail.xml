@@ -8,11 +8,11 @@
     tools:context=".DrinkDetailActivity">
 
     <ImageView
-        android:pic="@+pic/drink_pic_activity"
+        android:id="@+id/drink_pic_activity"
         android:layout_width="match_parent"
         android:layout_height="300dp" />
     <TextView
-        android:pic="@+pic/drink_name"
+        android:id="@+id/drink_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -22,7 +22,7 @@
         tools:text="TextView" />
 
     <TextView
-        android:pic="@+pic/drink_ingredients"
+        android:id="@+id/drink_ingredients"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"

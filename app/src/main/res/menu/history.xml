@@ -4,7 +4,7 @@
 
     <item
         android:title="Clear History"
-        android:pic="@+pic/history_item"
+        android:id="@+id/history_item"
         app:showAsAction="always" />
 
 </menu>

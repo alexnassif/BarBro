@@ -34,7 +34,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
-import com.alexnassif.mobile.barbro.data.BarBroContract;
+
 import com.alexnassif.mobile.barbro.utilities.GraphicOverlay;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.text.TextBlock;
@@ -179,7 +179,7 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
             if(mNewIngredients.getText().toString().trim().equals(""))
                 mNewIngredients.setError("Cannot be blank");
             else{
-                AsyncQueryHandler putDrink = new AsyncQueryHandler(this.getContentResolver()) {
+                /*AsyncQueryHandler putDrink = new AsyncQueryHandler(this.getContentResolver()) {
                 };
                 ContentValues newValue = new ContentValues();
                 newValue.put(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_NAME, mNewDrink.getText().toString().trim());
@@ -188,7 +188,7 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
                     newValue.put(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_PIC, mCurrentPhotoPath);
                 }
                 putDrink.startInsert(-1, null, BarBroContract.MyDrinkEntry.CONTENT_URI, newValue);
-                finish();
+                finish();*/
 
             }
 

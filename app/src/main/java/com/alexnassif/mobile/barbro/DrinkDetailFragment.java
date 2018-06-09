@@ -14,11 +14,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.alexnassif.mobile.barbro.data.BarBroContract;
+//import com.alexnassif.mobile.barbro.data.BarBroContract;
 
 
 
-public class DrinkDetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class DrinkDetailFragment extends Fragment {
 
     private String drinkObj = "drinkId";
     private View myView;
@@ -67,11 +67,11 @@ public class DrinkDetailFragment extends Fragment implements LoaderManager.Loade
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getLoaderManager().initLoader(DRINK_SEARCH_LOADER, null, this);
+        //getLoaderManager().initLoader(DRINK_SEARCH_LOADER, null, this);
     }
 
 
-    @Override
+    /*@Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
             case DRINK_SEARCH_LOADER: {
@@ -111,5 +111,5 @@ public class DrinkDetailFragment extends Fragment implements LoaderManager.Loade
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
-    }
+    }*/
 }

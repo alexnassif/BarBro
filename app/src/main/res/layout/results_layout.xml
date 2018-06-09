@@ -12,7 +12,7 @@
         android:orientation="vertical">
 
         <FrameLayout
-            android:pic="@+pic/featured_layout"
+            android:id="@+id/featured_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="0dp"
@@ -20,7 +20,7 @@
             android:layout_marginTop="8dp">
 
             <TextView
-                android:pic="@+pic/featured_drinks"
+                android:id="@+id/featured_drinks"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="Random"
@@ -28,7 +28,7 @@
                 android:textSize="16dp" />
 
             <ImageButton
-                android:pic="@+pic/minimize_button"
+                android:id="@+id/minimize_button"
                 android:layout_width="64dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
@@ -37,7 +37,7 @@
         </FrameLayout>
 
         <android.support.v7.widget.RecyclerView
-            android:pic="@+pic/random_recyclerView"
+            android:id="@+id/random_recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="0dp"
@@ -45,14 +45,14 @@
             android:layout_marginTop="8dp" />
 
         <AutoCompleteTextView
-            android:pic="@+pic/search_drinks"
+            android:id="@+id/search_drinks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:hint="@string/search_drink_string" />
 
         <android.support.v7.widget.RecyclerView
-            android:pic="@+pic/recyclerview_drinks"
+            android:id="@+id/recyclerview_drinks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -60,19 +60,19 @@
     </LinearLayout>
 
     <com.alexnassif.mobile.barbro.YouTubeLayout
-        android:pic="@+pic/dragLayout"
+        android:id="@+id/dragLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:visibility="gone">
 
         <include layout="@layout/header_exit"
-            android:pic="@+pic/header_layout"
+            android:id="@+id/header_layout"
             android:layout_width="match_parent"
             android:layout_height="100dp"/>
 
         <TextView
-            android:pic="@+pic/desc"
+            android:id="@+id/desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#286db7"
@@ -83,7 +83,7 @@
             android:textSize="25sp" />
 
         <TextView
-            android:pic="@+pic/desc_view_youtube"
+            android:id="@+id/desc_view_youtube"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"

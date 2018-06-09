@@ -13,19 +13,19 @@
         android:layout_weight="1">
 
         <Spinner
-            android:pic="@+pic/liquor_spinner"
+            android:id="@+id/liquor_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:prompt="@string/liquor_prompt" />
 
         <AutoCompleteTextView
-            android:pic="@+pic/drink_autoCompleteTextView"
+            android:id="@+id/drink_autoCompleteTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/search_drink_string" />
 
         <android.support.v7.widget.RecyclerView
-            android:pic="@+pic/recyclerview_drinks"
+            android:id="@+id/recyclerview_drinks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -34,7 +34,7 @@
     <FrameLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:pic="@+pic/drink_detail_fragment"
+        android:id="@+id/drink_detail_fragment"
         android:layout_weight="1">
 
     </FrameLayout>

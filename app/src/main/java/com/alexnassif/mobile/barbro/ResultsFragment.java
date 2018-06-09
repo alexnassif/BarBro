@@ -14,6 +14,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -89,7 +90,9 @@ public class ResultsFragment extends Fragment
         if (getArguments() != null) {
             mParam1 = getArguments().getBoolean(ARG_PARAM1);
         }
-        db.getsInstance(getContext());
+        List<Drink> list = db.getsInstance(getContext()).drinkDao().loadAllDrinks();
+
+        Log.d("drinksize", list.toString());
         setHasOptionsMenu(true);
     }
     @Override
@@ -169,8 +172,8 @@ public class ResultsFragment extends Fragment
             });
         }
 
-        List<Drink> list = db.drinkDao().loadAllDrinks();
-        mDrinkAdapter.swapCursor(list);
+        //List<Drink> list = db.drinkDao().loadAllDrinks();
+        //mDrinkAdapter.swapCursor(list);
 
     }
 

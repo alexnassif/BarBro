@@ -12,7 +12,7 @@ import java.util.List;
 public interface DrinkDao {
 
     @Query("SELECT * FROM drinks")
-    List<Drink> loadAllDrinks();
+    public List<Drink> loadAllDrinks();
 
 
 }

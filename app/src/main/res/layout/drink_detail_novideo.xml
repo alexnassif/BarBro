@@ -7,11 +7,11 @@
     android:orientation="vertical">
 
     <ImageView
-        android:pic="@+pic/drink_pic_novideo"
+        android:id="@+id/drink_pic_novideo"
         android:layout_width="match_parent"
         android:layout_height="300dp" />
     <TextView
-        android:pic="@+pic/drink_name_novideo"
+        android:id="@+id/drink_name_novideo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -21,7 +21,7 @@
         tools:text="TextView" />
 
     <TextView
-        android:pic="@+pic/drink_ingredients_novideo"
+        android:id="@+id/drink_ingredients_novideo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -29,7 +29,7 @@
         android:textSize="16sp"
         tools:text="TextView" />
     <TextView
-        android:pic="@+pic/drink_recipe_novideo"
+        android:id="@+id/drink_recipe_novideo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"

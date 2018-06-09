@@ -23,7 +23,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.alexnassif.mobile.barbro.data.BarBroContract;
+//import com.alexnassif.mobile.barbro.data.BarBroContract;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,7 +33,7 @@ import java.util.Date;
 import static android.app.Activity.RESULT_OK;
 
 
-public class EditDrinkFragment extends Fragment implements View.OnClickListener, LoaderManager.LoaderCallbacks<Cursor> {
+public class EditDrinkFragment extends Fragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -89,7 +89,7 @@ public class EditDrinkFragment extends Fragment implements View.OnClickListener,
         mAddImage.setOnClickListener(this);
         mSubmit.setOnClickListener(this);
         mCancel.setOnClickListener(this);
-        getLoaderManager().initLoader(MY_DRINKS_LOADER, null, this);
+        //getLoaderManager().initLoader(MY_DRINKS_LOADER, null, this);
     }
 
     @Override
@@ -109,7 +109,7 @@ public class EditDrinkFragment extends Fragment implements View.OnClickListener,
             if (mNewIngredients.getText().toString().trim().equals(""))
                 mNewIngredients.setError("Cannot be blank");
             else {
-                AsyncQueryHandler putDrink = new AsyncQueryHandler(getActivity().getContentResolver()) {
+                /*AsyncQueryHandler putDrink = new AsyncQueryHandler(getActivity().getContentResolver()) {
                 };
                 String stringId = Integer.toString(drinkId);
                 Uri uri = BarBroContract.MyDrinkEntry.CONTENT_URI;
@@ -126,7 +126,7 @@ public class EditDrinkFragment extends Fragment implements View.OnClickListener,
                     newValue.put(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_PIC, mNewPhotoPath);
                 }
                 putDrink.startUpdate(-1, null, uri, newValue, null, null);
-                getActivity().finish();
+                getActivity().finish();*/
 
             }
 
@@ -214,7 +214,7 @@ public class EditDrinkFragment extends Fragment implements View.OnClickListener,
         mAddImage.setImageBitmap(bitmap);
     }
 
-    @Override
+    /*@Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id){
             case MY_DRINKS_LOADER: {
@@ -252,5 +252,5 @@ public class EditDrinkFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
-    }
+    }*/
 }

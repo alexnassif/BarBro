@@ -26,13 +26,13 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.alexnassif.mobile.barbro.data.BarBroContract;
+
 import com.alexnassif.mobile.barbro.model.Drink;
-import com.alexnassif.mobile.barbro.data.HistoryUtils;
+//import com.alexnassif.mobile.barbro.data.HistoryUtils;
 
 
 public class HistoryFragment extends Fragment implements
-        LoaderManager.LoaderCallbacks<Cursor>, DrinkAdapter.DrinkAdapterOnClickHandler {
+        DrinkAdapter.DrinkAdapterOnClickHandler {
 
     private static final int HISTORY_SEARCH_LOADER = 22;
     private static final int DRINK_BY_ID_LOADER = 24;
@@ -89,7 +89,7 @@ public class HistoryFragment extends Fragment implements
 
         getActivity().setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        getLoaderManager().initLoader(HISTORY_SEARCH_LOADER, null, this);
+        //getLoaderManager().initLoader(HISTORY_SEARCH_LOADER, null, this);
         getActivity().setTitle("History");
 
         if (savedInstanceState != null) {
@@ -177,7 +177,7 @@ public class HistoryFragment extends Fragment implements
             mArrowExit = (ImageView) youtubeLayout.findViewById(R.id.arrowUpExit);
         }
         return myView;
-    }
+    }/*
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, final Bundle args) {
@@ -274,10 +274,10 @@ public class HistoryFragment extends Fragment implements
             youtubeLayout.maximize();
         }
 
-        /*
+        *//*
          * If the results are null, we assume an error has occurred. There are much more robust
          * methods for checking errors, but we wanted to keep this particular example simple.
-         */
+         *//*
 
 
         if (null == data) {
@@ -328,19 +328,19 @@ public class HistoryFragment extends Fragment implements
 
 
         return true;
-    }
+    }*/
     @Override
     public void onClick(int drink) {
 
-        HistoryUtils.addToHistory(getContext(), drink);
+        //HistoryUtils.addToHistory(getContext(), drink);
         if (mDualPane) {
             showDetails(drink);
         }
-        else
-            drinkDetail(drink);
+        //else
+            //drinkDetail(drink);
 
     }
-    public void drinkDetail(int drink){
+   /* public void drinkDetail(int drink){
         showVideoIcon();
         mCurCheckPosition = drink;
         drinkId = drink;
@@ -349,7 +349,7 @@ public class HistoryFragment extends Fragment implements
             getLoaderManager().initLoader(DRINK_BY_ID_LOADER, null, this);
         else
             getLoaderManager().restartLoader(DRINK_BY_ID_LOADER, null, this);
-    }
+    }*/
     private void showVideoIcon(){
 
         if(!isMenu) {

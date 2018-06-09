@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.alexnassif.mobile.barbro.data.BarBroContract;
+
 import com.alexnassif.mobile.barbro.model.Drink;
 
 import java.io.File;
@@ -42,7 +42,7 @@ public class MyDrinkAdapter extends RecyclerView.Adapter<MyDrinkAdapter.MyDrinkA
 
     @Override
     public void onBindViewHolder(MyDrinkAdapter.MyDrinkAdapterViewHolder holder, int position) {
-        int drinkId = mDrinkData.getColumnIndex(BarBroContract.MyDrinkEntry._ID);
+        /*int drinkId = mDrinkData.getColumnIndex(BarBroContract.MyDrinkEntry._ID);
         int drinkName = mDrinkData.getColumnIndex(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_NAME);
         int drinkIngredients = mDrinkData.getColumnIndexOrThrow(BarBroContract.MyDrinkEntry.COLUMN_MYINGREDIENTS);
         int drinkPic = mDrinkData.getColumnIndex(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_PIC);
@@ -64,7 +64,7 @@ public class MyDrinkAdapter extends RecyclerView.Adapter<MyDrinkAdapter.MyDrinkA
             Glide.with(holder.mDrinkImage.getContext()).load(takenPhotoUri.getPath()).centerCrop().into(holder.mDrinkImage);
         }
         holder.itemView.setTag(drink);
-        holder.mDrinkTextView.setText(_drinkName);
+        holder.mDrinkTextView.setText(_drinkName);*/
 
     }
 
@@ -93,11 +93,11 @@ public class MyDrinkAdapter extends RecyclerView.Adapter<MyDrinkAdapter.MyDrinkA
         @Override
         public void onClick(View view) {
 
-            int adapterPosition = getAdapterPosition();
+            /*int adapterPosition = getAdapterPosition();
             mDrinkData.moveToPosition(adapterPosition);
             int drinkId = mDrinkData.getColumnIndex(BarBroContract.MyDrinkEntry._ID);
             int id = mDrinkData.getInt(drinkId);
-            mClickHandler.onClick(id);
+            mClickHandler.onClick(id);*/
 
         }
     }

@@ -8,6 +8,6 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:pic="@+pic/edit_drink_fragment" />
+        android:id="@+id/edit_drink_fragment" />
 
 </LinearLayout>

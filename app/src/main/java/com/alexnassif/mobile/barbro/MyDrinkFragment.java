@@ -24,13 +24,13 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
-import com.alexnassif.mobile.barbro.data.BarBroContract;
+//import com.alexnassif.mobile.barbro.data.BarBroContract;
 import com.alexnassif.mobile.barbro.model.Drink;
 
 import java.io.File;
 
 
-public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, MyDrinkAdapter.MyDrinkAdapterOnClickHandler {
+public class MyDrinkFragment extends Fragment implements MyDrinkAdapter.MyDrinkAdapterOnClickHandler {
 
     private static final int MY_DRINK_LOADER = 23;
 
@@ -63,7 +63,7 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onStart() {
         super.onStart();
-        getLoaderManager().initLoader(MY_DRINK_LOADER, null, this);
+        //getLoaderManager().initLoader(MY_DRINK_LOADER, null, this);
     }
 
     @Override
@@ -87,10 +87,10 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
         mRecyclerView.setAdapter(mDrinkAdapter);
 
 
-        getLoaderManager().initLoader(MY_DRINK_LOADER, null, this);
+        //getLoaderManager().initLoader(MY_DRINK_LOADER, null, this);
         getActivity().setTitle("My Drinks");
 
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        /*new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
@@ -123,7 +123,7 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
                 deleteDrink.startDelete(-1, null, uri, null, null);
 
             }
-        }).attachToRecyclerView(mRecyclerView);
+        }).attachToRecyclerView(mRecyclerView);*/
 
     }
     @Nullable
@@ -135,7 +135,7 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
         return myView;
     }
 
-    @Override
+    /*@Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id){
             case MY_DRINK_LOADER:{
@@ -210,7 +210,7 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
-    }
+    }*/
 
     @Override
     public void onClick(int drink) {

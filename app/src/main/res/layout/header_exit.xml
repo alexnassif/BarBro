@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:pic="@+pic/header"
+        android:id="@+id/header"
         android:layout_width="0dp"
         android:layout_height="100dp"
         android:background="@android:color/holo_blue_bright"
@@ -21,11 +21,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:pic="@+pic/arrowUpExit"
+        android:id="@+id/arrowUpExit"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="@+pic/header"
+        app:layout_constraintBottom_toBottomOf="@+id/header"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"

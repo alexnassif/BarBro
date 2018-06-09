@@ -16,10 +16,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.alexnassif.mobile.barbro.data.BarBroContract;
+//import com.alexnassif.mobile.barbro.data.BarBroContract;
 
 
-public class DrinkDetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class DrinkDetailActivity extends AppCompatActivity  {
     private static final int DRINK_SEARCH_LOADER = 1;
     private int drinkId;
     private TextView mDrinkNameView;
@@ -41,7 +41,7 @@ public class DrinkDetailActivity extends AppCompatActivity implements LoaderMana
         mDrinkIngredientsView = (TextView) findViewById(R.id.drink_ingredients);
         mImageView = (ImageView) findViewById(R.id.drink_pic_activity);
         setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        getSupportLoaderManager().initLoader(DRINK_SEARCH_LOADER, null, this);
+        //getSupportLoaderManager().initLoader(DRINK_SEARCH_LOADER, null, this);
 
     }
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -63,7 +63,7 @@ public class DrinkDetailActivity extends AppCompatActivity implements LoaderMana
         return true;
     }
 
-    @Override
+    /*@Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id){
             case DRINK_SEARCH_LOADER: {
@@ -100,5 +100,5 @@ public class DrinkDetailActivity extends AppCompatActivity implements LoaderMana
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
-    }
+    }*/
 }

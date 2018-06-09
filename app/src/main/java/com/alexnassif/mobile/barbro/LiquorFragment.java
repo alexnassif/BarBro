@@ -27,16 +27,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alexnassif.mobile.barbro.data.BarBroContract;
+
 import com.alexnassif.mobile.barbro.model.Drink;
-import com.alexnassif.mobile.barbro.data.HistoryUtils;
+
 import com.thomashaertel.widget.MultiSpinner;
 
 import java.util.ArrayList;
 
 
 public class LiquorFragment extends Fragment implements
-        LoaderManager.LoaderCallbacks<Cursor>, DrinkAdapter.DrinkAdapterOnClickHandler {
+         DrinkAdapter.DrinkAdapterOnClickHandler {
 
     private static final int GITHUB_SEARCH_LOADER = 22;
 
@@ -228,7 +228,7 @@ public class LiquorFragment extends Fragment implements
         return true;
     }
 
-    @Override
+    /*@Override
     public Loader<Cursor> onCreateLoader(int id, final Bundle args) {
         switch (id){
             case GITHUB_SEARCH_LOADER: {
@@ -329,11 +329,11 @@ public class LiquorFragment extends Fragment implements
 //         * it to implement the LoaderCallbacks<String> interface
 
        // mLoadingIndicator.setVisibility(View.INVISIBLE);
-    }
+    }*/
 
     @Override
     public void onClick(int drink) {
-        HistoryUtils.addToHistory(getContext(), drink);
+        //HistoryUtils.addToHistory(getContext(), drink);
         if (mDualPane) {
             showDetails(drink);
         }
@@ -349,10 +349,10 @@ public class LiquorFragment extends Fragment implements
             isMenu = true;
         }
         Loader<Cursor> loaderM = getLoaderManager().getLoader(DRINK_BY_ID_LOADER);
-        if(loaderM == null)
-            getLoaderManager().initLoader(DRINK_BY_ID_LOADER, null, this);
-        else
-            getLoaderManager().restartLoader(DRINK_BY_ID_LOADER, null, this);
+        //if(loaderM == null)
+            //getLoaderManager().initLoader(DRINK_BY_ID_LOADER, null, this);
+        //else
+            //etLoaderManager().restartLoader(DRINK_BY_ID_LOADER, null, this);
 //        Intent intent = new Intent(getContext(), DrinkDetailActivity.class);
 //        intent.putExtra("drink", drink);
 //        startActivity(intent);
@@ -391,9 +391,9 @@ public class LiquorFragment extends Fragment implements
                 liqType = builder.toString();
                 Loader<Cursor> githubSearchLoader = getLoaderManager().getLoader(GITHUB_SEARCH_LOADER);
                 if (githubSearchLoader == null) {
-                    getLoaderManager().initLoader(GITHUB_SEARCH_LOADER, null, LiquorFragment.this);
+                    //getLoaderManager().initLoader(GITHUB_SEARCH_LOADER, null, LiquorFragment.this);
                 } else {
-                    getLoaderManager().restartLoader(GITHUB_SEARCH_LOADER, null, LiquorFragment.this);
+                    //getLoaderManager().restartLoader(GITHUB_SEARCH_LOADER, null, LiquorFragment.this);
                 }
             }
             else{

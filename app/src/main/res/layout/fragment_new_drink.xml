@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:pic="@+pic/scroll_view"
+    android:id="@+id/scroll_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:visibility="visible">
@@ -12,7 +12,7 @@
         android:layout_height="match_parent">
 
         <EditText
-            android:pic="@+pic/edit_drink"
+            android:id="@+id/edit_drink"
             android:layout_width="0dp"
             android:layout_height="35dp"
             android:layout_marginEnd="32dp"
@@ -32,7 +32,7 @@
             tools:layout_constraintRight_creator="1" />
 
         <EditText
-            android:pic="@+pic/new_drink_ingredients"
+            android:id="@+id/new_drink_ingredients"
             android:layout_width="0dp"
             android:layout_height="96dp"
             android:layout_marginEnd="32dp"
@@ -48,24 +48,24 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+pic/edit_drink"
+            app:layout_constraintTop_toBottomOf="@+id/edit_drink"
             tools:layout_constraintLeft_creator="1"
             tools:layout_constraintRight_creator="1" />
 
         <ImageView
-            android:pic="@+pic/take_drink_pic"
+            android:id="@+id/take_drink_pic"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginTop="10dp"
             app:layout_constraintHorizontal_bias="0.102"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+pic/new_drink_ingredients"
+            app:layout_constraintTop_toBottomOf="@+id/new_drink_ingredients"
             app:srcCompat="@drawable/ic_menu_camera"
             tools:ignore="ContentDescription" />
 
         <Button
-            android:pic="@+pic/submit_button"
+            android:id="@+id/submit_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
@@ -73,13 +73,13 @@
             android:layout_marginTop="10dp"
             android:background="@android:color/holo_blue_bright"
             android:text="@string/submit_new_drink"
-            app:layout_constraintRight_toLeftOf="@+pic/cancel_button"
-            app:layout_constraintTop_toBottomOf="@+pic/new_drink_ingredients"
+            app:layout_constraintRight_toLeftOf="@+id/cancel_button"
+            app:layout_constraintTop_toBottomOf="@+id/new_drink_ingredients"
             tools:layout_constraintRight_creator="1"
             tools:layout_constraintTop_creator="1" />
 
         <Button
-            android:pic="@+pic/cancel_button"
+            android:id="@+id/cancel_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
@@ -87,27 +87,27 @@
             android:layout_marginRight="8dp"
             android:background="@android:color/holo_red_light"
             android:text="@string/cancel_button"
-            app:layout_constraintBottom_toTopOf="@+pic/searchWeb"
-            app:layout_constraintRight_toRightOf="@+pic/new_drink_ingredients"
+            app:layout_constraintBottom_toTopOf="@+id/searchWeb"
+            app:layout_constraintRight_toRightOf="@+id/new_drink_ingredients"
             tools:layout_constraintBottom_creator="1"
             tools:layout_constraintRight_creator="1"
             tools:text="@string/cancel_edit" />
 
         <Button
-            android:pic="@+pic/searchWeb"
+            android:id="@+id/searchWeb"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_marginTop="4dp"
             android:text="@string/searchweb"
-            app:layout_constraintLeft_toLeftOf="@+pic/submit_button"
-            app:layout_constraintRight_toRightOf="@+pic/cancel_button"
-            app:layout_constraintTop_toBottomOf="@+pic/submit_button"
+            app:layout_constraintLeft_toLeftOf="@+id/submit_button"
+            app:layout_constraintRight_toRightOf="@+id/cancel_button"
+            app:layout_constraintTop_toBottomOf="@+id/submit_button"
             tools:layout_constraintLeft_creator="1"
             tools:layout_constraintRight_creator="1"
             tools:layout_constraintTop_creator="1" />
 
         <LinearLayout
-            android:pic="@+pic/view_drawing_pad"
+            android:id="@+id/view_drawing_pad"
             android:layout_width="0dp"
             android:layout_height="600dp"
             android:orientation="vertical"
@@ -116,7 +116,7 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+pic/searchWeb"
+            app:layout_constraintTop_toBottomOf="@+id/searchWeb"
             app:layout_constraintVertical_bias="0.0"
             tools:layout_constraintLeft_creator="1" />
 

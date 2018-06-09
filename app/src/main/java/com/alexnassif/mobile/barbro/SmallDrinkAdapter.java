@@ -12,7 +12,7 @@ import android.widget.TextView;
 import android.view.View.OnClickListener;
 
 import com.bumptech.glide.Glide;
-import com.alexnassif.mobile.barbro.data.BarBroContract;
+
 
 public class SmallDrinkAdapter extends RecyclerView.Adapter<SmallDrinkAdapter.SmallDrinkAdapterViewHolder> {
 
@@ -40,11 +40,11 @@ public class SmallDrinkAdapter extends RecyclerView.Adapter<SmallDrinkAdapter.Sm
 
     @Override
     public void onBindViewHolder(SmallDrinkAdapter.SmallDrinkAdapterViewHolder holder, int position) {
-        int drinkId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry._ID);
+        /*int drinkId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry._ID);
         int drinkName = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
-        int drinkPicId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC);
+        int drinkPicId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC);*/
 
-        mDrinkData.moveToPosition(position);
+        /*mDrinkData.moveToPosition(position);
 
         final int id = mDrinkData.getInt(drinkId);
         String _drinkName = mDrinkData.getString(drinkName);
@@ -52,7 +52,7 @@ public class SmallDrinkAdapter extends RecyclerView.Adapter<SmallDrinkAdapter.Sm
         holder.itemView.setTag(id);
 
         Glide.with(holder.mDrinkImageView.getContext()).load("http://assets.absolutdrinks.com/drinks/300x400/" + drinkPic +".png").into(holder.mDrinkImageView);
-        holder.mDrinkTextView.setText(_drinkName);
+        holder.mDrinkTextView.setText(_drinkName);*/
     }
 
     @Override
@@ -81,12 +81,12 @@ public class SmallDrinkAdapter extends RecyclerView.Adapter<SmallDrinkAdapter.Sm
         @Override
         public void onClick(View view) {
 
-            int adapterPosition = getAdapterPosition();
+            /*int adapterPosition = getAdapterPosition();
             mDrinkData.moveToPosition(adapterPosition);
             int drinkId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry._ID);
-            int id = mDrinkData.getInt(drinkId);
+            int id = mDrinkData.getInt(drinkId);*/
 
-            mClickHandler.onClick(id);
+            mClickHandler.onClick(0);
         }
     }
 }

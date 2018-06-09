@@ -14,12 +14,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.alexnassif.mobile.barbro.data.BarBroContract;
+//import com.alexnassif.mobile.barbro.data.BarBroContract;
 import com.bumptech.glide.Glide;
 
 import java.io.File;
 
-public class MyDrinkDetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class MyDrinkDetailActivity extends AppCompatActivity {
     private int drinkId;
     private TextView mMyDrinkName;
     private TextView mMyDrinkIngredients;
@@ -50,10 +50,10 @@ public class MyDrinkDetailActivity extends AppCompatActivity implements LoaderMa
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportLoaderManager().initLoader(MY_DRINK_DETAIL_LOADER, null, this);
+        ///getSupportLoaderManager().initLoader(MY_DRINK_DETAIL_LOADER, null, this);
     }
 
-    @Override
+    /*@Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id){
             case MY_DRINK_DETAIL_LOADER:{
@@ -95,5 +95,5 @@ public class MyDrinkDetailActivity extends AppCompatActivity implements LoaderMa
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         loader = null;
-    }
+    }*/
 }

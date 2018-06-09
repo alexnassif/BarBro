@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:pic="@+pic/topLayout"
+    android:id="@+id/topLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
     <Button
-        android:pic="@+pic/click_preview"
+        android:id="@+id/click_preview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/holo_blue_bright"
@@ -14,7 +14,7 @@
         />
 
     <WebView
-        android:pic="@+pic/webView"
+        android:id="@+id/webView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

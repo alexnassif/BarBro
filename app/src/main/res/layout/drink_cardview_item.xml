@@ -10,12 +10,12 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:pic="@+pic/cardview_image"
+            android:id="@+id/cardview_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
         <TextView
-            android:pic="@+pic/cardview_drinkname"
+            android:id="@+id/cardview_drinkname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="top"
