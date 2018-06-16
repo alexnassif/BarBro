@@ -1,10 +1,12 @@
 package com.alexnassif.mobile.barbro.data;
 
+import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.TypeConverter;
 import android.arch.persistence.room.TypeConverters;
+import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
 import android.util.Log;
 
@@ -19,7 +21,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 
-@Database(entities = {Drink.class, History.class, MyDrink.class}, version = 1, exportSchema = false)
+@Database(entities = {Drink.class, History.class, MyDrink.class}, version = 2, exportSchema = false)
 @TypeConverters(DateConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -27,6 +29,12 @@ public abstract class AppDatabase extends RoomDatabase {
         private static final Object LOCK = new Object();
         private static final String DATABASE_NAME = "barbro.db";
         private static AppDatabase sInstance;
+        static final Migration MIGRATION_1_2 = new Migration(1, 2) {
+            @Override
+            public void migrate(SupportSQLiteDatabase database) {
+                // Since we didn't alter the table, there's nothing else to do here.
+            }
+        };
 
         public static AppDatabase getsInstance(Context context){
 
@@ -36,7 +44,7 @@ public abstract class AppDatabase extends RoomDatabase {
                     copyAttachedDatabase(context.getApplicationContext(), DATABASE_NAME);
                     sInstance = Room.databaseBuilder(context.getApplicationContext(),
                             AppDatabase.class,
-                            AppDatabase.DATABASE_NAME)
+                            AppDatabase.DATABASE_NAME).addMigrations(MIGRATION_1_2)
                             .allowMainThreadQueries()
                             .build();
                 }
@@ -53,6 +61,8 @@ public abstract class AppDatabase extends RoomDatabase {
 
         // If the database already exists, return
         if (dbPath.exists()) {
+
+            Log.d("exists?", "db exists");
             return;
         }
 
@@ -76,7 +86,7 @@ public abstract class AppDatabase extends RoomDatabase {
             inputStream.close();
         }
         catch (IOException e) {
-            Log.d(LOG_TAG, "Failed to open file", e);
+            Log.d("failedopen", "Failed to open file", e);
             e.printStackTrace();
         }
     }
