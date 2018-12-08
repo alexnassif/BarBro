@@ -38,7 +38,7 @@
                 app:srcCompat="@android:drawable/arrow_up_float" />
         </FrameLayout>
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/random_recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/search_drink_string" />
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_drinks"
             android:layout_width="match_parent"
 

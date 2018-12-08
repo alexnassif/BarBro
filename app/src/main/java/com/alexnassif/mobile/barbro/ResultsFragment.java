@@ -6,14 +6,14 @@ import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.loader.app.LoaderManager.LoaderCallbacks;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,8 +32,7 @@ import com.alexnassif.mobile.barbro.data.Drink;
 import com.alexnassif.mobile.barbro.data.HistoryUtils;
 
 
-public class ResultsFragment extends Fragment implements
-        LoaderCallbacks<Cursor>, DrinkAdapter.DrinkAdapterOnClickHandler, SmallDrinkAdapter.SmallDrinkAdapterOnClickHandler {
+public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapterOnClickHandler, SmallDrinkAdapter.SmallDrinkAdapterOnClickHandler {
 
     private static final String ARG_PARAM1 = "param1";
     private boolean mParam1 = false;
@@ -94,7 +93,7 @@ public class ResultsFragment extends Fragment implements
         super.onActivityCreated(savedInstanceState);
 
         LinearLayoutManager layoutManager
-                = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+                = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
         mDrinkAdapter = new DrinkAdapter(getContext(), this);
@@ -122,13 +121,13 @@ public class ResultsFragment extends Fragment implements
         mDualPane = detailsFrame != null && detailsFrame.getVisibility() == View.VISIBLE;
         getActivity().setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         if(mParam1 == false) {
-            getLoaderManager().initLoader(GITHUB_SEARCH_LOADER, null, this);
+
             getActivity().setTitle("All Drinks");
         }
         else{
-            getLoaderManager().initLoader(FAVE_LOADER, null, this);
+
             getActivity().setTitle("Favorites");}
-        getLoaderManager().initLoader(RANDOM_DRINKS_LOADER, null, this);
+
 
         if (savedInstanceState != null) {
             // Restore last state for checked position.
@@ -230,133 +229,7 @@ public class ResultsFragment extends Fragment implements
         return myView;
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, final Bundle args) {
 
-        switch (id){
-            case RANDOM_DRINKS_LOADER:{
-                Uri uriAllDrinks = BarBroContract.BarBroEntry.CONTENT_URI;
-                return new CursorLoader(getContext(),
-                        uriAllDrinks,
-                        null,
-                        null,
-                        null,
-                        " RANDOM() LIMIT 3");}
-            case GITHUB_SEARCH_LOADER:{
-                Uri uriAllDrinks = BarBroContract.BarBroEntry.CONTENT_URI;
-                return new CursorLoader(getContext(),
-                        uriAllDrinks,
-                        null,
-                        null,
-                        null,
-                        BarBroContract.BarBroEntry.COLUMN_DRINK_NAME + " asc");}
-            case FAVE_LOADER:{
-                Uri uriAllDrinks = BarBroContract.BarBroEntry.CONTENT_URI;
-                return new CursorLoader(getContext(),
-                        uriAllDrinks,
-                        null,
-                        BarBroContract.BarBroEntry.COLUMN_FAVORITE + "=?",
-                        new String[]{"1"},
-                        BarBroContract.BarBroEntry.COLUMN_DRINK_NAME + " asc");
-            }
-            case DRINK_BY_ID_LOADER:{
-                String stringId = Integer.toString(drinkId);
-                Uri uri = BarBroContract.BarBroEntry.CONTENT_URI;
-                uri = uri.buildUpon().appendPath(stringId).build();
-                return new CursorLoader(getContext(),
-                        uri,
-                        null,
-                        null,
-                        null,
-                        null);}
-            default:
-                throw new RuntimeException("Loader Not Implemented: " + id);
-
-        }
-
-
-
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
-        if (loader.getId() == GITHUB_SEARCH_LOADER || loader.getId() == FAVE_LOADER) {
-            if (data.getCount() == 0 && loader.getId() == FAVE_LOADER) {
-                Toast.makeText(getContext(), "No Favorites added yet", Toast.LENGTH_LONG).show();
-            }
-            mDrinkAdapter.swapCursor(data);
-            final int drinkId = data.getColumnIndex(BarBroContract.BarBroEntry._ID);
-            int drinkName = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
-            int ingredients = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS);
-            int drinkPicId = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC);
-            int videoId = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_VIDEO);
-            Drink[] array = new Drink[data.getCount()];
-            int i = 0;
-            data.moveToFirst();
-            while (!data.isAfterLast()) {
-
-                Drink drink = new Drink(data.getString(drinkName), data.getString(ingredients), data.getString(drinkPicId));
-                drink.setVideo(data.getString(videoId));
-                drink.setDbId(data.getInt(drinkId));
-                array[i] = drink;
-                i++;
-                data.moveToNext();
-            }
-
-            ArrayAdapter<Drink> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, array);
-            acDrinkTextView.setAdapter(adapter);
-            acDrinkTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Drink drink = (Drink) adapterView.getAdapter().getItem(i);
-                    HistoryUtils.addToHistory(getContext(), drink.getDbId());
-                    videoURL = drink.getVideo();
-                    mCurCheckPosition = drink.getDbId();
-                    if (mDualPane) {
-                        showDetails(drink.getDbId());
-                    } else
-                        drinkDetail(drink.getDbId());
-                    acDrinkTextView.setText("");
-
-                }
-            });
-
-        }
-        if(loader.getId() == DRINK_BY_ID_LOADER){
-            data.moveToFirst();
-
-            int drinkName = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
-            int ingredients = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS);
-            int description = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DESCRIPTION);
-            int videoId = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_VIDEO);
-
-            viewHeader.setText(data.getString(drinkName));
-            viewDesc.setText(data.getString(ingredients));
-            mMixView.setText(data.getString(description));
-            videoURL = data.getString(videoId);
-            youtubeLayout.setVisibility(View.VISIBLE);
-            youtubeLayout.maximize();
-        }
-        if(loader.getId() == RANDOM_DRINKS_LOADER){
-            mDrinkAdapter_Randoms.swapCursor(data);
-        }
-
-        /*
-         * If the results are null, we assume an error has occurred. There are much more robust
-         * methods for checking errors, but we wanted to keep this particular example simple.
-         */
-
-
-        if (null == data) {
-            Toast.makeText(getContext(), " null data ", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-
-    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -390,11 +263,7 @@ public class ResultsFragment extends Fragment implements
             mMenuInflater.inflate(R.menu.video, mMenu);
             isMenu = true;
         }
-        Loader<Cursor> loaderM = getLoaderManager().getLoader(DRINK_BY_ID_LOADER);
-        if(loaderM == null)
-            getLoaderManager().initLoader(DRINK_BY_ID_LOADER, null, this);
-        else
-            getLoaderManager().restartLoader(DRINK_BY_ID_LOADER, null, this);
+
 
     }
 

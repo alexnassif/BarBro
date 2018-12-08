@@ -36,7 +36,7 @@
             android:authorities="com.alexnassif.mobile.barbro"
             android:exported="false" />
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="com.alexnassif.mobile.barbro.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
