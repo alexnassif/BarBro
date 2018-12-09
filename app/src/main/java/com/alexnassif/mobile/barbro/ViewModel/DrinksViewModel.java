@@ -1,6 +1,8 @@
 package com.alexnassif.mobile.barbro.ViewModel;
 
 
+import android.util.Log;
+
 import com.alexnassif.mobile.barbro.Networking.DrinkApi;
 import com.alexnassif.mobile.barbro.data.Drink;
 import com.alexnassif.mobile.barbro.data.DrinkList;
@@ -44,11 +46,14 @@ public class DrinksViewModel extends ViewModel {
 
                 //finally we are setting the list to our MutableLiveData
                 drinks.setValue(response.body());
+
+
+
             }
 
             @Override
             public void onFailure(Call<List<DrinkList>> call, Throwable t) {
-
+                Log.d("fromvm", "im in results fragment");
             }
 
         });

@@ -9,6 +9,8 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
@@ -26,13 +28,17 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.alexnassif.mobile.barbro.ViewModel.DrinksViewModel;
 import com.alexnassif.mobile.barbro.data.BarBroContract;
 import com.alexnassif.mobile.barbro.data.Drink;
+import com.alexnassif.mobile.barbro.data.DrinkList;
 import com.alexnassif.mobile.barbro.data.HistoryUtils;
 
+import java.util.List;
 
-public class HistoryFragment extends Fragment implements
-        LoaderManager.LoaderCallbacks<Cursor>, DrinkAdapter.DrinkAdapterOnClickHandler {
+
+public class HistoryFragment extends Fragment implements DrinkAdapter.DrinkAdapterOnClickHandler {
 
     private static final int HISTORY_SEARCH_LOADER = 22;
     private static final int DRINK_BY_ID_LOADER = 24;
@@ -79,7 +85,7 @@ public class HistoryFragment extends Fragment implements
         super.onActivityCreated(savedInstanceState);
 
         LinearLayoutManager layoutManager
-                = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+                = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
         mDrinkAdapter = new DrinkAdapter(getContext(), this);
@@ -89,7 +95,7 @@ public class HistoryFragment extends Fragment implements
 
         getActivity().setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        getLoaderManager().initLoader(HISTORY_SEARCH_LOADER, null, this);
+
         getActivity().setTitle("History");
 
         if (savedInstanceState != null) {
@@ -123,6 +129,13 @@ public class HistoryFragment extends Fragment implements
                 mMenu.clear();
                 isMenu = false;
                 mMenuInflater.inflate(R.menu.history, mMenu);
+            }
+        });
+        DrinksViewModel model = ViewModelProviders.of(this).get(DrinksViewModel.class);
+        model.getDrinks().observe(this, new Observer<List<DrinkList>>() {
+            @Override
+            public void onChanged(List<DrinkList> drinkLists) {
+                mDrinkAdapter.swapCursor(drinkLists);
             }
         });
 
@@ -180,117 +193,6 @@ public class HistoryFragment extends Fragment implements
     }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int id, final Bundle args) {
-
-        switch (id){
-            case HISTORY_SEARCH_LOADER:{
-                Uri uriAllDrinks = BarBroContract.HistoryEntry.CONTENT_URI;
-                return new CursorLoader(getContext(),
-                        uriAllDrinks,
-                        null,
-                        null,
-                        null,
-                        null);}
-            case DRINK_BY_ID_LOADER:{
-                String stringId = Integer.toString(drinkId);
-                Uri uri = BarBroContract.BarBroEntry.CONTENT_URI;
-                uri = uri.buildUpon().appendPath(stringId).build();
-                return new CursorLoader(getContext(),
-                        uri,
-                        null,
-                        null,
-                        null,
-                        null);}
-            default:
-                throw new RuntimeException("Loader Not Implemented: " + id);
-
-        }
-
-
-
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
-        if (loader.getId() == HISTORY_SEARCH_LOADER) {
-            if (data.getCount() == 0 && loader.getId() == HISTORY_SEARCH_LOADER) {
-                Toast.makeText(getContext(), "No history yet", Toast.LENGTH_LONG).show();
-                return;
-            }
-            mDrinkAdapter.swapCursor(data);
-            final int idh = data.getColumnIndex(BarBroContract.HistoryEntry.COLUMN_HISTORYID);
-            final int drinkName = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
-            int ingredients = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS);
-            int drinkPicId = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC);
-            int videoId = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_VIDEO);
-            Drink[] array = new Drink[data.getCount()];
-            int i = 0;
-            data.moveToFirst();
-            while (!data.isAfterLast()) {
-
-                Drink drink = new Drink(data.getString(drinkName), data.getString(ingredients), data.getString(drinkPicId));
-                drink.setVideo(data.getString(videoId));
-                drink.setDbId(data.getInt(idh));
-                array[i] = drink;
-                i++;
-                data.moveToNext();
-            }
-
-            ArrayAdapter<Drink> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, array);
-            acDrinkTextView.setAdapter(adapter);
-            acDrinkTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Drink drink = (Drink) adapterView.getAdapter().getItem(i);
-                    HistoryUtils.addToHistory(getContext(), drink.getDbId());
-                    videoURL = drink.getVideo();
-                    mCurCheckPosition = drink.getDbId();
-                    if (mDualPane) {
-                        showDetails(drink.getDbId());
-                    } else {
-                        drinkDetail(drink.getDbId());
-
-                    }
-                    acDrinkTextView.setText("");
-
-                }
-            });
-
-        }
-        if(loader.getId() == DRINK_BY_ID_LOADER){
-            data.moveToFirst();
-
-            int drinkName = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
-            int ingredients = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_INGREDIENTS);
-            int description = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DESCRIPTION);
-            int videoId = data.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_VIDEO);
-
-            viewHeader.setText(data.getString(drinkName));
-            viewDesc.setText(data.getString(ingredients));
-            mMixView.setText(data.getString(description));
-            videoURL = data.getString(videoId);
-            youtubeLayout.setVisibility(View.VISIBLE);
-            youtubeLayout.maximize();
-        }
-
-        /*
-         * If the results are null, we assume an error has occurred. There are much more robust
-         * methods for checking errors, but we wanted to keep this particular example simple.
-         */
-
-
-        if (null == data) {
-            Toast.makeText(getContext(), " null data ", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-
-    }
-
-    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.history, menu);
 
@@ -316,11 +218,6 @@ public class HistoryFragment extends Fragment implements
             Uri uriAllDrinks = BarBroContract.HistoryEntry.CONTENT_URI;
             deleteHistory.startDelete(-1, null, uriAllDrinks, null, null);
 
-            Loader<Cursor> loaderM = getLoaderManager().getLoader(HISTORY_SEARCH_LOADER);
-            if(loaderM == null)
-                getLoaderManager().initLoader(HISTORY_SEARCH_LOADER, null, this);
-            else
-                getLoaderManager().restartLoader(HISTORY_SEARCH_LOADER, null, this);
 
         }
         else
@@ -344,11 +241,7 @@ public class HistoryFragment extends Fragment implements
         showVideoIcon();
         mCurCheckPosition = drink;
         drinkId = drink;
-        Loader<Cursor> loaderM = getLoaderManager().getLoader(DRINK_BY_ID_LOADER);
-        if(loaderM == null)
-            getLoaderManager().initLoader(DRINK_BY_ID_LOADER, null, this);
-        else
-            getLoaderManager().restartLoader(DRINK_BY_ID_LOADER, null, this);
+
     }
     private void showVideoIcon(){
 

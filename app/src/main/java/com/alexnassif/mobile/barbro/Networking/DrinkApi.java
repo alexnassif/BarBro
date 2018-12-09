@@ -9,8 +9,8 @@ import retrofit2.http.GET;
 
 public interface DrinkApi {
 
-    String BASE_URL = "https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Ordinary_Drink";
+    String BASE_URL = "https://www.thecocktaildb.com/api/json/v1/1/";
 
-    @GET()
+    @GET("filter.php?c=Ordinary_Drink")
     Call<List<DrinkList>> getDrinks();
 }

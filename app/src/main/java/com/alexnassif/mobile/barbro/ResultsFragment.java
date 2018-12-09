@@ -6,6 +6,8 @@ import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -16,6 +18,8 @@ import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -75,6 +79,7 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
     private MenuInflater mMenuInflater;
     private boolean isMenu = false;
     private ImageButton minimize;
+    private DrinksViewModel model;
 
     private List<DrinkList> drinkList;
 
@@ -94,19 +99,19 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
         if (getArguments() != null) {
             mParam1 = getArguments().getBoolean(ARG_PARAM1);
         }
-
+        model = ViewModelProviders.of(this).get(DrinksViewModel.class);
         setHasOptionsMenu(true);
     }
+
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
-        mDrinkAdapter = new DrinkAdapter(getContext(), this);
-        mRecyclerView.setAdapter(mDrinkAdapter);
+
         LinearLayoutManager layoutManager_randoms
                 = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView_Randoms.setLayoutManager(layoutManager_randoms);
@@ -174,10 +179,18 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
             });
         }
 
-        DrinksViewModel model = ViewModelProviders.of(this).get(DrinksViewModel.class);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
         model.getDrinks().observe(this, new Observer<List<DrinkList>>() {
             @Override
             public void onChanged(List<DrinkList> drinkLists) {
+
+                mDrinkAdapter = new DrinkAdapter(getContext(), ResultsFragment.this);
+                mRecyclerView.setAdapter(mDrinkAdapter);
                 mDrinkAdapter.swapCursor(drinkLists);
             }
         });
