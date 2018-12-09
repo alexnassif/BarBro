@@ -9,6 +9,8 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.loader.app.LoaderManager.LoaderCallbacks;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
@@ -27,9 +29,14 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.alexnassif.mobile.barbro.ViewModel.DrinksViewModel;
 import com.alexnassif.mobile.barbro.data.BarBroContract;
 import com.alexnassif.mobile.barbro.data.Drink;
+import com.alexnassif.mobile.barbro.data.DrinkList;
 import com.alexnassif.mobile.barbro.data.HistoryUtils;
+
+import java.util.List;
 
 
 public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapterOnClickHandler, SmallDrinkAdapter.SmallDrinkAdapterOnClickHandler {
@@ -68,6 +75,8 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
     private MenuInflater mMenuInflater;
     private boolean isMenu = false;
     private ImageButton minimize;
+
+    private List<DrinkList> drinkList;
 
 
 
@@ -164,6 +173,14 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
                 }
             });
         }
+
+        DrinksViewModel model = ViewModelProviders.of(this).get(DrinksViewModel.class);
+        model.getDrinks().observe(this, new Observer<List<DrinkList>>() {
+            @Override
+            public void onChanged(List<DrinkList> drinkLists) {
+                mDrinkAdapter.swapCursor(drinkLists);
+            }
+        });
 
     }
 

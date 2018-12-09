@@ -14,8 +14,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 
+import com.alexnassif.mobile.barbro.data.DrinkList;
 import com.bumptech.glide.Glide;
 import com.alexnassif.mobile.barbro.data.BarBroContract;
+
+import java.util.List;
 
 /**
  * Created by mobile on 12/12/16.
@@ -23,7 +26,7 @@ import com.alexnassif.mobile.barbro.data.BarBroContract;
 
 public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapterViewHolder> {
 
-    private Cursor mDrinkData;
+    private List<DrinkList> mDrinkData;
     private Context context;
     private final DrinkAdapterOnClickHandler mClickHandler;
 
@@ -48,27 +51,17 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
 
     @Override
     public void onBindViewHolder(DrinkAdapterViewHolder holder, int position) {
-        int drinkId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry._ID);
-        int drinkName = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
-        int drinkPicId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC);
-        int faveId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_FAVORITE);
+        DrinkList item = mDrinkData.get(position);
+        //holder.itemView.setTag(id);
 
-        mDrinkData.moveToPosition(position);
-
-        final int id = mDrinkData.getInt(drinkId);
-        String _drinkName = mDrinkData.getString(drinkName);
-        String drinkPic = mDrinkData.getString(drinkPicId);
-        int fave = mDrinkData.getInt(faveId);
-        holder.itemView.setTag(id);
-
-        Glide.with(holder.mDrinkImageView.getContext()).load("http://assets.absolutdrinks.com/drinks/300x400/" + drinkPic +".png").into(holder.mDrinkImageView);
-        holder.mDrinkTextView.setText(_drinkName);
-        if(fave == 1) {
+        Glide.with(holder.mDrinkImageView.getContext()).load(item.getStrDrinkThumb()).into(holder.mDrinkImageView);
+        holder.mDrinkTextView.setText(item.getStrDrink());
+        /*if(fave == 1) {
             holder.mFaveButtonView.setImageResource(R.drawable.ic_fave);
 
         }
         else
-            holder.mFaveButtonView.setImageResource(R.drawable.ic_non_fave);
+            holder.mFaveButtonView.setImageResource(R.drawable.ic_non_fave);*/
 
     }
 
@@ -76,10 +69,10 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
     public int getItemCount() {
         if(mDrinkData == null)
             return 0;
-        return mDrinkData.getCount();
+        return mDrinkData.size();
     }
 
-    void swapCursor(Cursor drinkData) {
+    void swapCursor(List<DrinkList> drinkData) {
         mDrinkData = drinkData;
         notifyDataSetChanged();
     }
@@ -101,50 +94,8 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
         public void onClick(View view) {
 
             int adapterPosition = getAdapterPosition();
-            mDrinkData.moveToPosition(adapterPosition);
-            int drinkId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry._ID);
-            int faveId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_FAVORITE);
-            final int idh = mDrinkData.getColumnIndex(BarBroContract.HistoryEntry.COLUMN_HISTORYID);
-
-            int id = mDrinkData.getInt(drinkId);
-            int fave = mDrinkData.getInt(faveId);
-            int history_id = 0;
-            if(idh != -1){
-                history_id = mDrinkData.getInt(idh);
-            }
-            final String stringID = Integer.toString(id);
-
-            if (view.getId() == mFaveButtonView.getId()) {
-                AsyncQueryHandler putDrink = new AsyncQueryHandler(context.getContentResolver()) {
-
-                    @Override
-                    protected void onUpdateComplete(int token, Object cookie, int result) {
-                        super.onUpdateComplete(token, cookie, result);
-                        if(idh != -1)
-                            context.getContentResolver().notifyChange(BarBroContract.HistoryEntry.CONTENT_URI, null);
-                    }
-                };
-                ContentValues mUpdateValues = new ContentValues();
-                Uri uri = BarBroContract.BarBroEntry.CONTENT_URI;
-                if(idh == -1)
-                    uri = uri.buildUpon().appendPath(stringID).build();
-                else
-                    uri = uri.buildUpon().appendPath(history_id + "").build();
-                if (fave == 1) {
-                    mUpdateValues.put(BarBroContract.BarBroEntry.COLUMN_FAVORITE, 0);
-                } else {
-                    mUpdateValues.put(BarBroContract.BarBroEntry.COLUMN_FAVORITE, 1);
-
-                }
-                putDrink.startUpdate(-1, null, uri, mUpdateValues, null, null);
-
-
-            } else {
-                if(idh != -1)
-                    mClickHandler.onClick(history_id);
-                else
-                    mClickHandler.onClick(id);
-            }
+            DrinkList item = mDrinkData.get(adapterPosition);
+            mClickHandler.onClick(Integer.parseInt(item.getIdDrink()));
         }
     }
 }
