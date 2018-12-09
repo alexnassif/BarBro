@@ -6,6 +6,7 @@ import android.util.Log;
 import com.alexnassif.mobile.barbro.Networking.DrinkApi;
 import com.alexnassif.mobile.barbro.data.Drink;
 import com.alexnassif.mobile.barbro.data.DrinkList;
+import com.alexnassif.mobile.barbro.data.DrinkListJsonResponse;
 import com.google.android.gms.common.api.Api;
 
 import java.util.List;
@@ -37,23 +38,28 @@ public class DrinksViewModel extends ViewModel {
                 .build();
 
         DrinkApi api = retrofit.create(DrinkApi.class);
-        Call<List<DrinkList>> call = api.getDrinks();
+        Call<DrinkListJsonResponse> call = api.getDrinks();
 
 
-        call.enqueue(new Callback<List<DrinkList>>() {
+        call.enqueue(new Callback<DrinkListJsonResponse>() {
             @Override
-            public void onResponse(Call<List<DrinkList>> call, Response<List<DrinkList>> response) {
+            public void onResponse(Call<DrinkListJsonResponse> call, Response<DrinkListJsonResponse> response) {
 
-                //finally we are setting the list to our MutableLiveData
-                drinks.setValue(response.body());
+                /* finally we are setting the list to our MutableLiveData */
+                if(response.isSuccessful()){
+                    drinks.setValue(response.body().getList());
+                }
+                else{
+                    Log.d("fromvmns", "not successful");
+                }
 
 
 
             }
 
             @Override
-            public void onFailure(Call<List<DrinkList>> call, Throwable t) {
-                Log.d("fromvm", "im in results fragment");
+            public void onFailure(Call<DrinkListJsonResponse> call, Throwable t) {
+                Log.d("fromvmerror", t.getMessage());
             }
 
         });
