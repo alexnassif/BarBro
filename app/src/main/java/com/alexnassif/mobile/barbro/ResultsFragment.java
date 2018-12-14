@@ -34,11 +34,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alexnassif.mobile.barbro.ViewModel.DrinkDetailViewModel;
 import com.alexnassif.mobile.barbro.ViewModel.DrinksViewModel;
+import com.alexnassif.mobile.barbro.ViewModel.RandomViewModel;
 import com.alexnassif.mobile.barbro.data.BarBroContract;
 import com.alexnassif.mobile.barbro.data.Drink;
 import com.alexnassif.mobile.barbro.data.DrinkList;
 import com.alexnassif.mobile.barbro.data.HistoryUtils;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -47,15 +50,8 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
 
     private static final String ARG_PARAM1 = "param1";
     private boolean mParam1 = false;
-    /*
-     * This number will uniquely identify our Loader and is chosen arbitrarily. You can change this
-     * to any number you like, as long as you use the same variable name.
-     */
-    private static final int GITHUB_SEARCH_LOADER = 22;
-    private static final int FAVE_LOADER = 23;
-    private static final int DRINK_BY_ID_LOADER = 24;
-    private static final int RANDOM_DRINKS_LOADER = 20;
-    private RecyclerView mRecyclerView_Randoms;
+
+    //private RecyclerView mRecyclerView_Randoms;
 
     private RecyclerView mRecyclerView;
     private SmallDrinkAdapter mDrinkAdapter_Randoms;
@@ -79,9 +75,16 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
     private MenuInflater mMenuInflater;
     private boolean isMenu = false;
     private ImageButton minimize;
-    private DrinksViewModel model;
 
-    private List<DrinkList> drinkList;
+    private TextView mDrinkTextView;
+    private ImageView mDrinkImageView;
+
+    //ViewModels
+    private DrinksViewModel model;
+    private DrinkDetailViewModel drinkModel;
+    private RandomViewModel randomViewModel;
+
+
 
 
 
@@ -100,6 +103,8 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
             mParam1 = getArguments().getBoolean(ARG_PARAM1);
         }
         model = ViewModelProviders.of(this).get(DrinksViewModel.class);
+        drinkModel = ViewModelProviders.of(this).get(DrinkDetailViewModel.class);
+        randomViewModel = ViewModelProviders.of(this).get(RandomViewModel.class);
         setHasOptionsMenu(true);
     }
 
@@ -114,21 +119,21 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
 
         LinearLayoutManager layoutManager_randoms
                 = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        mRecyclerView_Randoms.setLayoutManager(layoutManager_randoms);
-        mRecyclerView_Randoms.setHasFixedSize(true);
+        //mRecyclerView_Randoms.setLayoutManager(layoutManager_randoms);
+        //mRecyclerView_Randoms.setHasFixedSize(true);
         mDrinkAdapter_Randoms = new SmallDrinkAdapter(getContext(), this);
-        mRecyclerView_Randoms.setAdapter(mDrinkAdapter_Randoms);
+        //mRecyclerView_Randoms.setAdapter(mDrinkAdapter_Randoms);
         minimize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mRecyclerView_Randoms.getVisibility() == View.GONE) {
+                /*if(mRecyclerView_Randoms.getVisibility() == View.GONE) {
                     mRecyclerView_Randoms.setVisibility(View.VISIBLE);
                     minimize.setImageResource(android.R.drawable.arrow_up_float);
                 }
                 else {
                     mRecyclerView_Randoms.setVisibility(View.GONE);
                     minimize.setImageResource(android.R.drawable.arrow_down_float);
-                }
+                }*/
             }
         });
         View detailsFrame = getActivity().findViewById(R.id.drink_detail_fragment);
@@ -195,6 +200,20 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
             }
         });
 
+        randomViewModel.getDrinks().observe(this, new Observer<List<Drink>>() {
+            @Override
+            public void onChanged(List<Drink> drinks) {
+                mDrinkAdapter_Randoms = new SmallDrinkAdapter(getContext(), ResultsFragment.this);
+                //mRecyclerView_Randoms.setAdapter(mDrinkAdapter_Randoms);
+                mDrinkAdapter_Randoms.swapCursor(drinks);
+
+                Drink drink = drinks.get(0);
+
+                Glide.with(mDrinkImageView.getContext()).load(drink.getStrDrinkThumb()).into(mDrinkImageView);
+                mDrinkTextView.setText(drink.getStrDrink());
+            }
+        });
+
     }
 
     @Override
@@ -245,7 +264,7 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.results_layout, container, false);
         mRecyclerView = (RecyclerView) myView.findViewById(R.id.recyclerview_drinks);
-        mRecyclerView_Randoms = (RecyclerView) myView.findViewById(R.id.random_recyclerView);
+        //mRecyclerView_Randoms = (RecyclerView) myView.findViewById(R.id.random_recyclerView);
         acDrinkTextView = (AutoCompleteTextView) myView.findViewById(R.id.search_drinks);
         minimize = (ImageButton) myView.findViewById(R.id.minimize_button);
         if (!mDualPane) {
@@ -254,6 +273,8 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
             mMixView = (TextView) myView.findViewById(R.id.desc_view_youtube);
             youtubeLayout = (YouTubeLayout) myView.findViewById(R.id.dragLayout);
             mArrowExit = (ImageView) myView.findViewById(R.id.arrowUpExit);
+            mDrinkTextView = (TextView) myView.findViewById(R.id.cardview_drinkname);
+            mDrinkImageView = (ImageView) myView.findViewById(R.id.cardview_image);
             //youtubeLayout.setVisibility(View.GONE);
         }
         return myView;
@@ -299,7 +320,18 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
 
     @Override
     public void onClick(int drink) {
-        HistoryUtils.addToHistory(getContext(), drink);
+        //HistoryUtils.addToHistory(getContext(), drink);
+        drinkModel.getDrinks(drink).observe(this, new Observer<Drink>() {
+            @Override
+            public void onChanged(Drink drink) {
+                viewHeader.setText(drink.getStrDrink());
+                viewDesc.setText(drink.getStrIngredient1());
+                mMixView.setText(drink.getStrInstructions());
+                youtubeLayout.setVisibility(View.VISIBLE);
+                youtubeLayout.maximize();
+
+            }
+        });
         if (mDualPane) {
             showDetails(drink);
         }

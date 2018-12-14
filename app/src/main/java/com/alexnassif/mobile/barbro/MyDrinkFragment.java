@@ -8,6 +8,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
+
+import com.alexnassif.mobile.barbro.data.MyDrink;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.fragment.app.Fragment;
 import androidx.loader.app.LoaderManager;
@@ -80,7 +82,7 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
             showTip = true;
         }
         LinearLayoutManager layoutManager
-                = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+                = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
         mDrinkAdapter = new MyDrinkAdapter(getContext(), this);
@@ -100,7 +102,7 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
             @Override
             public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
 
-                Drink drink = (Drink) viewHolder.itemView.getTag();
+                MyDrink drink = (MyDrink) viewHolder.itemView.getTag();
                 String stringId = Integer.toString(drink.getDbId());
                 Uri uri = BarBroContract.MyDrinkEntry.CONTENT_URI;
                 uri = uri.buildUpon().appendPath(stringId).build();
@@ -162,12 +164,12 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
             int drinkName = data.getColumnIndex(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_NAME);
             int ingredients = data.getColumnIndex(BarBroContract.MyDrinkEntry.COLUMN_MYINGREDIENTS);
             int drinkPicId = data.getColumnIndex(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_PIC);
-            Drink[] array = new Drink[data.getCount()];
+            MyDrink[] array = new MyDrink[data.getCount()];
             int i = 0;
             data.moveToFirst();
             while (!data.isAfterLast()) {
 
-                Drink drink = new Drink(data.getString(drinkName), data.getString(ingredients), data.getString(drinkPicId));
+                MyDrink drink = new MyDrink(data.getString(drinkName), data.getString(ingredients), data.getString(drinkPicId));
                 drink.setDbId(data.getInt(drinkId));
                 array[i] = drink;
                 i++;
@@ -175,12 +177,12 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
             }
 
             mDrinkAdapter.swapCursor(data);
-            ArrayAdapter<Drink> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, array);
+            ArrayAdapter<MyDrink> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, array);
             acDrinkTextView.setAdapter(adapter);
             acDrinkTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Drink drink = (Drink) adapterView.getAdapter().getItem(i);
+                    MyDrink drink = (MyDrink) adapterView.getAdapter().getItem(i);
                     drinkDetail(drink.getDbId());
                     acDrinkTextView.setText("");
 

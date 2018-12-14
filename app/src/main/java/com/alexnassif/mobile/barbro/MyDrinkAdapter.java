@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alexnassif.mobile.barbro.data.MyDrink;
 import com.bumptech.glide.Glide;
 import com.alexnassif.mobile.barbro.data.BarBroContract;
 import com.alexnassif.mobile.barbro.data.Drink;
@@ -54,7 +55,7 @@ public class MyDrinkAdapter extends RecyclerView.Adapter<MyDrinkAdapter.MyDrinkA
         final String _drinkIngredients = mDrinkData.getString(drinkIngredients);
         final String _drinkPic = mDrinkData.getString(drinkPic);
 
-        final Drink drink = new Drink();
+        final MyDrink drink = new MyDrink();
         drink.setDbId(id);
         drink.setDrinkName(_drinkName);
         drink.setIngredients(_drinkIngredients);

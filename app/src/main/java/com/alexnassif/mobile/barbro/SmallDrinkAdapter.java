@@ -11,12 +11,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 
+import com.alexnassif.mobile.barbro.data.Drink;
 import com.bumptech.glide.Glide;
 import com.alexnassif.mobile.barbro.data.BarBroContract;
 
+import java.util.List;
+
 public class SmallDrinkAdapter extends RecyclerView.Adapter<SmallDrinkAdapter.SmallDrinkAdapterViewHolder> {
 
-    private Cursor mDrinkData;
+    private List<Drink> mDrinkData;
     private Context context;
     private final SmallDrinkAdapterOnClickHandler mClickHandler;
 
@@ -40,29 +43,22 @@ public class SmallDrinkAdapter extends RecyclerView.Adapter<SmallDrinkAdapter.Sm
 
     @Override
     public void onBindViewHolder(SmallDrinkAdapter.SmallDrinkAdapterViewHolder holder, int position) {
-        int drinkId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry._ID);
-        int drinkName = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_NAME);
-        int drinkPicId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry.COLUMN_DRINK_PIC);
 
-        mDrinkData.moveToPosition(position);
+        Drink drink = mDrinkData.get(position);
+        holder.itemView.setTag(drink.getIdDrink());
 
-        final int id = mDrinkData.getInt(drinkId);
-        String _drinkName = mDrinkData.getString(drinkName);
-        String drinkPic = mDrinkData.getString(drinkPicId);
-        holder.itemView.setTag(id);
-
-        Glide.with(holder.mDrinkImageView.getContext()).load("http://assets.absolutdrinks.com/drinks/300x400/" + drinkPic +".png").into(holder.mDrinkImageView);
-        holder.mDrinkTextView.setText(_drinkName);
+        Glide.with(holder.mDrinkImageView.getContext()).load(drink.getStrDrinkThumb()).into(holder.mDrinkImageView);
+        holder.mDrinkTextView.setText(drink.getStrDrink());
     }
 
     @Override
     public int getItemCount() {
         if(mDrinkData == null)
             return 0;
-        return mDrinkData.getCount();
+        return mDrinkData.size();
     }
 
-    void swapCursor(Cursor drinkData) {
+    void swapCursor(List<Drink> drinkData) {
         mDrinkData = drinkData;
         notifyDataSetChanged();
     }
@@ -82,11 +78,9 @@ public class SmallDrinkAdapter extends RecyclerView.Adapter<SmallDrinkAdapter.Sm
         public void onClick(View view) {
 
             int adapterPosition = getAdapterPosition();
-            mDrinkData.moveToPosition(adapterPosition);
-            int drinkId = mDrinkData.getColumnIndex(BarBroContract.BarBroEntry._ID);
-            int id = mDrinkData.getInt(drinkId);
+            Drink drink = mDrinkData.get(adapterPosition);
 
-            mClickHandler.onClick(id);
+            mClickHandler.onClick(Integer.parseInt(drink.getIdDrink()));
         }
     }
 }
