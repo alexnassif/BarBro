@@ -1,6 +1,9 @@
 package com.alexnassif.mobile.barbro.data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import android.text.TextUtils;
 
 /**
  * Created by mobile on 12/11/16.
@@ -88,6 +91,9 @@ public class Drink implements Serializable {
         this.strMeasure13 = strMeasure13;
         this.strMeasure14 = strMeasure14;
         this.strMeasure15 = strMeasure15;
+
+        //this.ingredients = getAllIngredients();
+        //this.measuresments = getMeasurements();
     }
 
     public String getStrDrink() {
@@ -240,6 +246,98 @@ public class Drink implements Serializable {
 
     public String getStrMeasure15() {
         return strMeasure15;
+    }
+
+
+    public List<String> getAllIngredients(){
+
+        List<String> ingredients = new ArrayList<String>();
+
+        //if(!this.strIngredient1.isEmpty())
+            ingredients.add(this.strIngredient1);
+        //if(!this.strIngredient2.isEmpty())
+            ingredients.add(this.strIngredient2);
+        //if(!this.strIngredient3.isEmpty())
+            ingredients.add(this.strIngredient3);
+        //if(!this.strIngredient4.isEmpty())
+            ingredients.add(this.strIngredient4);
+        //if(!this.strIngredient5.isEmpty())
+            ingredients.add(this.strIngredient5);
+        //if(!this.strIngredient6.isEmpty())
+            ingredients.add(this.strIngredient6);
+        //if(!this.strIngredient7.isEmpty())
+            ingredients.add(this.strIngredient7);
+        //if(!this.strIngredient8.isEmpty())
+            ingredients.add(this.strIngredient8);
+        //if(!this.strIngredient9.isEmpty())
+            ingredients.add(this.strIngredient9);
+        //if(!this.strIngredient10.isEmpty())
+            ingredients.add(this.strIngredient10);
+        //if(!this.strIngredient11.isEmpty())
+            ingredients.add(this.strIngredient11);
+        //if(!this.strIngredient12.isEmpty())
+            ingredients.add(this.strIngredient12);
+        //if(!this.strIngredient13.isEmpty())
+            ingredients.add(this.strIngredient13);
+        //if(!this.strIngredient14.isEmpty())
+            ingredients.add(this.strIngredient14);
+        //if(!this.strIngredient15.isEmpty())
+            ingredients.add(this.strIngredient15);
+
+        return ingredients;
+    }
+
+    public List<String> getMeasurements(){
+        List<String> measuresments = new ArrayList<String>();
+        //if(!this.strMeasure1.isEmpty())
+            measuresments.add(this.strMeasure1);
+        //if(!this.strMeasure2.isEmpty())
+            measuresments.add(this.strMeasure2);
+        //if(!this.strMeasure3.isEmpty())
+            measuresments.add(this.strMeasure3);
+        //if(!this.strMeasure4.isEmpty())
+            measuresments.add(this.strMeasure4);
+        //if(!this.strMeasure5.isEmpty())
+            measuresments.add(this.strMeasure5);
+        //if(!this.strMeasure6.isEmpty())
+            measuresments.add(this.strMeasure6);
+        //if(!this.strMeasure7.isEmpty())
+            measuresments.add(this.strMeasure7);
+        //if(!this.strMeasure8.isEmpty())
+            measuresments.add(this.strMeasure8);
+        //if(!this.strMeasure9.isEmpty())
+            measuresments.add(this.strMeasure9);
+        //if(!this.strMeasure10.isEmpty())
+            measuresments.add(this.strMeasure10);
+        //if(!this.strMeasure11.isEmpty())
+            measuresments.add(this.strMeasure11);
+        //if(!this.strMeasure12.isEmpty())
+            measuresments.add(this.strMeasure12);
+        //if(!this.strMeasure13.isEmpty())
+            measuresments.add(this.strMeasure13);
+        //if(!this.strMeasure14.isEmpty())
+            measuresments.add(this.strMeasure14);
+        //if(!this.strMeasure15.isEmpty())
+            measuresments.add(this.strMeasure15);
+
+        return measuresments;
+    }
+
+    public String drinkIngredients(){
+
+        List<String> ingredients = this.getAllIngredients();
+        List<String> measurements = this.getMeasurements();
+
+        String ing = "";
+        for(int i = 0; i < measurements.size(); i++){
+
+            if(!measurements.get(i).isEmpty() && !ingredients.get(i).isEmpty())
+                ing += measurements.get(i) + " " + ingredients.get(i) + "\n";
+
+
+        }
+
+        return ing;
     }
 
 }

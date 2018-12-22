@@ -84,10 +84,6 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
     private DrinkDetailViewModel drinkModel;
     private RandomViewModel randomViewModel;
 
-
-
-
-
     public static ResultsFragment newInstance(boolean param1) {
         ResultsFragment fragment = new ResultsFragment();
         Bundle args = new Bundle();
@@ -207,10 +203,16 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
                 //mRecyclerView_Randoms.setAdapter(mDrinkAdapter_Randoms);
                 mDrinkAdapter_Randoms.swapCursor(drinks);
 
-                Drink drink = drinks.get(0);
+                final Drink drink = drinks.get(0);
 
                 Glide.with(mDrinkImageView.getContext()).load(drink.getStrDrinkThumb()).into(mDrinkImageView);
                 mDrinkTextView.setText(drink.getStrDrink());
+                mDrinkImageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        drinkDetail(Integer.parseInt(drink.getIdDrink()));
+                    }
+                });
             }
         });
 
@@ -310,6 +312,19 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
     public void drinkDetail(int drink){
         drinkId = drink;
         mCurCheckPosition = drink;
+        drinkModel.getDrinks(drink).observe(this, new Observer<Drink>() {
+            @Override
+            public void onChanged(Drink drink) {
+                viewHeader.setText(drink.getStrDrink());
+                Log.d("drinkid", drink.getIdDrink() + "");
+                viewDesc.setText(drink.drinkIngredients());
+                mMixView.setText(drink.getStrInstructions());
+                youtubeLayout.setVisibility(View.VISIBLE);
+                youtubeLayout.maximize();
+
+            }
+        });
+
         if(!isMenu) {
             mMenuInflater.inflate(R.menu.video, mMenu);
             isMenu = true;
@@ -321,17 +336,7 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
     @Override
     public void onClick(int drink) {
         //HistoryUtils.addToHistory(getContext(), drink);
-        drinkModel.getDrinks(drink).observe(this, new Observer<Drink>() {
-            @Override
-            public void onChanged(Drink drink) {
-                viewHeader.setText(drink.getStrDrink());
-                viewDesc.setText(drink.getStrIngredient1());
-                mMixView.setText(drink.getStrInstructions());
-                youtubeLayout.setVisibility(View.VISIBLE);
-                youtubeLayout.maximize();
 
-            }
-        });
         if (mDualPane) {
             showDetails(drink);
         }

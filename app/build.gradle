@@ -55,6 +55,7 @@ dependencies {
 
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -23,8 +23,9 @@ public class DrinkDetailViewModel extends ViewModel {
         this.drinkId = drinkId;
         if(drink == null){
             drink = new MutableLiveData<Drink>();
-            loadDrink(drinkId);
+
         }
+        loadDrink(drinkId);
         return drink;
     }
 

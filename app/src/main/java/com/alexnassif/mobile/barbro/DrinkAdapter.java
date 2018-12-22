@@ -6,6 +6,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,6 +98,7 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
             int adapterPosition = getAdapterPosition();
             DrinkList item = mDrinkData.get(adapterPosition);
             mClickHandler.onClick(Integer.parseInt(item.getIdDrink()));
+            Log.d("drinkadapterposition", item.getIdDrink());
         }
     }
 }
