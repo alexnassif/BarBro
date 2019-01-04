@@ -58,22 +58,16 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
     private DrinkAdapter mDrinkAdapter;
     private View myView;
     private AutoCompleteTextView acDrinkTextView;
-    private VideoFragment videoFragment;
     private DrinkDetailFragment drinkDetailFragment;
 
     private boolean mDualPane;
     int mCurCheckPosition = 0;
-    private String videoURL = "pennsylvania.mp4";
     private YouTubeLayout youtubeLayout;
     private TextView viewHeader;
     private int drinkId;
     private TextView viewDesc;
     private TextView mMixView;
     private ImageView mArrowExit;
-    private boolean whichFragment = true;
-    private Menu mMenu;
-    private MenuInflater mMenuInflater;
-    private boolean isMenu = false;
     private ImageButton minimize;
 
     private TextView mDrinkTextView;
@@ -148,25 +142,16 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
             // Restore last state for checked position.
             mCurCheckPosition = savedInstanceState.getInt("curChoice", 1);
             if(mDualPane) {
-                whichFragment = savedInstanceState.getBoolean("fragment");
-                if (whichFragment)
-                    drinkDetailFragment = (DrinkDetailFragment) getFragmentManager().getFragment(savedInstanceState, "myFragmentName");
-                else
-                    videoFragment = (VideoFragment) getFragmentManager().getFragment(savedInstanceState, "myFragmentName");
+                drinkDetailFragment = (DrinkDetailFragment) getFragmentManager().getFragment(savedInstanceState, "myFragmentName");
             }
         }
 
         if (mDualPane) {
             if(mCurCheckPosition == 0)
                 mCurCheckPosition = 1;
-            if(whichFragment)
-                showDetails(mCurCheckPosition);
-            else {
-                FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
-                fragmentManager
-                        .replace(R.id.drink_detail_fragment, videoFragment)
-                        .commit();
-            }
+
+            //showDetails(mCurCheckPosition);
+
         }
 
         if(!mDualPane) {
@@ -174,8 +159,6 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
                 @Override
                 public void onClick(View view) {
                     youtubeLayout.setVisibility(View.GONE);
-                    mMenu.clear();
-                    isMenu = false;
                 }
             });
         }
@@ -229,38 +212,10 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
         super.onSaveInstanceState(outState);
         outState.putInt("curChoice", mCurCheckPosition);
         if(mDualPane) {
-            if (whichFragment)
-                getFragmentManager().putFragment(outState, "myFragmentName", drinkDetailFragment);
-            else
-                getFragmentManager().putFragment(outState, "myFragmentName", videoFragment);
-
-            outState.putBoolean("fragment", whichFragment);
+            getFragmentManager().putFragment(outState, "myFragmentName", drinkDetailFragment);
         }
     }
-    void showDetails(int index) {
-        whichFragment = true;
-        mCurCheckPosition = index;
 
-        if (mDualPane) {
-            // We can display everything in-place with fragments, so update
-            // the list to highlight the selected item and show the data.
-
-            // Check what fragment is currently shown, replace if needed.
-            //DrinkDetailFragment details = DrinkDetailFragment.newInstance(index);
-
-                // Execute a transaction, replacing any existing fragment
-                // with this one inside the frame.
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                drinkDetailFragment = drinkDetailFragment.newInstance(index);
-                ft.replace(R.id.drink_detail_fragment, drinkDetailFragment);
-
-
-                //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                ft.commit();
-
-
-        }
-    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -269,14 +224,14 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
         //mRecyclerView_Randoms = (RecyclerView) myView.findViewById(R.id.random_recyclerView);
         acDrinkTextView = (AutoCompleteTextView) myView.findViewById(R.id.search_drinks);
         minimize = (ImageButton) myView.findViewById(R.id.minimize_button);
+        mDrinkTextView = (TextView) myView.findViewById(R.id.cardview_drinkname);
+        mDrinkImageView = (ImageView) myView.findViewById(R.id.cardview_image);
         if (!mDualPane) {
             viewHeader = (TextView) myView.findViewById(R.id.header);
             viewDesc = (TextView) myView.findViewById(R.id.desc);
             mMixView = (TextView) myView.findViewById(R.id.desc_view_youtube);
             youtubeLayout = (YouTubeLayout) myView.findViewById(R.id.dragLayout);
             mArrowExit = (ImageView) myView.findViewById(R.id.arrowUpExit);
-            mDrinkTextView = (TextView) myView.findViewById(R.id.cardview_drinkname);
-            mDrinkImageView = (ImageView) myView.findViewById(R.id.cardview_image);
             //youtubeLayout.setVisibility(View.GONE);
         }
         return myView;
@@ -286,12 +241,6 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (mDualPane) {
-            inflater.inflate(R.menu.video, menu);
-        } else {
-            mMenu = menu;
-            mMenuInflater = inflater;
-        }
 
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -299,13 +248,6 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.video_item && mCurCheckPosition != 0) {
-            Intent intent = new Intent(getContext(), VideoActivity.class);
-            intent.putExtra("video", mCurCheckPosition);
-            startActivity(intent);
-        } else
-            Toast.makeText(getContext(), "No Drink Chosen", Toast.LENGTH_LONG).show();
-
 
         return true;
     }
@@ -325,23 +267,35 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
             }
         });
 
-        if(!isMenu) {
-            mMenuInflater.inflate(R.menu.video, mMenu);
-            isMenu = true;
-        }
-
 
     }
 
     @Override
-    public void onClick(int drink) {
+    public void onClick(int drinkId) {
         //HistoryUtils.addToHistory(getContext(), drink);
+        drinkModel.getDrinks(drinkId).observe(this, new Observer<Drink>() {
+            @Override
+            public void onChanged(Drink drink) {
 
-        if (mDualPane) {
-            showDetails(drink);
-        }
-        else {
-            drinkDetail(drink);
-        }
+                if(mDualPane){
+                    mCurCheckPosition = Integer.parseInt(drink.getIdDrink());
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    drinkDetailFragment = drinkDetailFragment.newInstance(drink);
+                    ft.replace(R.id.drink_detail_fragment, drinkDetailFragment);
+                    //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                    ft.commit();
+                }
+                else {
+                    viewHeader.setText(drink.getStrDrink());
+                    Log.d("drinkid", drink.getIdDrink() + "");
+                    viewDesc.setText(drink.drinkIngredients());
+                    mMixView.setText(drink.getStrInstructions());
+                    youtubeLayout.setVisibility(View.VISIBLE);
+                    youtubeLayout.maximize();
+                }
+
+            }
+        });
+
     }
 }

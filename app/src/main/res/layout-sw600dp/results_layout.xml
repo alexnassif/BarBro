@@ -38,10 +38,10 @@
                 app:srcCompat="@android:drawable/arrow_up_float" />
         </FrameLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/random_recyclerView"
+        <include layout="@layout/drink_cardview_item"
+            android:id="@+id/card_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="300dp" />
 
         <AutoCompleteTextView
             android:id="@+id/search_drinks"

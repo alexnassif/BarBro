@@ -167,10 +167,10 @@ public class HistoryFragment extends Fragment implements DrinkAdapter.DrinkAdapt
 
             // Execute a transaction, replacing any existing fragment
             // with this one inside the frame.
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            /*FragmentTransaction ft = getFragmentManager().beginTransaction();
             drinkDetailFragment = DrinkDetailFragment.newInstance(index);
             ft.replace(R.id.drink_detail_fragment, drinkDetailFragment);
-            ft.commit();
+            ft.commit();*/
 
 
         }
