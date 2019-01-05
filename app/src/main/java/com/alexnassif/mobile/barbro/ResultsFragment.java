@@ -193,7 +193,7 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
                 mDrinkImageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        drinkDetail(Integer.parseInt(drink.getIdDrink()));
+                        drinkDetail(drink.getIdDrink());
                     }
                 });
             }
@@ -278,7 +278,7 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
             public void onChanged(Drink drink) {
 
                 if(mDualPane){
-                    mCurCheckPosition = Integer.parseInt(drink.getIdDrink());
+                    mCurCheckPosition = drink.getIdDrink();
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
                     drinkDetailFragment = drinkDetailFragment.newInstance(drink);
                     ft.replace(R.id.drink_detail_fragment, drinkDetailFragment);

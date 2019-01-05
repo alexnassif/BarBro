@@ -102,7 +102,7 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
             @Override
             public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
 
-                MyDrink drink = (MyDrink) viewHolder.itemView.getTag();
+                /*MyDrink drink = (MyDrink) viewHolder.itemView.getTag();
                 String stringId = Integer.toString(drink.getDbId());
                 Uri uri = BarBroContract.MyDrinkEntry.CONTENT_URI;
                 uri = uri.buildUpon().appendPath(stringId).build();
@@ -112,7 +112,7 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
                         file.delete();
                     }
 
-                }
+                }*/
 
                 AsyncQueryHandler deleteDrink = new AsyncQueryHandler(getActivity().getContentResolver()) {
 
@@ -122,7 +122,7 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
                         mRecyclerView.removeAllViewsInLayout();
                     }
                 };
-                deleteDrink.startDelete(-1, null, uri, null, null);
+                //deleteDrink.startDelete(-1, null, uri, null, null);
 
             }
         }).attachToRecyclerView(mRecyclerView);
@@ -169,11 +169,11 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
             data.moveToFirst();
             while (!data.isAfterLast()) {
 
-                MyDrink drink = new MyDrink(data.getString(drinkName), data.getString(ingredients), data.getString(drinkPicId));
+                /*MyDrink drink = new MyDrink(data.getString(drinkName), data.getString(ingredients), data.getString(drinkPicId));
                 drink.setDbId(data.getInt(drinkId));
                 array[i] = drink;
                 i++;
-                data.moveToNext();
+                data.moveToNext();*/
             }
 
             mDrinkAdapter.swapCursor(data);
@@ -183,7 +183,7 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     MyDrink drink = (MyDrink) adapterView.getAdapter().getItem(i);
-                    drinkDetail(drink.getDbId());
+                    //drinkDetail(drink.getDbId());
                     acDrinkTextView.setText("");
 
                 }

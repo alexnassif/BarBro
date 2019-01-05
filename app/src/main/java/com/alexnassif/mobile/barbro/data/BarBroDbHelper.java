@@ -129,13 +129,7 @@ public class BarBroDbHelper extends SQLiteOpenHelper {
 
     }
 
-
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-
-    }
-
-    /* @Override
+     @Override
      public void onCreate(SQLiteDatabase db) {
          final String SQL_CREATE_BARBRO_TABLE = "CREATE TABLE " +
                  BarBroContract.BarBroEntry.TABLE_NAME + " (" +
@@ -182,12 +176,12 @@ public class BarBroDbHelper extends SQLiteOpenHelper {
          db.execSQL(SQL_CREATE_BARBRO_MYDRINK_TABLE);
          db.execSQL(SQL_CREATE_BARBRO_HISTORY_TABLE);
 
-     }*/
+     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + BarBroContract.BarBroEntry.TABLE_NAME);
+        /*db.execSQL("DROP TABLE IF EXISTS " + BarBroContract.BarBroEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + BarBroContract.MyDrinkEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + BarBroContract.HistoryEntry.TABLE_NAME);
-        onCreate(db);
+        onCreate(db);*/
     }
 }

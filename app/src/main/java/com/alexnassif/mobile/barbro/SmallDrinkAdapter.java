@@ -80,7 +80,7 @@ public class SmallDrinkAdapter extends RecyclerView.Adapter<SmallDrinkAdapter.Sm
             int adapterPosition = getAdapterPosition();
             Drink drink = mDrinkData.get(adapterPosition);
 
-            mClickHandler.onClick(Integer.parseInt(drink.getIdDrink()));
+            mClickHandler.onClick(drink.getIdDrink());
         }
     }
 }

@@ -2,43 +2,50 @@ package com.alexnassif.mobile.barbro.data;
 
 import java.io.Serializable;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "mydrinks")
 public class MyDrink implements Serializable {
-    private int dbId;
-    private String drinkName;
-    private String id;
+
+    @PrimaryKey
+    private int id;
+    private String name;
     private String ingredients;
-    private String video;
+    private String pic;
 
-    public MyDrink(){
-
-    }
-    public MyDrink(String drinkName, String ingredients, String id){
-        this.drinkName = drinkName;
+    public MyDrink(String pic, String drinkName, String ingredients, int id){
+        this.name = drinkName;
         this.ingredients = ingredients;
         this.id = id;
+        this.pic = pic;
     }
-    public String getVideo(){return video;}
-    public String getId(){ return id; };
-    public String getDrinkName(){
-        return drinkName;
+
+    public int getId(){ return id; };
+    public String getName(){
+        return name;
     }
     public String getIngredients(){
         return ingredients;
     }
-    public void setId(String id){ this.id = id; }
-    public void setVideo(String video){this.video = video; }
-    public void setDrinkName(String drinkName){
-        this.drinkName = drinkName;
+    public void setId(int id){ this.id = id; }
+    public void setName(String drinkName){
+        this.name = drinkName;
     }
     public void setIngredients(String ingredients){
         this.ingredients = ingredients;
     }
-    public void setDbId(int id){
-        this.dbId = id;
+
+    public String getPic() {
+        return pic;
     }
-    public int getDbId(){return dbId;}
+
+    public void setPic(String pic) {
+        this.pic = pic;
+    }
+
     @Override
     public String toString(){
-        return drinkName;
+        return name;
     }
 }

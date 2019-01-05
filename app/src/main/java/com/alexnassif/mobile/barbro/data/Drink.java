@@ -5,14 +5,20 @@ import java.util.ArrayList;
 import java.util.List;
 import android.text.TextUtils;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 /**
  * Created by mobile on 12/11/16.
  */
 
+@Entity(tableName = "favorites")
 public class Drink implements Serializable {
 
+    @PrimaryKey(autoGenerate = true)
+    private int idDrink;
+
     private String strDrink;
-    private String idDrink;
     private String strCategory;
     private String strIBA;
     private String strAlcoholic;
@@ -52,7 +58,7 @@ public class Drink implements Serializable {
     private String strMeasure14;
     private String strMeasure15;
 
-    public Drink(String strDrink, String idDrink, String strCategory, String strIBA, String strAlcoholic, String strGlass, String strInstructions, String strDrinkThumb, String strIngredient1, String strIngredient2, String strIngredient3, String strIngredient4, String strIngredient5, String strIngredient6, String strIngredient7, String strIngredient8, String strIngredient9, String strIngredient10, String strIngredient11, String strIngredient12, String strIngredient13, String strIngredient14, String strIngredient15, String strMeasure1, String strMeasure2, String strMeasure3, String strMeasure4, String strMeasure5, String strMeasure6, String strMeasure7, String strMeasure8, String strMeasure9, String strMeasure10, String strMeasure11, String strMeasure12, String strMeasure13, String strMeasure14, String strMeasure15) {
+    public Drink(String strDrink, int idDrink, String strCategory, String strIBA, String strAlcoholic, String strGlass, String strInstructions, String strDrinkThumb, String strIngredient1, String strIngredient2, String strIngredient3, String strIngredient4, String strIngredient5, String strIngredient6, String strIngredient7, String strIngredient8, String strIngredient9, String strIngredient10, String strIngredient11, String strIngredient12, String strIngredient13, String strIngredient14, String strIngredient15, String strMeasure1, String strMeasure2, String strMeasure3, String strMeasure4, String strMeasure5, String strMeasure6, String strMeasure7, String strMeasure8, String strMeasure9, String strMeasure10, String strMeasure11, String strMeasure12, String strMeasure13, String strMeasure14, String strMeasure15) {
         this.strDrink = strDrink;
         this.idDrink = idDrink;
         this.strCategory = strCategory;
@@ -96,11 +102,163 @@ public class Drink implements Serializable {
         //this.measuresments = getMeasurements();
     }
 
+    public void setIdDrink(int idDrink) {
+        this.idDrink = idDrink;
+    }
+
+    public void setStrDrink(String strDrink) {
+        this.strDrink = strDrink;
+    }
+
+    public void setStrCategory(String strCategory) {
+        this.strCategory = strCategory;
+    }
+
+    public void setStrIBA(String strIBA) {
+        this.strIBA = strIBA;
+    }
+
+    public void setStrAlcoholic(String strAlcoholic) {
+        this.strAlcoholic = strAlcoholic;
+    }
+
+    public void setStrGlass(String strGlass) {
+        this.strGlass = strGlass;
+    }
+
+    public void setStrInstructions(String strInstructions) {
+        this.strInstructions = strInstructions;
+    }
+
+    public void setStrDrinkThumb(String strDrinkThumb) {
+        this.strDrinkThumb = strDrinkThumb;
+    }
+
+    public void setStrIngredient1(String strIngredient1) {
+        this.strIngredient1 = strIngredient1;
+    }
+
+    public void setStrIngredient2(String strIngredient2) {
+        this.strIngredient2 = strIngredient2;
+    }
+
+    public void setStrIngredient3(String strIngredient3) {
+        this.strIngredient3 = strIngredient3;
+    }
+
+    public void setStrIngredient4(String strIngredient4) {
+        this.strIngredient4 = strIngredient4;
+    }
+
+    public void setStrIngredient5(String strIngredient5) {
+        this.strIngredient5 = strIngredient5;
+    }
+
+    public void setStrIngredient6(String strIngredient6) {
+        this.strIngredient6 = strIngredient6;
+    }
+
+    public void setStrIngredient7(String strIngredient7) {
+        this.strIngredient7 = strIngredient7;
+    }
+
+    public void setStrIngredient8(String strIngredient8) {
+        this.strIngredient8 = strIngredient8;
+    }
+
+    public void setStrIngredient9(String strIngredient9) {
+        this.strIngredient9 = strIngredient9;
+    }
+
+    public void setStrIngredient10(String strIngredient10) {
+        this.strIngredient10 = strIngredient10;
+    }
+
+    public void setStrIngredient11(String strIngredient11) {
+        this.strIngredient11 = strIngredient11;
+    }
+
+    public void setStrIngredient12(String strIngredient12) {
+        this.strIngredient12 = strIngredient12;
+    }
+
+    public void setStrIngredient13(String strIngredient13) {
+        this.strIngredient13 = strIngredient13;
+    }
+
+    public void setStrIngredient14(String strIngredient14) {
+        this.strIngredient14 = strIngredient14;
+    }
+
+    public void setStrIngredient15(String strIngredient15) {
+        this.strIngredient15 = strIngredient15;
+    }
+
+    public void setStrMeasure1(String strMeasure1) {
+        this.strMeasure1 = strMeasure1;
+    }
+
+    public void setStrMeasure2(String strMeasure2) {
+        this.strMeasure2 = strMeasure2;
+    }
+
+    public void setStrMeasure3(String strMeasure3) {
+        this.strMeasure3 = strMeasure3;
+    }
+
+    public void setStrMeasure4(String strMeasure4) {
+        this.strMeasure4 = strMeasure4;
+    }
+
+    public void setStrMeasure5(String strMeasure5) {
+        this.strMeasure5 = strMeasure5;
+    }
+
+    public void setStrMeasure6(String strMeasure6) {
+        this.strMeasure6 = strMeasure6;
+    }
+
+    public void setStrMeasure7(String strMeasure7) {
+        this.strMeasure7 = strMeasure7;
+    }
+
+    public void setStrMeasure8(String strMeasure8) {
+        this.strMeasure8 = strMeasure8;
+    }
+
+    public void setStrMeasure9(String strMeasure9) {
+        this.strMeasure9 = strMeasure9;
+    }
+
+    public void setStrMeasure10(String strMeasure10) {
+        this.strMeasure10 = strMeasure10;
+    }
+
+    public void setStrMeasure11(String strMeasure11) {
+        this.strMeasure11 = strMeasure11;
+    }
+
+    public void setStrMeasure12(String strMeasure12) {
+        this.strMeasure12 = strMeasure12;
+    }
+
+    public void setStrMeasure13(String strMeasure13) {
+        this.strMeasure13 = strMeasure13;
+    }
+
+    public void setStrMeasure14(String strMeasure14) {
+        this.strMeasure14 = strMeasure14;
+    }
+
+    public void setStrMeasure15(String strMeasure15) {
+        this.strMeasure15 = strMeasure15;
+    }
+
     public String getStrDrink() {
         return strDrink;
     }
 
-    public String getIdDrink() {
+    public int getIdDrink() {
         return idDrink;
     }
 
