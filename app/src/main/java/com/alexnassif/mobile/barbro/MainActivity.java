@@ -3,9 +3,14 @@ package com.alexnassif.mobile.barbro;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.alexnassif.mobile.barbro.data.AppDatabase;
+import com.alexnassif.mobile.barbro.data.Drink;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import android.util.Log;
 import android.view.View;
 import com.google.android.material.navigation.NavigationView;
 import androidx.core.view.GravityCompat;
@@ -15,17 +20,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
 
+import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private FloatingActionButton fab;
     private FragmentManager fragmentManager;
+    private AppDatabase mDb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        mDb = AppDatabase.getsInstance(getApplicationContext());
+        List<Drink> list = mDb.favoritesDao().loadFavorites();
+        Log.d("roomlist", list.size() + "");
         fragmentManager = getSupportFragmentManager();
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

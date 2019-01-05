@@ -16,6 +16,7 @@ import androidx.room.PrimaryKey;
 public class Drink implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
+    private int id;
     private int idDrink;
 
     private String strDrink;
@@ -58,7 +59,8 @@ public class Drink implements Serializable {
     private String strMeasure14;
     private String strMeasure15;
 
-    public Drink(String strDrink, int idDrink, String strCategory, String strIBA, String strAlcoholic, String strGlass, String strInstructions, String strDrinkThumb, String strIngredient1, String strIngredient2, String strIngredient3, String strIngredient4, String strIngredient5, String strIngredient6, String strIngredient7, String strIngredient8, String strIngredient9, String strIngredient10, String strIngredient11, String strIngredient12, String strIngredient13, String strIngredient14, String strIngredient15, String strMeasure1, String strMeasure2, String strMeasure3, String strMeasure4, String strMeasure5, String strMeasure6, String strMeasure7, String strMeasure8, String strMeasure9, String strMeasure10, String strMeasure11, String strMeasure12, String strMeasure13, String strMeasure14, String strMeasure15) {
+    public Drink(int id, String strDrink, int idDrink, String strCategory, String strIBA, String strAlcoholic, String strGlass, String strInstructions, String strDrinkThumb, String strIngredient1, String strIngredient2, String strIngredient3, String strIngredient4, String strIngredient5, String strIngredient6, String strIngredient7, String strIngredient8, String strIngredient9, String strIngredient10, String strIngredient11, String strIngredient12, String strIngredient13, String strIngredient14, String strIngredient15, String strMeasure1, String strMeasure2, String strMeasure3, String strMeasure4, String strMeasure5, String strMeasure6, String strMeasure7, String strMeasure8, String strMeasure9, String strMeasure10, String strMeasure11, String strMeasure12, String strMeasure13, String strMeasure14, String strMeasure15) {
+        this.id = id;
         this.strDrink = strDrink;
         this.idDrink = idDrink;
         this.strCategory = strCategory;
@@ -100,6 +102,14 @@ public class Drink implements Serializable {
 
         //this.ingredients = getAllIngredients();
         //this.measuresments = getMeasurements();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setIdDrink(int idDrink) {

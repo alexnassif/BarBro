@@ -14,8 +14,8 @@ public interface FavoritesDao {
     List<Drink> loadFavorites();
 
     @Insert
-    void insertFavorite(FavoriteEntry favorite);
+    void insertFavorite(Drink favorite);
 
     @Delete
-    void deleteFavorite(FavoriteEntry favorite);
+    void deleteFavorite(Drink favorite);
 }

@@ -8,14 +8,14 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "mydrinks")
 public class MyDrink implements Serializable {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int id;
     private String name;
     private String ingredients;
     private String pic;
 
-    public MyDrink(String pic, String drinkName, String ingredients, int id){
-        this.name = drinkName;
+    public MyDrink(String pic, String name, String ingredients, int id){
+        this.name = name;
         this.ingredients = ingredients;
         this.id = id;
         this.pic = pic;
