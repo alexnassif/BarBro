@@ -35,8 +35,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mDb = AppDatabase.getsInstance(getApplicationContext());
-        List<Drink> list = mDb.favoritesDao().loadFavorites();
-        Log.d("roomlist", list.size() + "");
         fragmentManager = getSupportFragmentManager();
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

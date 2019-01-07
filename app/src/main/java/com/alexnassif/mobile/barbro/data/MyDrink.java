@@ -3,6 +3,7 @@ package com.alexnassif.mobile.barbro.data;
 import java.io.Serializable;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "mydrinks")
@@ -18,6 +19,12 @@ public class MyDrink implements Serializable {
         this.name = name;
         this.ingredients = ingredients;
         this.id = id;
+        this.pic = pic;
+    }
+    @Ignore
+    public MyDrink(String pic, String name, String ingredients){
+        this.name = name;
+        this.ingredients = ingredients;
         this.pic = pic;
     }
 

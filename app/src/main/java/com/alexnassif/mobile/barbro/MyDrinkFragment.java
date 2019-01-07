@@ -9,6 +9,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 
+import com.alexnassif.mobile.barbro.data.AppDatabase;
+import com.alexnassif.mobile.barbro.data.AppExecutors;
 import com.alexnassif.mobile.barbro.data.MyDrink;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.fragment.app.Fragment;
@@ -18,6 +20,8 @@ import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.ItemTouchHelper;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,11 +34,11 @@ import com.alexnassif.mobile.barbro.data.BarBroContract;
 import com.alexnassif.mobile.barbro.data.Drink;
 
 import java.io.File;
+import java.util.List;
 
 
-public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, MyDrinkAdapter.MyDrinkAdapterOnClickHandler {
+public class MyDrinkFragment extends Fragment implements MyDrinkAdapter.MyDrinkAdapterOnClickHandler {
 
-    private static final int MY_DRINK_LOADER = 23;
 
     private RecyclerView mRecyclerView;
 
@@ -44,6 +48,7 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
     private SharedPreferences sp;
     private boolean showTip;
     private static final String show_Tip = "showTipMyDrink";
+    private AppDatabase mDb;
 
     public MyDrinkFragment() {
         // Required empty public constructor
@@ -60,12 +65,12 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivity().setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        mDb = AppDatabase.getsInstance(getContext());
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        getLoaderManager().initLoader(MY_DRINK_LOADER, null, this);
     }
 
     @Override
@@ -88,8 +93,6 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
         mDrinkAdapter = new MyDrinkAdapter(getContext(), this);
         mRecyclerView.setAdapter(mDrinkAdapter);
 
-
-        getLoaderManager().initLoader(MY_DRINK_LOADER, null, this);
         getActivity().setTitle("My Drinks");
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -127,6 +130,15 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
             }
         }).attachToRecyclerView(mRecyclerView);
 
+
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                List<MyDrink> mydrinks = mDb.myDrinksDao().loadMyDrinks();
+                Log.d("mydrinkssize", mydrinks.get(0).getName());
+            }
+        });
+
     }
     @Nullable
     @Override
@@ -137,82 +149,6 @@ public class MyDrinkFragment extends Fragment implements LoaderManager.LoaderCal
         return myView;
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        switch (id){
-            case MY_DRINK_LOADER:{
-                Uri uriAllDrinks = BarBroContract.MyDrinkEntry.CONTENT_URI;
-                return new CursorLoader(getContext(),
-                        uriAllDrinks,
-                        null,
-                        null,
-                        null,
-                        null);}
-            default:
-                throw new RuntimeException("Loader Not Implemented: " + id);
-
-        }
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
-        if(data.getCount() == 0){
-            Toast.makeText(getContext(), "You haven't added your own recipe yet", Toast.LENGTH_LONG).show();
-        } else {
-            int drinkId = data.getColumnIndex(BarBroContract.MyDrinkEntry._ID);
-            int drinkName = data.getColumnIndex(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_NAME);
-            int ingredients = data.getColumnIndex(BarBroContract.MyDrinkEntry.COLUMN_MYINGREDIENTS);
-            int drinkPicId = data.getColumnIndex(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_PIC);
-            MyDrink[] array = new MyDrink[data.getCount()];
-            int i = 0;
-            data.moveToFirst();
-            while (!data.isAfterLast()) {
-
-                /*MyDrink drink = new MyDrink(data.getString(drinkName), data.getString(ingredients), data.getString(drinkPicId));
-                drink.setDbId(data.getInt(drinkId));
-                array[i] = drink;
-                i++;
-                data.moveToNext();*/
-            }
-
-            mDrinkAdapter.swapCursor(data);
-            ArrayAdapter<MyDrink> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, array);
-            acDrinkTextView.setAdapter(adapter);
-            acDrinkTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    MyDrink drink = (MyDrink) adapterView.getAdapter().getItem(i);
-                    //drinkDetail(drink.getDbId());
-                    acDrinkTextView.setText("");
-
-                }
-            });
-            if(showTip) {
-                Snackbar snackbar = Snackbar
-                        .make(getActivity().findViewById(R.id.fragmentHistory), "Swipe to delete",
-                                Snackbar.LENGTH_LONG)
-                        .setAction("Don't Show Again", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-
-                                SharedPreferences.Editor editor = sp.edit();
-                                editor.putBoolean(show_Tip, false);
-                                editor.apply();
-                            }
-                        });
-
-                snackbar.show();
-            }
-
-
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-
-    }
 
     @Override
     public void onClick(int drink) {

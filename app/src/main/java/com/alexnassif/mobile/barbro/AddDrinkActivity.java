@@ -17,6 +17,10 @@ import android.graphics.Point;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+
+import com.alexnassif.mobile.barbro.data.AppDatabase;
+import com.alexnassif.mobile.barbro.data.AppExecutors;
+import com.alexnassif.mobile.barbro.data.MyDrink;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.core.content.FileProvider;
 import androidx.appcompat.app.AppCompatActivity;
@@ -69,6 +73,7 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
     private SharedPreferences sp;
     private boolean showTip;
     private static final String show_Tip = "showTip";
+    private AppDatabase mDb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -105,6 +110,7 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
         mNewDrink.setOnDragListener(mDragListen);
         mNewIngredients.setOnDragListener(mDragListen);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mDb = AppDatabase.getsInstance(getApplicationContext());
 
         // A text recognizer is created to find text.  An associated processor instance
         // is set to receive the text recognition results and display graphics for each text block
@@ -178,7 +184,7 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
             if(mNewIngredients.getText().toString().trim().equals(""))
                 mNewIngredients.setError("Cannot be blank");
             else{
-                AsyncQueryHandler putDrink = new AsyncQueryHandler(this.getContentResolver()) {
+                /*AsyncQueryHandler putDrink = new AsyncQueryHandler(this.getContentResolver()) {
                 };
                 ContentValues newValue = new ContentValues();
                 newValue.put(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_NAME, mNewDrink.getText().toString().trim());
@@ -186,8 +192,19 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
                 if(mCurrentPhotoPath != null){
                     newValue.put(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_PIC, mCurrentPhotoPath);
                 }
-                putDrink.startInsert(-1, null, BarBroContract.MyDrinkEntry.CONTENT_URI, newValue);
-                finish();
+                putDrink.startInsert(-1, null, BarBroContract.MyDrinkEntry.CONTENT_URI, newValue);*/
+
+                final MyDrink mydrink = new MyDrink("", mNewDrink.getText().toString().trim(), mNewIngredients.getText().toString().trim());
+
+                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        mDb.myDrinksDao().insertMyDrink(mydrink);
+                        finish();
+                    }
+                });
+
+
 
             }
 
