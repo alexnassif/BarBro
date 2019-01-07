@@ -193,8 +193,11 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
                     newValue.put(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_PIC, mCurrentPhotoPath);
                 }
                 putDrink.startInsert(-1, null, BarBroContract.MyDrinkEntry.CONTENT_URI, newValue);*/
-
-                final MyDrink mydrink = new MyDrink("", mNewDrink.getText().toString().trim(), mNewIngredients.getText().toString().trim());
+                String pic = null;
+                if(mCurrentPhotoPath != null){
+                    pic = mCurrentPhotoPath;
+                }
+                final MyDrink mydrink = new MyDrink(pic, mNewDrink.getText().toString().trim(), mNewIngredients.getText().toString().trim());
 
                 AppExecutors.getInstance().diskIO().execute(new Runnable() {
                     @Override

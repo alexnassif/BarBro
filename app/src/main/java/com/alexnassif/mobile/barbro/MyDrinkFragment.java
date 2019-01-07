@@ -105,17 +105,15 @@ public class MyDrinkFragment extends Fragment implements MyDrinkAdapter.MyDrinkA
             @Override
             public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
 
-                /*MyDrink drink = (MyDrink) viewHolder.itemView.getTag();
-                String stringId = Integer.toString(drink.getDbId());
-                Uri uri = BarBroContract.MyDrinkEntry.CONTENT_URI;
-                uri = uri.buildUpon().appendPath(stringId).build();
-                if(drink.getId() != null){
-                    File file = new File(drink.getId());
+                MyDrink drink = (MyDrink) viewHolder.itemView.getTag();
+
+                if(drink.getPic() != null){
+                    File file = new File(drink.getPic());
                     if(file.exists()) {
                         file.delete();
                     }
 
-                }*/
+                }
 
                 AsyncQueryHandler deleteDrink = new AsyncQueryHandler(getActivity().getContentResolver()) {
 
@@ -135,7 +133,7 @@ public class MyDrinkFragment extends Fragment implements MyDrinkAdapter.MyDrinkA
             @Override
             public void run() {
                 List<MyDrink> mydrinks = mDb.myDrinksDao().loadMyDrinks();
-                Log.d("mydrinkssize", mydrinks.get(0).getName());
+                mDrinkAdapter.swapCursor(mydrinks);
             }
         });
 
@@ -151,9 +149,9 @@ public class MyDrinkFragment extends Fragment implements MyDrinkAdapter.MyDrinkA
 
 
     @Override
-    public void onClick(int drink) {
+    public void onClick(MyDrink drink) {
 
-        drinkDetail(drink);
+        //drinkDetail(drink);
 
     }
 

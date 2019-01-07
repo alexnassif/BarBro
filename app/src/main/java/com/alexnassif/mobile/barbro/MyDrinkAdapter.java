@@ -16,10 +16,11 @@ import com.alexnassif.mobile.barbro.data.BarBroContract;
 import com.alexnassif.mobile.barbro.data.Drink;
 
 import java.io.File;
+import java.util.List;
 
 
 public class MyDrinkAdapter extends RecyclerView.Adapter<MyDrinkAdapter.MyDrinkAdapterViewHolder> {
-    private Cursor mDrinkData;
+    private List<MyDrink> mDrinkData;
     private Context context;
     private final MyDrinkAdapter.MyDrinkAdapterOnClickHandler mClickHandler;
 
@@ -29,7 +30,7 @@ public class MyDrinkAdapter extends RecyclerView.Adapter<MyDrinkAdapter.MyDrinkA
     }
 
     public interface MyDrinkAdapterOnClickHandler{
-        void onClick(int drinkId);
+        void onClick(MyDrink mydrink);
     }
     @Override
     public MyDrinkAdapter.MyDrinkAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -43,31 +44,26 @@ public class MyDrinkAdapter extends RecyclerView.Adapter<MyDrinkAdapter.MyDrinkA
 
     @Override
     public void onBindViewHolder(MyDrinkAdapter.MyDrinkAdapterViewHolder holder, int position) {
-        int drinkId = mDrinkData.getColumnIndex(BarBroContract.MyDrinkEntry._ID);
-        int drinkName = mDrinkData.getColumnIndex(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_NAME);
-        int drinkIngredients = mDrinkData.getColumnIndexOrThrow(BarBroContract.MyDrinkEntry.COLUMN_MYINGREDIENTS);
-        int drinkPic = mDrinkData.getColumnIndex(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_PIC);
 
-        mDrinkData.moveToPosition(position);
+        MyDrink mydrink = mDrinkData.get(position);
 
-        final int id = mDrinkData.getInt(drinkId);
-        final String _drinkName = mDrinkData.getString(drinkName);
-        final String _drinkIngredients = mDrinkData.getString(drinkIngredients);
-        final String _drinkPic = mDrinkData.getString(drinkPic);
+        holder.mDrinkTextView.setText(mydrink.getName());
 
-
-
-
+        if(mydrink.getPic() != null){
+            Uri takenPhotoUri = Uri.fromFile(new File(mydrink.getPic()));
+            Glide.with(holder.mDrinkImage.getContext()).load(takenPhotoUri.getPath()).centerCrop().into(holder.mDrinkImage);
+        }
+        holder.itemView.setTag(mydrink);
     }
 
     @Override
     public int getItemCount() {
         if(mDrinkData == null)
             return 0;
-        return mDrinkData.getCount();
+        return mDrinkData.size();
     }
 
-    void swapCursor(Cursor drinkData) {
+    void swapCursor(List<MyDrink> drinkData) {
         mDrinkData = drinkData;
         notifyDataSetChanged();
     }
@@ -86,10 +82,8 @@ public class MyDrinkAdapter extends RecyclerView.Adapter<MyDrinkAdapter.MyDrinkA
         public void onClick(View view) {
 
             int adapterPosition = getAdapterPosition();
-            mDrinkData.moveToPosition(adapterPosition);
-            int drinkId = mDrinkData.getColumnIndex(BarBroContract.MyDrinkEntry._ID);
-            int id = mDrinkData.getInt(drinkId);
-            mClickHandler.onClick(id);
+            MyDrink mydrink = mDrinkData.get(adapterPosition);
+            mClickHandler.onClick(mydrink);
 
         }
     }
