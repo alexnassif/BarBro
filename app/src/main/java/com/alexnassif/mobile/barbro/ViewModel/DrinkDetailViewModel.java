@@ -17,10 +17,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DrinkDetailViewModel extends ViewModel {
     private MutableLiveData<Drink> drink;
-    private int drinkId;
 
     public LiveData<Drink> getDrinks(int drinkId) {
-        this.drinkId = drinkId;
         if(drink == null){
             drink = new MutableLiveData<Drink>();
 

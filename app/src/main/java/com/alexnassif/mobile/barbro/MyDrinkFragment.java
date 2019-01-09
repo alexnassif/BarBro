@@ -1,37 +1,27 @@
 package com.alexnassif.mobile.barbro;
 
-import android.content.AsyncQueryHandler;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 
+import com.alexnassif.mobile.barbro.ViewModel.MyDrinksViewModel;
 import com.alexnassif.mobile.barbro.data.AppDatabase;
 import com.alexnassif.mobile.barbro.data.AppExecutors;
 import com.alexnassif.mobile.barbro.data.MyDrink;
-import com.google.android.material.snackbar.Snackbar;
+
 import androidx.fragment.app.Fragment;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.CursorLoader;
-import androidx.loader.content.Loader;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.ItemTouchHelper;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Toast;
-
-import com.alexnassif.mobile.barbro.data.BarBroContract;
-import com.alexnassif.mobile.barbro.data.Drink;
 
 import java.io.File;
 import java.util.List;
@@ -115,28 +105,31 @@ public class MyDrinkFragment extends Fragment implements MyDrinkAdapter.MyDrinkA
 
                 }
 
-                AsyncQueryHandler deleteDrink = new AsyncQueryHandler(getActivity().getContentResolver()) {
-
+                AppExecutors.getInstance().diskIO().execute(new Runnable() {
                     @Override
-                    protected void onDeleteComplete(int token, Object cookie, int result) {
-                        super.onDeleteComplete(token, cookie, result);
-                        mRecyclerView.removeAllViewsInLayout();
+                    public void run() {
+                        int position = viewHolder.getAdapterPosition();
+                        List<MyDrink> myDrinks = mDrinkAdapter.getmDrinkData();
+                        mDb.myDrinksDao().deleteMyDrink(myDrinks.get(position));
                     }
-                };
-                //deleteDrink.startDelete(-1, null, uri, null, null);
+                });
 
             }
         }).attachToRecyclerView(mRecyclerView);
 
+        setupViewModel();
 
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+    }
+
+    private void setupViewModel(){
+
+        MyDrinksViewModel viewModel = ViewModelProviders.of(this).get(MyDrinksViewModel.class);
+        viewModel.getMyDrinks().observe(this, new Observer<List<MyDrink>>() {
             @Override
-            public void run() {
-                List<MyDrink> mydrinks = mDb.myDrinksDao().loadMyDrinks();
-                mDrinkAdapter.swapCursor(mydrinks);
+            public void onChanged(List<MyDrink> myDrinks) {
+                mDrinkAdapter.swapCursor(myDrinks);
             }
         });
-
     }
     @Nullable
     @Override

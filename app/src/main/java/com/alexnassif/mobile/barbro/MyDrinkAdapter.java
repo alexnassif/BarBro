@@ -68,6 +68,10 @@ public class MyDrinkAdapter extends RecyclerView.Adapter<MyDrinkAdapter.MyDrinkA
         notifyDataSetChanged();
     }
 
+    public List<MyDrink> getmDrinkData() {
+        return mDrinkData;
+    }
+
     public class MyDrinkAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final TextView mDrinkTextView;
         public final ImageView mDrinkImage;
