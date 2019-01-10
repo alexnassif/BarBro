@@ -16,15 +16,19 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DrinkDetailViewModel extends ViewModel {
+
     private MutableLiveData<Drink> drink;
 
-    public LiveData<Drink> getDrinks(int drinkId) {
+    public LiveData<Drink> getDrink() {
         if(drink == null){
             drink = new MutableLiveData<Drink>();
 
         }
-        loadDrink(drinkId);
         return drink;
+    }
+
+    public void setDrink(int drinkId) {
+        loadDrink(drinkId);
     }
 
     private void loadDrink(int drinkId) {

@@ -93,7 +93,7 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
             mParam1 = getArguments().getBoolean(ARG_PARAM1);
         }
         model = ViewModelProviders.of(this).get(DrinksViewModel.class);
-        drinkModel = ViewModelProviders.of(this).get(DrinkDetailViewModel.class);
+        drinkModel = ViewModelProviders.of(getActivity()).get(DrinkDetailViewModel.class);
         randomViewModel = ViewModelProviders.of(this).get(RandomViewModel.class);
         setHasOptionsMenu(true);
     }
@@ -149,7 +149,11 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
         if (mDualPane) {
             if(mCurCheckPosition == 0)
                 mCurCheckPosition = 1;
-
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            drinkDetailFragment = drinkDetailFragment.newInstance();
+            ft.replace(R.id.drink_detail_fragment, drinkDetailFragment);
+            //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.commit();
             //showDetails(mCurCheckPosition);
 
         }
@@ -254,38 +258,11 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
     public void drinkDetail(int drink){
         drinkId = drink;
         mCurCheckPosition = drink;
-        drinkModel.getDrinks(drink).observe(this, new Observer<Drink>() {
-            @Override
-            public void onChanged(Drink drink) {
-                viewHeader.setText(drink.getStrDrink());
-                Log.d("drinkid", drink.getIdDrink() + "");
-                viewDesc.setText(drink.drinkIngredients());
-                mMixView.setText(drink.getStrInstructions());
-                youtubeLayout.setVisibility(View.VISIBLE);
-                youtubeLayout.maximize();
-
-            }
-        });
-
-
-    }
-
-    @Override
-    public void onClick(int drinkId) {
-        //HistoryUtils.addToHistory(getContext(), drink);
-        drinkModel.getDrinks(drinkId).observe(this, new Observer<Drink>() {
-            @Override
-            public void onChanged(Drink drink) {
-
-                if(mDualPane){
-                    mCurCheckPosition = drink.getIdDrink();
-                    FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    drinkDetailFragment = drinkDetailFragment.newInstance(drink);
-                    ft.replace(R.id.drink_detail_fragment, drinkDetailFragment);
-                    //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                    ft.commit();
-                }
-                else {
+        drinkModel.setDrink(drinkId);
+        if(!mDualPane){
+            drinkModel.getDrink().observe(this, new Observer<Drink>() {
+                @Override
+                public void onChanged(Drink drink) {
                     viewHeader.setText(drink.getStrDrink());
                     Log.d("drinkid", drink.getIdDrink() + "");
                     viewDesc.setText(drink.drinkIngredients());
@@ -293,9 +270,16 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
                     youtubeLayout.setVisibility(View.VISIBLE);
                     youtubeLayout.maximize();
                 }
+            });
+        }
 
-            }
-        });
 
+    }
+
+    @Override
+    public void onClick(int drinkId) {
+        //HistoryUtils.addToHistory(getContext(), drink);
+
+        drinkDetail(drinkId);
     }
 }

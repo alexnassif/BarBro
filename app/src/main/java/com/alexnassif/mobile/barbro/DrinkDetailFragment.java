@@ -2,20 +2,24 @@ package com.alexnassif.mobile.barbro;
 
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alexnassif.mobile.barbro.ViewModel.DrinkDetailViewModel;
 import com.alexnassif.mobile.barbro.data.Drink;
 import com.bumptech.glide.Glide;
 
 public class DrinkDetailFragment extends Fragment {
 
-    private String drinkObj = "drinkId";
+    //private String drinkObj = "drinkId";
     private View myView;
-    private Drink drinkId;
+    //private Drink drinkId;
     private ImageView mImageView;
     private TextView mDrinkTitle;
     private TextView mIngredients;
@@ -25,11 +29,11 @@ public class DrinkDetailFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static DrinkDetailFragment newInstance(Drink drinkId) {
+    public static DrinkDetailFragment newInstance() {
         DrinkDetailFragment fragment = new DrinkDetailFragment();
-        Bundle args = new Bundle();
+        /*Bundle args = new Bundle();
         args.putSerializable("drinkId", drinkId);
-        fragment.setArguments(args);
+        fragment.setArguments(args);*/
         return fragment;
     }
 
@@ -38,8 +42,19 @@ public class DrinkDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         if (getArguments() != null) {
-            drinkId = (Drink) getArguments().getSerializable(drinkObj);
+            //drinkId = (Drink) getArguments().getSerializable(drinkObj);
         }
+
+        DrinkDetailViewModel model = ViewModelProviders.of(getActivity()).get(DrinkDetailViewModel.class);
+        model.getDrink().observe(this, new Observer<Drink>() {
+            @Override
+            public void onChanged(Drink drinkId) {
+                mDrinkTitle.setText(drinkId.getStrDrink());
+                mIngredients.setText(drinkId.drinkIngredients());
+                mRecipe.setText(drinkId.getStrInstructions());
+                Glide.with(mImageView.getContext()).load(drinkId.getStrDrinkThumb()).into(mImageView);
+            }
+        });
     }
 
     @Override
@@ -57,9 +72,8 @@ public class DrinkDetailFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mDrinkTitle.setText(drinkId.getStrDrink());
-        mIngredients.setText(drinkId.drinkIngredients());
-        mRecipe.setText(drinkId.getStrInstructions());
-        Glide.with(mImageView.getContext()).load(drinkId.getStrDrinkThumb()).into(mImageView);
+
     }
+
+
 }
