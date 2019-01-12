@@ -59,4 +59,5 @@
     <string name="searchweb">Search Web</string>
     <string name="edit_drink">Edit Drink</string>
     <string name="delete">Delete</string>
+    <string name="closex">closex</string>
 </resources>

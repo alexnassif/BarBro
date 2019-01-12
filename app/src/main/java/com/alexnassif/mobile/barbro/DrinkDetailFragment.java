@@ -17,9 +17,7 @@ import com.bumptech.glide.Glide;
 
 public class DrinkDetailFragment extends Fragment {
 
-    //private String drinkObj = "drinkId";
     private View myView;
-    //private Drink drinkId;
     private ImageView mImageView;
     private TextView mDrinkTitle;
     private TextView mIngredients;
@@ -31,9 +29,6 @@ public class DrinkDetailFragment extends Fragment {
 
     public static DrinkDetailFragment newInstance() {
         DrinkDetailFragment fragment = new DrinkDetailFragment();
-        /*Bundle args = new Bundle();
-        args.putSerializable("drinkId", drinkId);
-        fragment.setArguments(args);*/
         return fragment;
     }
 
@@ -41,9 +36,6 @@ public class DrinkDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        if (getArguments() != null) {
-            //drinkId = (Drink) getArguments().getSerializable(drinkObj);
-        }
 
         DrinkDetailViewModel model = ViewModelProviders.of(getActivity()).get(DrinkDetailViewModel.class);
         model.getDrink().observe(this, new Observer<Drink>() {

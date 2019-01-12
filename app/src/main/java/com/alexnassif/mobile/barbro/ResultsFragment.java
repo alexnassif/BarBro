@@ -1,10 +1,6 @@
 package com.alexnassif.mobile.barbro;
 
-
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,9 +9,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.loader.app.LoaderManager.LoaderCallbacks;
-import androidx.loader.content.CursorLoader;
-import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,7 +30,6 @@ import android.widget.Toast;
 import com.alexnassif.mobile.barbro.ViewModel.DrinkDetailViewModel;
 import com.alexnassif.mobile.barbro.ViewModel.DrinksViewModel;
 import com.alexnassif.mobile.barbro.ViewModel.RandomViewModel;
-import com.alexnassif.mobile.barbro.data.BarBroContract;
 import com.alexnassif.mobile.barbro.data.Drink;
 import com.alexnassif.mobile.barbro.data.DrinkList;
 import com.alexnassif.mobile.barbro.data.HistoryUtils;
@@ -62,13 +54,13 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
 
     private boolean mDualPane;
     int mCurCheckPosition = 0;
-    private YouTubeLayout youtubeLayout;
-    private TextView viewHeader;
-    private int drinkId;
-    private TextView viewDesc;
-    private TextView mMixView;
-    private ImageView mArrowExit;
+    private ImageView mImageView;
+    private TextView mDrinkTitle;
+    private TextView mIngredients;
+    private TextView mRecipe;
     private ImageButton minimize;
+    private View layoutview;
+    private View cardlayoutview;
 
     private TextView mDrinkTextView;
     private ImageView mDrinkImageView;
@@ -77,6 +69,11 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
     private DrinksViewModel model;
     private DrinkDetailViewModel drinkModel;
     private RandomViewModel randomViewModel;
+
+    private Menu mMenu;
+    private MenuInflater mMenuInflater;
+    private boolean isMenu = false;
+
 
     public static ResultsFragment newInstance(boolean param1) {
         ResultsFragment fragment = new ResultsFragment();
@@ -109,21 +106,18 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
 
         LinearLayoutManager layoutManager_randoms
                 = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        //mRecyclerView_Randoms.setLayoutManager(layoutManager_randoms);
-        //mRecyclerView_Randoms.setHasFixedSize(true);
         mDrinkAdapter_Randoms = new SmallDrinkAdapter(getContext(), this);
-        //mRecyclerView_Randoms.setAdapter(mDrinkAdapter_Randoms);
         minimize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*if(mRecyclerView_Randoms.getVisibility() == View.GONE) {
-                    mRecyclerView_Randoms.setVisibility(View.VISIBLE);
+                if(cardlayoutview.getVisibility() == View.GONE) {
+                    cardlayoutview.setVisibility(View.VISIBLE);
                     minimize.setImageResource(android.R.drawable.arrow_up_float);
                 }
                 else {
-                    mRecyclerView_Randoms.setVisibility(View.GONE);
+                    cardlayoutview.setVisibility(View.GONE);
                     minimize.setImageResource(android.R.drawable.arrow_down_float);
-                }*/
+                }
             }
         });
         View detailsFrame = getActivity().findViewById(R.id.drink_detail_fragment);
@@ -147,24 +141,13 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
         }
 
         if (mDualPane) {
-            if(mCurCheckPosition == 0)
-                mCurCheckPosition = 1;
+
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             drinkDetailFragment = drinkDetailFragment.newInstance();
             ft.replace(R.id.drink_detail_fragment, drinkDetailFragment);
             //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ft.commit();
-            //showDetails(mCurCheckPosition);
 
-        }
-
-        if(!mDualPane) {
-            mArrowExit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    youtubeLayout.setVisibility(View.GONE);
-                }
-            });
         }
 
     }
@@ -186,9 +169,6 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
         randomViewModel.getDrinks().observe(this, new Observer<List<Drink>>() {
             @Override
             public void onChanged(List<Drink> drinks) {
-                mDrinkAdapter_Randoms = new SmallDrinkAdapter(getContext(), ResultsFragment.this);
-                //mRecyclerView_Randoms.setAdapter(mDrinkAdapter_Randoms);
-                mDrinkAdapter_Randoms.swapCursor(drinks);
 
                 final Drink drink = drinks.get(0);
 
@@ -225,18 +205,18 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.results_layout, container, false);
         mRecyclerView = (RecyclerView) myView.findViewById(R.id.recyclerview_drinks);
-        //mRecyclerView_Randoms = (RecyclerView) myView.findViewById(R.id.random_recyclerView);
         acDrinkTextView = (AutoCompleteTextView) myView.findViewById(R.id.search_drinks);
         minimize = (ImageButton) myView.findViewById(R.id.minimize_button);
         mDrinkTextView = (TextView) myView.findViewById(R.id.cardview_drinkname);
         mDrinkImageView = (ImageView) myView.findViewById(R.id.cardview_image);
+        cardlayoutview = myView.findViewById(R.id.card_layout);
         if (!mDualPane) {
-            viewHeader = (TextView) myView.findViewById(R.id.header);
-            viewDesc = (TextView) myView.findViewById(R.id.desc);
-            mMixView = (TextView) myView.findViewById(R.id.desc_view_youtube);
-            youtubeLayout = (YouTubeLayout) myView.findViewById(R.id.dragLayout);
-            mArrowExit = (ImageView) myView.findViewById(R.id.arrowUpExit);
-            //youtubeLayout.setVisibility(View.GONE);
+
+            layoutview = myView.findViewById(R.id.novideo_drink_detail);
+            mDrinkTitle = (TextView) myView.findViewById(R.id.drink_name_novideo);
+            mIngredients = (TextView) myView.findViewById(R.id.drink_ingredients_novideo);
+            mImageView = (ImageView) myView.findViewById(R.id.drink_pic_novideo);
+            mRecipe = (TextView) myView.findViewById(R.id.drink_recipe_novideo);
         }
         return myView;
     }
@@ -245,7 +225,10 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
+        if(!mDualPane){
+            mMenu = menu;
+            mMenuInflater = inflater;
+        }
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -253,22 +236,41 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
+        if(id == R.id.close_item){
+            layoutview.setVisibility(View.INVISIBLE);
+            mMenu.clear();
+            isMenu = !isMenu;
+            if(!mParam1) {
+
+                getActivity().setTitle("All Drinks");
+            }
+            else{
+
+                getActivity().setTitle("Favorites");}
+        }
+
         return true;
     }
     public void drinkDetail(int drink){
-        drinkId = drink;
         mCurCheckPosition = drink;
-        drinkModel.setDrink(drinkId);
+        drinkModel.setDrink(drink);
         if(!mDualPane){
+
             drinkModel.getDrink().observe(this, new Observer<Drink>() {
                 @Override
                 public void onChanged(Drink drink) {
-                    viewHeader.setText(drink.getStrDrink());
-                    Log.d("drinkid", drink.getIdDrink() + "");
-                    viewDesc.setText(drink.drinkIngredients());
-                    mMixView.setText(drink.getStrInstructions());
-                    youtubeLayout.setVisibility(View.VISIBLE);
-                    youtubeLayout.maximize();
+                    getActivity().setTitle(drink.getStrDrink());
+                    layoutview.setVisibility(View.VISIBLE);
+                    mDrinkTitle.setText(drink.getStrDrink());
+                    mIngredients.setText(drink.drinkIngredients());
+                    mRecipe.setText(drink.getStrInstructions());
+                    Glide.with(mImageView.getContext()).load(drink.getStrDrinkThumb()).into(mImageView);
+                    if(!isMenu) {
+                        mMenuInflater.inflate(R.menu.close, mMenu);
+                        isMenu = !isMenu;
+
+                    }
+
                 }
             });
         }

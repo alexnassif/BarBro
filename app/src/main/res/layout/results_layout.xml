@@ -57,39 +57,10 @@
 
     </LinearLayout>
 
-    <com.alexnassif.mobile.barbro.YouTubeLayout
-        android:id="@+id/dragLayout"
+    <include layout="@layout/drink_detail_novideo"
+        android:id="@+id/novideo_drink_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <include layout="@layout/header_exit"
-            android:id="@+id/header_layout"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"/>
-
-        <TextView
-            android:id="@+id/desc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#286db7"
-            android:gravity="center"
-            android:tag="desc"
-            android:text=""
-            android:textColor="#FFFFFF"
-            android:textSize="25sp" />
-
-        <TextView
-            android:id="@+id/desc_view_youtube"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:background="#000000"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp" />
-
-
-    </com.alexnassif.mobile.barbro.YouTubeLayout>
+        android:visibility="invisible"/>
 
 </FrameLayout>

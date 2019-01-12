@@ -7,6 +7,8 @@ import android.os.Bundle;
 import com.alexnassif.mobile.barbro.data.AppDatabase;
 import com.alexnassif.mobile.barbro.data.Drink;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -75,9 +77,9 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    @SuppressWarnings("StatementWithEmptyBody")
+    //@SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
