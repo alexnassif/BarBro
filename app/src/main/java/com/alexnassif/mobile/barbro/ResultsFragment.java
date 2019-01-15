@@ -30,6 +30,8 @@ import android.widget.Toast;
 import com.alexnassif.mobile.barbro.ViewModel.DrinkDetailViewModel;
 import com.alexnassif.mobile.barbro.ViewModel.DrinksViewModel;
 import com.alexnassif.mobile.barbro.ViewModel.RandomViewModel;
+import com.alexnassif.mobile.barbro.data.AppDatabase;
+import com.alexnassif.mobile.barbro.data.AppExecutors;
 import com.alexnassif.mobile.barbro.data.Drink;
 import com.alexnassif.mobile.barbro.data.DrinkList;
 import com.alexnassif.mobile.barbro.data.HistoryUtils;
@@ -38,7 +40,7 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 
-public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapterOnClickHandler, SmallDrinkAdapter.SmallDrinkAdapterOnClickHandler {
+public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapterOnClickHandler {
 
     private static final String ARG_PARAM1 = "param1";
     private boolean mParam1 = false;
@@ -46,7 +48,6 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
     //private RecyclerView mRecyclerView_Randoms;
 
     private RecyclerView mRecyclerView;
-    private SmallDrinkAdapter mDrinkAdapter_Randoms;
     private DrinkAdapter mDrinkAdapter;
     private View myView;
     private AutoCompleteTextView acDrinkTextView;
@@ -73,6 +74,8 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
     private Menu mMenu;
     private MenuInflater mMenuInflater;
     private boolean isMenu = false;
+    private AppDatabase mDb;
+    private DrinkList faveItem;
 
 
     public static ResultsFragment newInstance(boolean param1) {
@@ -92,6 +95,7 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
         model = ViewModelProviders.of(this).get(DrinksViewModel.class);
         drinkModel = ViewModelProviders.of(getActivity()).get(DrinkDetailViewModel.class);
         randomViewModel = ViewModelProviders.of(this).get(RandomViewModel.class);
+        mDb = AppDatabase.getsInstance(getContext());
         setHasOptionsMenu(true);
     }
 
@@ -104,9 +108,6 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
 
-        LinearLayoutManager layoutManager_randoms
-                = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        mDrinkAdapter_Randoms = new SmallDrinkAdapter(getContext(), this);
         minimize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -163,6 +164,20 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
                 mDrinkAdapter = new DrinkAdapter(getContext(), ResultsFragment.this);
                 mRecyclerView.setAdapter(mDrinkAdapter);
                 mDrinkAdapter.swapCursor(drinkLists);
+                DrinkList[] array = new DrinkList[drinkLists.size()];
+                array = drinkLists.toArray(array);
+                ArrayAdapter<DrinkList> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, array);
+                acDrinkTextView.setAdapter(adapter);
+
+                acDrinkTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        DrinkList drink = (DrinkList) adapterView.getAdapter().getItem(i);
+                        drinkDetail(Integer.parseInt(drink.getIdDrink()));
+                        acDrinkTextView.setText("");
+
+                    }
+                });
             }
         });
 
@@ -233,7 +248,7 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(final MenuItem item) {
         int id = item.getItemId();
 
         if(id == R.id.close_item){
@@ -247,6 +262,14 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
             else{
 
                 getActivity().setTitle("Favorites");}
+        }
+        if(id == R.id.fave_item){
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    mDb.favoritesDao().insertFavorite(faveItem);
+                }
+            });
         }
 
         return true;
@@ -279,9 +302,11 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
     }
 
     @Override
-    public void onClick(int drinkId) {
+    public void onClick(DrinkList drinkId) {
+
+        this.faveItem = drinkId;
         //HistoryUtils.addToHistory(getContext(), drink);
 
-        drinkDetail(drinkId);
+        drinkDetail(Integer.parseInt(drinkId.getIdDrink()));
     }
 }

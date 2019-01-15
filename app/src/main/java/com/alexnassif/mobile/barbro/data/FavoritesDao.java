@@ -11,11 +11,11 @@ import androidx.room.Query;
 public interface FavoritesDao {
 
     @Query("SELECT * FROM favorites")
-    List<Drink> loadFavorites();
+    List<DrinkList> loadFavorites();
 
     @Insert
-    void insertFavorite(Drink favorite);
+    void insertFavorite(DrinkList favorite);
 
     @Delete
-    void deleteFavorite(Drink favorite);
+    void deleteFavorite(DrinkList favorite);
 }

@@ -227,14 +227,14 @@ public class HistoryFragment extends Fragment implements DrinkAdapter.DrinkAdapt
         return true;
     }
     @Override
-    public void onClick(int drink) {
+    public void onClick(DrinkList drink) {
 
-        HistoryUtils.addToHistory(getContext(), drink);
+        //HistoryUtils.addToHistory(getContext(), drink);
         if (mDualPane) {
-            showDetails(drink);
+            showDetails(Integer.parseInt(drink.getIdDrink()));
         }
         else
-            drinkDetail(drink);
+            drinkDetail(Integer.parseInt(drink.getIdDrink()));
 
     }
     public void drinkDetail(int drink){

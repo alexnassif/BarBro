@@ -38,7 +38,7 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
     }
 
     public interface DrinkAdapterOnClickHandler{
-        void onClick(int drink);
+        void onClick(DrinkList drink);
     }
 
     @Override
@@ -58,12 +58,6 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
 
         Glide.with(holder.mDrinkImageView.getContext()).load(item.getStrDrinkThumb()).into(holder.mDrinkImageView);
         holder.mDrinkTextView.setText(item.getStrDrink());
-        /*if(fave == 1) {
-            holder.mFaveButtonView.setImageResource(R.drawable.ic_fave);
-
-        }
-        else
-            holder.mFaveButtonView.setImageResource(R.drawable.ic_non_fave);*/
 
     }
 
@@ -82,14 +76,11 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
     public class DrinkAdapterViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
         public final TextView mDrinkTextView;
         public final ImageView mDrinkImageView;
-        public final ImageButton mFaveButtonView;
         public DrinkAdapterViewHolder(View itemView) {
             super(itemView);
             mDrinkImageView = (ImageView) itemView.findViewById(R.id.drink_image);
             mDrinkTextView = (TextView) itemView.findViewById(R.id.drink_data);
-            mFaveButtonView = (ImageButton) itemView.findViewById(R.id.fave_button);
             itemView.setOnClickListener(this);
-            mFaveButtonView.setOnClickListener(this);
         }
 
         @Override
@@ -97,7 +88,7 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
 
             int adapterPosition = getAdapterPosition();
             DrinkList item = mDrinkData.get(adapterPosition);
-            mClickHandler.onClick(Integer.parseInt(item.getIdDrink()));
+            mClickHandler.onClick(item);
             Log.d("drinkadapterposition", item.getIdDrink());
         }
     }
