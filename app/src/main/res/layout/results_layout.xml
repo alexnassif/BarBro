@@ -57,10 +57,4 @@
 
     </LinearLayout>
 
-    <include layout="@layout/drink_detail_novideo"
-        android:id="@+id/novideo_drink_detail"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="invisible"/>
-
 </FrameLayout>

@@ -1,35 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/cardview_light_background"
-    android:orientation="vertical"
     tools:context=".DrinkDetailActivity">
 
-    <ImageView
-        android:id="@+id/drink_pic_activity"
+    <include layout="@layout/drink_detail_novideo"
+        android:id="@+id/novideo_drink_detail"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_marginTop="16dp"/>
-    <TextView
-        android:id="@+id/drink_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="@color/cardview_light_background"
-        android:gravity="center"
-        android:textSize="24sp"
-        tools:text="TextView" />
-
-    <TextView
-        android:id="@+id/drink_ingredients"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:textSize="16sp"
-        tools:text="TextView" />
+        android:layout_height="match_parent"/>
 
 
-</LinearLayout>
+</FrameLayout>

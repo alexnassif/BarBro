@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/fave_item"
-        android:icon="@android:drawable/btn_star_big_off"
+        android:icon="@drawable/ic_non_fave"
         android:title="@string/favorite"
         app:showAsAction="always" />
 
