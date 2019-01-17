@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity
                     .replace(R.id.content_frame, new ResultsFragment());
         } else if (id == R.id.nav_favorite_type) {
             fragmentTransaction
-                    .replace(R.id.content_frame, ResultsFragment.newInstance(true));
+                    .replace(R.id.content_frame, new FavoriteFragment());
 
         } else if (id == R.id.nav_liquor_type) {
             fragmentTransaction

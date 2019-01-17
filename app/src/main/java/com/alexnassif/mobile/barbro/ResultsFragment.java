@@ -1,5 +1,6 @@
 package com.alexnassif.mobile.barbro;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
@@ -25,10 +26,9 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.alexnassif.mobile.barbro.ViewModel.DrinkDetailViewModel;
 import com.alexnassif.mobile.barbro.ViewModel.DrinksViewModel;
+import com.alexnassif.mobile.barbro.ViewModel.FavoritesViewModel;
 import com.alexnassif.mobile.barbro.ViewModel.RandomViewModel;
 import com.alexnassif.mobile.barbro.data.AppDatabase;
 import com.alexnassif.mobile.barbro.data.AppExecutors;
@@ -42,8 +42,8 @@ import java.util.List;
 
 public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapterOnClickHandler {
 
-    private static final String ARG_PARAM1 = "param1";
-    private boolean mParam1 = false;
+    private static final String FAVE_FLAG = "favorites";
+    private boolean mFAVE_FLAG = false;
 
     //private RecyclerView mRecyclerView_Randoms;
 
@@ -55,12 +55,7 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
 
     private boolean mDualPane;
     int mCurCheckPosition = 0;
-    private ImageView mImageView;
-    private TextView mDrinkTitle;
-    private TextView mIngredients;
-    private TextView mRecipe;
     private ImageButton minimize;
-    private View layoutview;
     private View cardlayoutview;
 
     private TextView mDrinkTextView;
@@ -71,17 +66,11 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
     private DrinkDetailViewModel drinkModel;
     private RandomViewModel randomViewModel;
 
-    private Menu mMenu;
-    private MenuInflater mMenuInflater;
-    private boolean isMenu = false;
-    private AppDatabase mDb;
-    private DrinkList faveItem;
 
-
-    public static ResultsFragment newInstance(boolean param1) {
+    public static ResultsFragment newInstance(boolean fave) {
         ResultsFragment fragment = new ResultsFragment();
         Bundle args = new Bundle();
-        args.putBoolean(ARG_PARAM1, param1);
+        args.putBoolean(FAVE_FLAG, fave);
         fragment.setArguments(args);
         return fragment;
     }
@@ -90,12 +79,12 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getBoolean(ARG_PARAM1);
+            mFAVE_FLAG = getArguments().getBoolean(FAVE_FLAG);
         }
         model = ViewModelProviders.of(this).get(DrinksViewModel.class);
         drinkModel = ViewModelProviders.of(getActivity()).get(DrinkDetailViewModel.class);
         randomViewModel = ViewModelProviders.of(this).get(RandomViewModel.class);
-        mDb = AppDatabase.getsInstance(getContext());
+
         setHasOptionsMenu(true);
     }
 
@@ -124,7 +113,7 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
         View detailsFrame = getActivity().findViewById(R.id.drink_detail_fragment);
         mDualPane = detailsFrame != null && detailsFrame.getVisibility() == View.VISIBLE;
         getActivity().setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        if(mParam1 == false) {
+        if(!mFAVE_FLAG) {
 
             getActivity().setTitle("All Drinks");
         }
@@ -225,14 +214,7 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
         mDrinkTextView = (TextView) myView.findViewById(R.id.cardview_drinkname);
         mDrinkImageView = (ImageView) myView.findViewById(R.id.cardview_image);
         cardlayoutview = myView.findViewById(R.id.card_layout);
-        if (!mDualPane) {
 
-            layoutview = myView.findViewById(R.id.novideo_drink_detail);
-            mDrinkTitle = (TextView) myView.findViewById(R.id.drink_name_novideo);
-            mIngredients = (TextView) myView.findViewById(R.id.drink_ingredients_novideo);
-            mImageView = (ImageView) myView.findViewById(R.id.drink_pic_novideo);
-            mRecipe = (TextView) myView.findViewById(R.id.drink_recipe_novideo);
-        }
         return myView;
     }
 
@@ -240,10 +222,7 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if(!mDualPane){
-            mMenu = menu;
-            mMenuInflater = inflater;
-        }
+
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -251,51 +230,18 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
     public boolean onOptionsItemSelected(final MenuItem item) {
         int id = item.getItemId();
 
-        if(id == R.id.close_item){
-            layoutview.setVisibility(View.INVISIBLE);
-            mMenu.clear();
-            isMenu = !isMenu;
-            if(!mParam1) {
-
-                getActivity().setTitle("All Drinks");
-            }
-            else{
-
-                getActivity().setTitle("Favorites");}
-        }
-        if(id == R.id.fave_item){
-            AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                @Override
-                public void run() {
-                    mDb.favoritesDao().insertFavorite(faveItem);
-                }
-            });
-        }
 
         return true;
     }
-    public void drinkDetail(int drink){
-        mCurCheckPosition = drink;
-        drinkModel.setDrink(drink);
+    public void drinkDetail(int drinkId){
+        mCurCheckPosition = drinkId;
+        drinkModel.setDrink(drinkId);
         if(!mDualPane){
 
-            drinkModel.getDrink().observe(this, new Observer<Drink>() {
-                @Override
-                public void onChanged(Drink drink) {
-                    getActivity().setTitle(drink.getStrDrink());
-                    layoutview.setVisibility(View.VISIBLE);
-                    mDrinkTitle.setText(drink.getStrDrink());
-                    mIngredients.setText(drink.drinkIngredients());
-                    mRecipe.setText(drink.getStrInstructions());
-                    Glide.with(mImageView.getContext()).load(drink.getStrDrinkThumb()).into(mImageView);
-                    if(!isMenu) {
-                        mMenuInflater.inflate(R.menu.close, mMenu);
-                        isMenu = !isMenu;
+            Intent drinkdetailIntent = new Intent(getContext(), DrinkDetailActivity.class);
+            drinkdetailIntent.putExtra("drink", drinkId);
+            startActivity(drinkdetailIntent);
 
-                    }
-
-                }
-            });
         }
 
 
@@ -304,7 +250,6 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
     @Override
     public void onClick(DrinkList drinkId) {
 
-        this.faveItem = drinkId;
         //HistoryUtils.addToHistory(getContext(), drink);
 
         drinkDetail(Integer.parseInt(drinkId.getIdDrink()));

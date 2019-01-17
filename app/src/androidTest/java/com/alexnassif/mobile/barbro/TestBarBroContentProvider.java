@@ -236,7 +236,7 @@ public class TestBarBroContentProvider {
         String insertFailed = "Unable to insert directly into the database";
         assertTrue(insertFailed, taskRowId != -1);
 
-        /* We are done with the database, close it now. */
+        /* We are done with the database, fave it now. */
         database.close();
 
         /* Perform the ContentProvider query */
@@ -255,7 +255,7 @@ public class TestBarBroContentProvider {
         String queryFailed = "Query failed to return a valid Cursor";
         assertTrue(queryFailed, taskCursor != null);
 
-        /* We are done with the cursor, close it now. */
+        /* We are done with the cursor, fave it now. */
         taskCursor.close();
     }
 
@@ -287,8 +287,8 @@ public class TestBarBroContentProvider {
 //                /* Values to insert into table */
 //                testTaskValues);
 //
-//        /* Always close the database when you're through with it */
-//        database.close();
+//        /* Always fave the database when you're through with it */
+//        database.fave();
 //
 //        String insertFailed = "Unable to insert into the database";
 //        assertTrue(insertFailed, taskRowId != -1);

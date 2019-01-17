@@ -86,7 +86,7 @@ public class DatabaseTest {
         assertEquals("Error: Your database was created without the expected tables.",
                 BarBroContract.BarBroEntry.TABLE_NAME, tableNameCursor.getString(0));
 
-        /* Always close a cursor when you are done with it */
+        /* Always fave a cursor when you are done with it */
         tableNameCursor.close();
     }
 

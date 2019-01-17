@@ -63,7 +63,7 @@ public class HistoryUtils {
                 }
 
 
-                /* Make sure to close the Cursor to avoid memory leaks! */
+                /* Make sure to fave the Cursor to avoid memory leaks! */
                 cursor.close();
                 return null;
             }

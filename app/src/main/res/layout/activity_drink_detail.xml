@@ -10,7 +10,8 @@
     <ImageView
         android:id="@+id/drink_pic_activity"
         android:layout_width="match_parent"
-        android:layout_height="300dp" />
+        android:layout_height="300dp"
+        android:layout_marginTop="16dp"/>
     <TextView
         android:id="@+id/drink_name"
         android:layout_width="match_parent"
