@@ -52,7 +52,7 @@ public class DrinkDetailActivity extends AppCompatActivity {
         mRecipeView = (TextView) findViewById(R.id.drink_recipe_novideo);
         mImageView = (ImageView) findViewById(R.id.drink_pic_novideo);
         setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mDb = AppDatabase.getsInstance(this);
 
         drinkDetailViewModel = ViewModelProviders.of(this).get(DrinkDetailViewModel.class);
@@ -73,6 +73,7 @@ public class DrinkDetailActivity extends AppCompatActivity {
             public void onChanged(DrinkList drinkList) {
 
                 if(drinkList != null){
+                    
                     mCurrentDrink = drinkList;
                     favoriteMenuItem.setIcon(R.drawable.ic_fave);
                     faveFlag = true;
@@ -121,7 +122,8 @@ public class DrinkDetailActivity extends AppCompatActivity {
                     }
                 });
             }
+            return true;
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 }

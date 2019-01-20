@@ -29,7 +29,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.alexnassif.mobile.barbro.DrinkDetailActivity" />
+        <activity android:name="com.alexnassif.mobile.barbro.DrinkDetailActivity"
+            android:parentActivityName="com.alexnassif.mobile.barbro.MainActivity"/>
 
         <provider
             android:name="com.alexnassif.mobile.barbro.data.BarBroContentProvider"
