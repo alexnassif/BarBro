@@ -7,9 +7,11 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 
 import com.alexnassif.mobile.barbro.ViewModel.MyDrinksViewModel;
+import com.alexnassif.mobile.barbro.ViewModel.MyDrinksViewModelFactory;
 import com.alexnassif.mobile.barbro.data.AppDatabase;
 import com.alexnassif.mobile.barbro.data.AppExecutors;
 import com.alexnassif.mobile.barbro.data.MyDrink;
+import com.alexnassif.mobile.barbro.utilities.InjectorUtils;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -123,7 +125,9 @@ public class MyDrinkFragment extends Fragment implements MyDrinkAdapter.MyDrinkA
 
     private void setupViewModel(){
 
-        MyDrinksViewModel viewModel = ViewModelProviders.of(this).get(MyDrinksViewModel.class);
+        MyDrinksViewModelFactory factory = InjectorUtils.provideMyDrinksViewModelFactory(this.getContext().getApplicationContext());
+
+        MyDrinksViewModel viewModel = ViewModelProviders.of(this, factory).get(MyDrinksViewModel.class);
         viewModel.getMyDrinks().observe(this, new Observer<List<MyDrink>>() {
             @Override
             public void onChanged(List<MyDrink> myDrinks) {
