@@ -5,6 +5,8 @@ import android.content.Context;
 import com.alexnassif.mobile.barbro.DrinkRepository;
 import com.alexnassif.mobile.barbro.ViewModel.DrinkDetailViewModelFactory;
 import com.alexnassif.mobile.barbro.ViewModel.DrinksViewModelFactory;
+import com.alexnassif.mobile.barbro.ViewModel.FavoriteDetailViewModelFactory;
+import com.alexnassif.mobile.barbro.ViewModel.FavoriteViewModelFactory;
 import com.alexnassif.mobile.barbro.ViewModel.MyDrinksViewModelFactory;
 import com.alexnassif.mobile.barbro.data.AppDatabase;
 import com.alexnassif.mobile.barbro.data.AppExecutors;
@@ -30,5 +32,15 @@ public class InjectorUtils {
     public static DrinkDetailViewModelFactory provideDrinkDetailViewModelFactory(Context context){
         DrinkRepository repository = provideRepository(context.getApplicationContext());
         return new DrinkDetailViewModelFactory(repository);
+    }
+
+    public static FavoriteViewModelFactory provideFavoriteViewModelFactory(Context context){
+        DrinkRepository repository = provideRepository(context.getApplicationContext());
+        return new FavoriteViewModelFactory(repository);
+    }
+
+    public static FavoriteDetailViewModelFactory provideFavoriteDetailViewModelFactory(Context context, int drinkId){
+        DrinkRepository repository = provideRepository(context.getApplicationContext());
+        return new FavoriteDetailViewModelFactory(repository, drinkId);
     }
 }

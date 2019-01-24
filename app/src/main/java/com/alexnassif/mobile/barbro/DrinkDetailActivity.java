@@ -14,9 +14,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alexnassif.mobile.barbro.ViewModel.DrinkDetailViewModel;
 import com.alexnassif.mobile.barbro.ViewModel.DrinkDetailViewModelFactory;
+import com.alexnassif.mobile.barbro.ViewModel.FavoriteDetailViewModelFactory;
+import com.alexnassif.mobile.barbro.ViewModel.FavoritesDetailViewModel;
 import com.alexnassif.mobile.barbro.ViewModel.FavoritesViewModel;
 import com.alexnassif.mobile.barbro.data.AppDatabase;
 import com.alexnassif.mobile.barbro.data.AppExecutors;
@@ -34,7 +37,7 @@ public class DrinkDetailActivity extends AppCompatActivity {
     private TextView mRecipeView;
     private ImageView mImageView;
     private DrinkDetailViewModel drinkDetailViewModel;
-    private FavoritesViewModel drinkModel;
+    private FavoritesDetailViewModel drinkModel;
     private MenuItem favoriteMenuItem;
     private boolean faveFlag = false;
     private AppDatabase mDb;
@@ -69,15 +72,18 @@ public class DrinkDetailActivity extends AppCompatActivity {
                 Glide.with(mImageView.getContext()).load(drink.getStrDrinkThumb()).into(mImageView);
             }
         });
-        drinkModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
-        drinkModel.getFave(drink).observe(this, new Observer<DrinkList>() {
+
+        FavoriteDetailViewModelFactory faveDetailFactory = InjectorUtils.provideFavoriteDetailViewModelFactory(this.getApplicationContext(), drink);
+        drinkModel = ViewModelProviders.of(this, faveDetailFactory).get(FavoritesDetailViewModel.class);
+        drinkModel.getFave().observe(this, new Observer<DrinkList>() {
             @Override
             public void onChanged(DrinkList drinkList) {
 
                 if(drinkList != null){
                     
                     mCurrentDrink = drinkList;
-                    favoriteMenuItem.setIcon(R.drawable.ic_fave);
+                    //favoriteMenuItem.setIcon(R.drawable.ic_fave);
+                    Toast.makeText(getApplicationContext(), "Its a fave", Toast.LENGTH_LONG).show();
                     faveFlag = true;
 
                 }

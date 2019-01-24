@@ -1,5 +1,6 @@
 package com.alexnassif.mobile.barbro;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,11 +17,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alexnassif.mobile.barbro.ViewModel.DrinkDetailViewModel;
+import com.alexnassif.mobile.barbro.ViewModel.DrinkDetailViewModelFactory;
+import com.alexnassif.mobile.barbro.ViewModel.FavoriteViewModelFactory;
 import com.alexnassif.mobile.barbro.ViewModel.FavoritesViewModel;
 import com.alexnassif.mobile.barbro.data.AppDatabase;
 import com.alexnassif.mobile.barbro.data.AppExecutors;
 import com.alexnassif.mobile.barbro.data.Drink;
 import com.alexnassif.mobile.barbro.data.DrinkList;
+import com.alexnassif.mobile.barbro.utilities.InjectorUtils;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
@@ -69,9 +73,10 @@ public class FavoriteFragment extends Fragment implements DrinkAdapter.DrinkAdap
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-
-            model = ViewModelProviders.of(this).get(FavoritesViewModel.class);
-            drinkModel = ViewModelProviders.of(getActivity()).get(DrinkDetailViewModel.class);
+            FavoriteViewModelFactory faveFactory = InjectorUtils.provideFavoriteViewModelFactory(getContext().getApplicationContext());
+            model = ViewModelProviders.of(this, faveFactory).get(FavoritesViewModel.class);
+            DrinkDetailViewModelFactory drinkDetailFactory = InjectorUtils.provideDrinkDetailViewModelFactory(getContext().getApplicationContext());
+            drinkModel = ViewModelProviders.of(getActivity(), drinkDetailFactory).get(DrinkDetailViewModel.class);
             mDb = AppDatabase.getsInstance(getContext());
             setHasOptionsMenu(true);
         }
@@ -204,28 +209,14 @@ public class FavoriteFragment extends Fragment implements DrinkAdapter.DrinkAdap
 
             return true;
         }
-        public void drinkDetail(int drink){
-            mCurCheckPosition = drink;
-            drinkModel.setDrink(drink);
+        public void drinkDetail(int drinkId){
+            mCurCheckPosition = drinkId;
+            drinkModel.setDrink(drinkId);
             if(!mDualPane){
 
-                drinkModel.getDrink().observe(this, new Observer<Drink>() {
-                    @Override
-                    public void onChanged(Drink drink) {
-                        getActivity().setTitle(drink.getStrDrink());
-                        layoutview.setVisibility(View.VISIBLE);
-                        mDrinkTitle.setText(drink.getStrDrink());
-                        mIngredients.setText(drink.drinkIngredients());
-                        mRecipe.setText(drink.getStrInstructions());
-                        Glide.with(mImageView.getContext()).load(drink.getStrDrinkThumb()).into(mImageView);
-                        if(!isMenu) {
-                            mMenuInflater.inflate(R.menu.fave, mMenu);
-                            isMenu = !isMenu;
-
-                        }
-
-                    }
-                });
+                Intent drinkdetailIntent = new Intent(getContext(), DrinkDetailActivity.class);
+                drinkdetailIntent.putExtra("drink", drinkId);
+                startActivity(drinkdetailIntent);
             }
 
 

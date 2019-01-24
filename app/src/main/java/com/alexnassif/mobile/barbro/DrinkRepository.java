@@ -52,6 +52,14 @@ public class DrinkRepository {
         return mDrinksDao.loadMyDrinks();
     }
 
+    public LiveData<List<DrinkList>> loadFavorites(){
+        return mFavoritesDao.loadFavorites();
+    }
+
+    public LiveData<DrinkList> getDrink(int id){
+        return mFavoritesDao.loadFavoriteById(id);
+    }
+
     public LiveData<List<DrinkList>> loadDrinks() {
 
         final MutableLiveData<List<DrinkList>> drinks = new MutableLiveData<List<DrinkList>>();
