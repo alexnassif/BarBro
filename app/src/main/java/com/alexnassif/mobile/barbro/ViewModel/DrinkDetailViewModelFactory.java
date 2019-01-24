@@ -1,4 +1,4 @@
-package com.alexnassif.mobile.barbro.data;
+package com.alexnassif.mobile.barbro.ViewModel;
 
 import com.alexnassif.mobile.barbro.DrinkRepository;
 import com.alexnassif.mobile.barbro.ViewModel.DrinkDetailViewModel;
@@ -10,16 +10,15 @@ import androidx.lifecycle.ViewModelProviders;
 
 public class DrinkDetailViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
-    private final int mDrinkId;
+    private final DrinkRepository mRepository;
 
-    public DrinkDetailViewModelFactory(int drinkId){
-
-        mDrinkId = drinkId;
+    public DrinkDetailViewModelFactory(DrinkRepository repository){
+        this.mRepository = repository;
     }
 
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        return (T) new DrinkDetailViewModel();
+        return (T) new DrinkDetailViewModel(mRepository);
     }
 }

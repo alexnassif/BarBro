@@ -2,6 +2,7 @@ package com.alexnassif.mobile.barbro.ViewModel;
 
 import android.util.Log;
 
+import com.alexnassif.mobile.barbro.DrinkRepository;
 import com.alexnassif.mobile.barbro.Networking.DrinkApi;
 import com.alexnassif.mobile.barbro.data.Drink;
 import com.alexnassif.mobile.barbro.data.DrinkDetailJsonResponse;
@@ -17,7 +18,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DrinkDetailViewModel extends ViewModel {
 
-    private MutableLiveData<Drink> drink = new MutableLiveData<Drink>();
+    private LiveData<Drink> drink = new MutableLiveData<Drink>();
+    private DrinkRepository mRepository;
+
+    public DrinkDetailViewModel(DrinkRepository mRepository) {
+        this.mRepository = mRepository;
+    }
 
     public LiveData<Drink> getDrink() {
 
@@ -25,42 +31,6 @@ public class DrinkDetailViewModel extends ViewModel {
     }
 
     public void setDrink(int drinkId) {
-        loadDrink(drinkId);
-    }
-
-    private void loadDrink(int drinkId) {
-        Log.d("fromvmnsid", drinkId + "");
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(DrinkApi.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        DrinkApi api = retrofit.create(DrinkApi.class);
-        Call<DrinkDetailJsonResponse> call = api.getDetailedDrink(drinkId);
-
-
-        call.enqueue(new Callback<DrinkDetailJsonResponse>() {
-            @Override
-            public void onResponse(Call<DrinkDetailJsonResponse> call, Response<DrinkDetailJsonResponse> response) {
-
-                /* finally we are setting the list to our MutableLiveData */
-                if(response.isSuccessful()){
-                    drink.setValue(response.body().getDrinks().get(0));
-                    Log.d("fromvmns", "successful");
-                }
-                else{
-                    Log.d("fromvmns", "not successful");
-                }
-
-
-
-            }
-
-            @Override
-            public void onFailure(Call<DrinkDetailJsonResponse> call, Throwable t) {
-                Log.d("fromvmerror", t.getMessage());
-            }
-
-        });
+        drink = mRepository.loadDrink(drinkId);
     }
 }

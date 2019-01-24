@@ -16,11 +16,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alexnassif.mobile.barbro.ViewModel.DrinkDetailViewModel;
+import com.alexnassif.mobile.barbro.ViewModel.DrinkDetailViewModelFactory;
 import com.alexnassif.mobile.barbro.ViewModel.FavoritesViewModel;
 import com.alexnassif.mobile.barbro.data.AppDatabase;
 import com.alexnassif.mobile.barbro.data.AppExecutors;
 import com.alexnassif.mobile.barbro.data.Drink;
 import com.alexnassif.mobile.barbro.data.DrinkList;
+import com.alexnassif.mobile.barbro.utilities.InjectorUtils;
 import com.bumptech.glide.Glide;
 
 
@@ -54,8 +56,8 @@ public class DrinkDetailActivity extends AppCompatActivity {
         setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mDb = AppDatabase.getsInstance(this);
-
-        drinkDetailViewModel = ViewModelProviders.of(this).get(DrinkDetailViewModel.class);
+        DrinkDetailViewModelFactory detailFactory = InjectorUtils.provideDrinkDetailViewModelFactory(this.getApplicationContext());
+        drinkDetailViewModel = ViewModelProviders.of(this, detailFactory).get(DrinkDetailViewModel.class);
         drinkDetailViewModel.setDrink(drink);
         drinkDetailViewModel.getDrink().observe(this, new Observer<Drink>() {
             @Override

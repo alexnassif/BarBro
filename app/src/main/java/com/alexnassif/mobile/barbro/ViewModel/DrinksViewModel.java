@@ -3,6 +3,7 @@ package com.alexnassif.mobile.barbro.ViewModel;
 
 import android.util.Log;
 
+import com.alexnassif.mobile.barbro.DrinkRepository;
 import com.alexnassif.mobile.barbro.Networking.DrinkApi;
 import com.alexnassif.mobile.barbro.data.Drink;
 import com.alexnassif.mobile.barbro.data.DrinkList;
@@ -21,47 +22,16 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DrinksViewModel extends ViewModel {
-    private MutableLiveData<List<DrinkList>> drinks;
+    private LiveData<List<DrinkList>> drinks;
+    private final DrinkRepository mRepository;
 
-    public LiveData<List<DrinkList>> getDrinks() {
-        if(drinks == null){
-            drinks = new MutableLiveData<List<DrinkList>>();
-            loadDrinks();
-        }
-        return drinks;
+    public DrinksViewModel(DrinkRepository repository) {
+        this.mRepository = repository;
+
+        drinks = mRepository.loadDrinks();
     }
 
-    private void loadDrinks() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(DrinkApi.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        DrinkApi api = retrofit.create(DrinkApi.class);
-        Call<DrinkListJsonResponse> call = api.getDrinks();
-
-
-        call.enqueue(new Callback<DrinkListJsonResponse>() {
-            @Override
-            public void onResponse(Call<DrinkListJsonResponse> call, Response<DrinkListJsonResponse> response) {
-
-                /* finally we are setting the list to our MutableLiveData */
-                if(response.isSuccessful()){
-                    drinks.setValue(response.body().getList());
-                }
-                else{
-                    Log.d("fromvmns", "not successful");
-                }
-
-
-
-            }
-
-            @Override
-            public void onFailure(Call<DrinkListJsonResponse> call, Throwable t) {
-                Log.d("fromvmerror", t.getMessage());
-            }
-
-        });
+    public LiveData<List<DrinkList>> getDrinks() {
+        return drinks;
     }
 }
