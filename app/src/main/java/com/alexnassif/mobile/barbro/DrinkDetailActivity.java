@@ -80,11 +80,10 @@ public class DrinkDetailActivity extends AppCompatActivity {
             public void onChanged(DrinkList drinkList) {
 
                 if(drinkList != null){
-                    
+
                     mCurrentDrink = drinkList;
-                    //favoriteMenuItem.setIcon(R.drawable.ic_fave);
-                    Toast.makeText(getApplicationContext(), "Its a fave", Toast.LENGTH_LONG).show();
                     faveFlag = true;
+                    invalidateOptionsMenu();
 
                 }
 
@@ -98,10 +97,23 @@ public class DrinkDetailActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.fave, menu);
-        favoriteMenuItem = menu.findItem(R.id.fave_item);
+
         return true;
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        favoriteMenuItem = menu.findItem(R.id.fave_item);
+
+        if(faveFlag)
+            favoriteMenuItem.setIcon(R.drawable.ic_fave);
+        else {
+            favoriteMenuItem.setIcon(R.drawable.ic_non_fave);
+        }
+
+        return super.onPrepareOptionsMenu(menu);
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -113,8 +125,8 @@ public class DrinkDetailActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         mDb.favoritesDao().deleteFavorite(mCurrentDrink);
-                        favoriteMenuItem.setIcon(R.drawable.ic_non_fave);
                         faveFlag = false;
+                        invalidateOptionsMenu();
                     }
                 });
             }else{
