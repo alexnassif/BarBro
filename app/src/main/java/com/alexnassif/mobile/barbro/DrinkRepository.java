@@ -5,6 +5,7 @@ import android.util.Log;
 import com.alexnassif.mobile.barbro.Networking.DrinkApi;
 import com.alexnassif.mobile.barbro.data.AppExecutors;
 import com.alexnassif.mobile.barbro.data.Drink;
+import com.alexnassif.mobile.barbro.data.DrinkApiBuilder;
 import com.alexnassif.mobile.barbro.data.DrinkDetailJsonResponse;
 import com.alexnassif.mobile.barbro.data.DrinkList;
 import com.alexnassif.mobile.barbro.data.DrinkListJsonResponse;
@@ -29,19 +30,21 @@ public class DrinkRepository {
     private final FavoritesDao mFavoritesDao;
     private final MyDrinksDao mDrinksDao;
     private final AppExecutors mExecutors;
+    private final DrinkApiBuilder mDrinkApi;
     private boolean mInitialized = false;
 
-    public DrinkRepository(FavoritesDao mFavoritesDao, MyDrinksDao mDrinksDao, AppExecutors mExecutors) {
+    public DrinkRepository(FavoritesDao mFavoritesDao, MyDrinksDao mDrinksDao, AppExecutors mExecutors, DrinkApiBuilder drinkApi) {
         this.mFavoritesDao = mFavoritesDao;
         this.mDrinksDao = mDrinksDao;
         this.mExecutors = mExecutors;
+        this.mDrinkApi = drinkApi;
     }
 
-    public synchronized static DrinkRepository getInstance(FavoritesDao mFavoritesDao, MyDrinksDao mDrinksDao, AppExecutors mExecutors){
+    public synchronized static DrinkRepository getInstance(FavoritesDao mFavoritesDao, MyDrinksDao mDrinksDao, AppExecutors mExecutors, DrinkApiBuilder drinkApi){
 
         if(instance == null){
             synchronized (LOCK){
-                instance = new DrinkRepository(mFavoritesDao, mDrinksDao, mExecutors);
+                instance = new DrinkRepository(mFavoritesDao, mDrinksDao, mExecutors, drinkApi);
             }
         }
 
@@ -63,14 +66,9 @@ public class DrinkRepository {
     public LiveData<List<DrinkList>> loadDrinks() {
 
         final MutableLiveData<List<DrinkList>> drinks = new MutableLiveData<List<DrinkList>>();
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(DrinkApi.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
 
-        DrinkApi api = retrofit.create(DrinkApi.class);
-        Call<DrinkListJsonResponse> call = api.getDrinks();
 
+        Call<DrinkListJsonResponse> call = mDrinkApi.getmDrinkApi().getDrinks();
 
         call.enqueue(new Callback<DrinkListJsonResponse>() {
             @Override
@@ -100,13 +98,7 @@ public class DrinkRepository {
 
     public LiveData<Drink> loadDrink(int drinkId) {
         final MutableLiveData<Drink> drink = new MutableLiveData<Drink>();
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(DrinkApi.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        DrinkApi api = retrofit.create(DrinkApi.class);
-        Call<DrinkDetailJsonResponse> call = api.getDetailedDrink(drinkId);
+        Call<DrinkDetailJsonResponse> call = mDrinkApi.getmDrinkApi().getDetailedDrink(drinkId);
 
 
         call.enqueue(new Callback<DrinkDetailJsonResponse>() {

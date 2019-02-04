@@ -3,6 +3,7 @@ package com.alexnassif.mobile.barbro.utilities;
 import android.content.Context;
 
 import com.alexnassif.mobile.barbro.DrinkRepository;
+import com.alexnassif.mobile.barbro.Networking.DrinkApi;
 import com.alexnassif.mobile.barbro.ViewModel.DrinkDetailViewModelFactory;
 import com.alexnassif.mobile.barbro.ViewModel.DrinksViewModelFactory;
 import com.alexnassif.mobile.barbro.ViewModel.FavoriteDetailViewModelFactory;
@@ -10,13 +11,15 @@ import com.alexnassif.mobile.barbro.ViewModel.FavoriteViewModelFactory;
 import com.alexnassif.mobile.barbro.ViewModel.MyDrinksViewModelFactory;
 import com.alexnassif.mobile.barbro.data.AppDatabase;
 import com.alexnassif.mobile.barbro.data.AppExecutors;
+import com.alexnassif.mobile.barbro.data.DrinkApiBuilder;
 
 public class InjectorUtils {
 
     public static DrinkRepository provideRepository(Context context){
         AppDatabase database = AppDatabase.getsInstance(context.getApplicationContext());
         AppExecutors executors = AppExecutors.getInstance();
-        return DrinkRepository.getInstance(database.favoritesDao(), database.myDrinksDao(), executors);
+        DrinkApiBuilder drinkApiBuilder = DrinkApiBuilder.getInstance();
+        return DrinkRepository.getInstance(database.favoritesDao(), database.myDrinksDao(), executors, drinkApiBuilder);
     }
 
     public static MyDrinksViewModelFactory provideMyDrinksViewModelFactory(Context context){
