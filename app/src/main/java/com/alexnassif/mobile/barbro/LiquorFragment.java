@@ -29,11 +29,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alexnassif.mobile.barbro.ViewModel.DrinkDetailViewModel;
+import com.alexnassif.mobile.barbro.ViewModel.DrinkDetailViewModelFactory;
 import com.alexnassif.mobile.barbro.ViewModel.DrinksViewModel;
+import com.alexnassif.mobile.barbro.ViewModel.DrinksViewModelFactory;
 import com.alexnassif.mobile.barbro.data.BarBroContract;
 import com.alexnassif.mobile.barbro.data.Drink;
 import com.alexnassif.mobile.barbro.data.DrinkList;
 import com.alexnassif.mobile.barbro.data.HistoryUtils;
+import com.alexnassif.mobile.barbro.utilities.InjectorUtils;
 import com.thomashaertel.widget.MultiSpinner;
 
 import java.util.ArrayList;
@@ -42,7 +46,6 @@ import java.util.List;
 
 public class LiquorFragment extends Fragment implements DrinkAdapter.DrinkAdapterOnClickHandler {
 
-    private static final int GITHUB_SEARCH_LOADER = 22;
 
     private RecyclerView mRecyclerView;
 
@@ -54,27 +57,22 @@ public class LiquorFragment extends Fragment implements DrinkAdapter.DrinkAdapte
     private AutoCompleteTextView mAutoCompleteTextView;
     private boolean mDualPane;
     int mCurCheckPosition = 0;
-    private String videoURL = "pennsylvania.mp4";
-    private static final int DRINK_BY_ID_LOADER = 24;
-    private YouTubeLayout youtubeLayout;
-    private TextView viewHeader;
-    private int drinkId;
-    private TextView viewDesc;
-    private TextView mMixView;
     private boolean whichFragment = true;
-    private VideoFragment videoFragment;
     private DrinkDetailFragment drinkDetailFragment;
     ArrayAdapter<CharSequence> adapter;
-    private Menu mMenu;
-    private MenuInflater mMenuInflater;
     private boolean isMenu = false;
-    private ImageView mArrowExit;
+
+    private DrinksViewModel drinksModel;
+    private DrinkDetailViewModel drinkDetailModel;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        DrinkDetailViewModelFactory detailFactory = InjectorUtils.provideDrinkDetailViewModelFactory(getContext().getApplicationContext());
+        drinkDetailModel = ViewModelProviders.of(getActivity(), detailFactory).get(DrinkDetailViewModel.class);
     }
 
     @Override
@@ -104,46 +102,21 @@ public class LiquorFragment extends Fragment implements DrinkAdapter.DrinkAdapte
             // Restore last state for checked position.
             mCurCheckPosition = savedInstanceState.getInt("curChoice", 1);
             if(mDualPane) {
-                whichFragment = savedInstanceState.getBoolean("fragment");
-                if (whichFragment)
-                    drinkDetailFragment = (DrinkDetailFragment) getFragmentManager().getFragment(savedInstanceState, "myFragmentName");
-                else
-                    videoFragment = (VideoFragment) getFragmentManager().getFragment(savedInstanceState, "myFragmentName");
+                drinkDetailFragment = (DrinkDetailFragment) getFragmentManager().getFragment(savedInstanceState, "myFragmentName");
             }
         }
+
 
         if (mDualPane) {
-            if(mCurCheckPosition == 0)
-                mCurCheckPosition = 1;
-            if(whichFragment)
-                showDetails(mCurCheckPosition);
-            else {
-                FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
-                //videoFragment = videoFragment.newInstance(videoURL);
-                fragmentManager
-                        .replace(R.id.drink_detail_fragment, videoFragment)
-                        .commit();
-            }
+
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            drinkDetailFragment = drinkDetailFragment.newInstance();
+            ft.replace(R.id.drink_detail_fragment, drinkDetailFragment);
+            //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.commit();
+
         }
 
-        if(!mDualPane) {
-            mArrowExit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    youtubeLayout.setVisibility(View.GONE);
-                    mMenu.clear();
-                    isMenu = false;
-                }
-            });
-        }
-
-        DrinksViewModel model = ViewModelProviders.of(this).get(DrinksViewModel.class);
-        model.getDrinks().observe(this, new Observer<List<DrinkList>>() {
-            @Override
-            public void onChanged(List<DrinkList> drinkLists) {
-                mDrinkAdapter.swapCursor(drinkLists);
-            }
-        });
     }
 
     @Override
@@ -156,12 +129,7 @@ public class LiquorFragment extends Fragment implements DrinkAdapter.DrinkAdapte
         super.onSaveInstanceState(outState);
         outState.putInt("curChoice", mCurCheckPosition);
         if(mDualPane) {
-            if (whichFragment)
-                getFragmentManager().putFragment(outState, "myFragmentName", drinkDetailFragment);
-            else
-                getFragmentManager().putFragment(outState, "myFragmentName", videoFragment);
-
-            outState.putBoolean("fragment", whichFragment);
+            getFragmentManager().putFragment(outState, "myFragmentName", drinkDetailFragment);
         }
     }
     void showDetails(int index) {
@@ -198,25 +166,11 @@ public class LiquorFragment extends Fragment implements DrinkAdapter.DrinkAdapte
         mAutoCompleteTextView.setVisibility(View.INVISIBLE);
         mRecyclerView.setVisibility(View.INVISIBLE);
         getActivity().setTitle("Search by Type");
-        if (!mDualPane) {
-            viewHeader = (TextView) myView.findViewById(R.id.header);
-            viewDesc = (TextView) myView.findViewById(R.id.desc);
-            mMixView = (TextView) myView.findViewById(R.id.desc_view_youtube);
-            youtubeLayout = (YouTubeLayout) myView.findViewById(R.id.dragLayout);
-            mArrowExit = (ImageView) myView.findViewById(R.id.arrowUpExit);
-            //youtubeLayout.setVisibility(View.GONE);
-        }
+
         return myView;
     }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
-        if (mDualPane) {
-            inflater.inflate(R.menu.video, menu);
-        } else {
-            mMenu = menu;
-            mMenuInflater = inflater;
-        }
 
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -224,43 +178,32 @@ public class LiquorFragment extends Fragment implements DrinkAdapter.DrinkAdapte
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.video_item && mCurCheckPosition != 0) {
-
-            Intent intent = new Intent(getContext(), VideoActivity.class);
-            intent.putExtra("video", mCurCheckPosition);
-            startActivity(intent);
-
-        }
-        else
-            Toast.makeText(getContext(), "No Drink Chosen", Toast.LENGTH_LONG).show();
-
 
         return true;
     }
 
 
 
-    @Override
-    public void onClick(DrinkList drink) {
-        //HistoryUtils.addToHistory(getContext(), drink);
-        if (mDualPane) {
-            showDetails(Integer.parseInt(drink.getIdDrink()));
+    public void drinkDetail(int drinkId){
+        mCurCheckPosition = drinkId;
+        drinkDetailModel.setDrink(drinkId);
+        if(!mDualPane){
+
+            Intent drinkdetailIntent = new Intent(getContext(), DrinkDetailActivity.class);
+            drinkdetailIntent.putExtra("drink", drinkId);
+            startActivity(drinkdetailIntent);
+
         }
-        else
-            drinkDetail(Integer.parseInt(drink.getIdDrink()));
+
 
     }
-    public void drinkDetail(int drink){
-        mCurCheckPosition = drink;
-        drinkId = drink;
-        if(!isMenu) {
-            mMenuInflater.inflate(R.menu.video, mMenu);
-            isMenu = true;
-        }
 
-//        Intent intent = new Intent(getContext(), DrinkDetailActivity.class);
-//        intent.putExtra("drink", drink);
-//        startActivity(intent);
+    @Override
+    public void onClick(DrinkList drinkId) {
+
+        //HistoryUtils.addToHistory(getContext(), drink);
+
+        drinkDetail(Integer.parseInt(drinkId.getIdDrink()));
     }
     private boolean checkForTastes(boolean[] tastes){
 
@@ -294,6 +237,16 @@ public class LiquorFragment extends Fragment implements DrinkAdapter.DrinkAdapte
                         builder.append(sList.get(i));
                 }
                 liqType = builder.toString();
+                DrinksViewModelFactory factory = InjectorUtils.provideDrinksViewModelFactory(getContext().getApplicationContext());
+                drinksModel = ViewModelProviders.of(LiquorFragment.this, factory).get(DrinksViewModel.class);
+                drinksModel.getDrinks().observe(LiquorFragment.this, new Observer<List<DrinkList>>() {
+                    @Override
+                    public void onChanged(List<DrinkList> drinkLists) {
+                        mDrinkAdapter.swapCursor(drinkLists);
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                    }
+                });
+
 
             }
             else{
