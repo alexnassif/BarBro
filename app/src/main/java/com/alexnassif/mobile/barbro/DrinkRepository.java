@@ -55,6 +55,10 @@ public class DrinkRepository {
         return mDrinksDao.loadMyDrinks();
     }
 
+    public LiveData<MyDrink> getMyDrink(int id) {
+        return mDrinksDao.loadMyDrinkById(id);
+    }
+
     public LiveData<List<DrinkList>> loadFavorites(){
         return mFavoritesDao.loadFavorites();
     }
