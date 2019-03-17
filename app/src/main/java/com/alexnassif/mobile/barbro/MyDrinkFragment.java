@@ -148,15 +148,10 @@ public class MyDrinkFragment extends Fragment implements MyDrinkAdapter.MyDrinkA
     @Override
     public void onClick(MyDrink drink) {
 
-        //drinkDetail(drink);
-
-    }
-
-    public void drinkDetail(int drink){
-
         Intent intent = new Intent(getContext(), MyDrinkDetailActivity.class);
         intent.putExtra("drink", drink);
         startActivity(intent);
+
     }
 
 }
