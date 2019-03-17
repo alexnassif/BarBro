@@ -7,6 +7,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 @Dao
 public interface MyDrinksDao {
@@ -18,6 +19,9 @@ public interface MyDrinksDao {
 
     @Insert
     void insertMyDrink(MyDrink drink);
+
+    @Update
+    void updateMyDrink(MyDrink drink);
 
     @Delete
     void deleteMyDrink(MyDrink drink);
