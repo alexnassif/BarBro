@@ -25,6 +25,7 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.core.content.FileProvider;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.DragEvent;
 import android.view.GestureDetector;
@@ -149,30 +150,7 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View view) {
         if(view.getId() == R.id.take_drink_pic) {
 
-            textRecognizer = new TextRecognizer.Builder(this).build();
-            if (!textRecognizer.isOperational()) {
-                // Note: The first time that an app using a Vision API is installed on a
-                // device, GMS will download a native libraries to the device in order to do detection.
-                // Usually this completes before the app is run for the first time.  But if that
-                // download has not yet completed, then the above call will not detect any text,
-                // barcodes, or faces.
-                //
-                // isOperational() can be used to check if the required native libraries are currently
-                // available.  The detectors will automatically become operational once the library
-                // downloads complete on device.
-
-                // Check for low storage.  If there is low storage, the native library will not be
-                // downloaded, so detection will not become operational.
-                IntentFilter lowstorageFilter = new IntentFilter(Intent.ACTION_DEVICE_STORAGE_LOW);
-                boolean hasLowStorage = registerReceiver(null, lowstorageFilter) != null;
-
-                if (hasLowStorage) {
-                    Toast.makeText(this, R.string.low_storage_error, Toast.LENGTH_LONG).show();
-                }
-            }
-            if(textRecognizer.isOperational()) {
-                dispatchTakePictureIntent();
-            }
+            dispatchTakePictureIntent();
         }
         else if (view.getId() == R.id.cancel_button) {
             finish();
@@ -213,8 +191,21 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
 
         }
         else if(view.getId() == R.id.searchWeb){
-            Intent intent = new Intent(this, SearchWeb.class);
-            startActivityForResult(intent, REQUEST_BITMAP);
+            textRecognizer = new TextRecognizer.Builder(this).build();
+            if (!textRecognizer.isOperational()) {
+                
+                IntentFilter lowstorageFilter = new IntentFilter(Intent.ACTION_DEVICE_STORAGE_LOW);
+                boolean hasLowStorage = registerReceiver(null, lowstorageFilter) != null;
+
+                if (hasLowStorage) {
+                    Toast.makeText(this, R.string.low_storage_error, Toast.LENGTH_LONG).show();
+                }
+            }
+            if(textRecognizer.isOperational()) {
+
+                Intent intent = new Intent(this, SearchWeb.class);
+                startActivityForResult(intent, REQUEST_BITMAP);
+            }
         }
     }
     private void setPic(Uri uri) {
@@ -313,11 +304,14 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
                     mGraphicOverlay.setBitmap(bitmap);
                 }
 
+
+
                 Frame frame = new Frame.Builder().setBitmap(bitmap).build();
+
+                if(textRecognizer == null)
+                    Log.d("framenull", "frame is null");
+
                 try {
-
-
-
 
                    SparseArray<TextBlock> results = textRecognizer.detect(frame);
                    OcrDetector ocrDetector = new OcrDetector(mGraphicOverlay, results);
@@ -344,7 +338,8 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
                         snackbar.show();
                     }
                 } catch (Exception e) {
-                    Toast.makeText(this, "Text Recognizer is not available right now", Toast.LENGTH_LONG).show();
+                    Log.d("sparse", e.getMessage());
+                    //Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
 
