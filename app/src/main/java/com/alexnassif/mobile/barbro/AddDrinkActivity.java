@@ -1,9 +1,8 @@
 package com.alexnassif.mobile.barbro;
 
-import android.content.AsyncQueryHandler;
+
 import android.content.ClipData;
 import android.content.ClipDescription;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -39,7 +38,6 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
-import com.alexnassif.mobile.barbro.data.BarBroContract;
 import com.alexnassif.mobile.barbro.utilities.GraphicOverlay;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.text.TextBlock;
@@ -49,10 +47,8 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashSet;
 
 public class AddDrinkActivity extends AppCompatActivity implements View.OnClickListener {
-    private static HashSet<String> deviceWithDisabledTextCheck = new HashSet<>();
 
     private EditText mNewDrink;
     private EditText mNewIngredients;
@@ -113,30 +109,16 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mDb = AppDatabase.getsInstance(getApplicationContext());
 
-        // A text recognizer is created to find text.  An associated processor instance
-        // is set to receive the text recognition results and display graphics for each text block
-        // on screen.
-        /*textRecognizer = new TextRecognizer.Builder(this).build();
+        textRecognizer = new TextRecognizer.Builder(this).build();
         if (!textRecognizer.isOperational()) {
-            // Note: The first time that an app using a Vision API is installed on a
-            // device, GMS will download a native libraries to the device in order to do detection.
-            // Usually this completes before the app is run for the first time.  But if that
-            // download has not yet completed, then the above call will not detect any text,
-            // barcodes, or faces.
-            //
-            // isOperational() can be used to check if the required native libraries are currently
-            // available.  The detectors will automatically become operational once the library
-            // downloads complete on device.
 
-            // Check for low storage.  If there is low storage, the native library will not be
-            // downloaded, so detection will not become operational.
             IntentFilter lowstorageFilter = new IntentFilter(Intent.ACTION_DEVICE_STORAGE_LOW);
             boolean hasLowStorage = registerReceiver(null, lowstorageFilter) != null;
 
             if (hasLowStorage) {
                 Toast.makeText(this, R.string.low_storage_error, Toast.LENGTH_LONG).show();
             }
-        }*/
+        }
     }
 
     @Override
@@ -191,16 +173,7 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
 
         }
         else if(view.getId() == R.id.searchWeb){
-            textRecognizer = new TextRecognizer.Builder(this).build();
-            if (!textRecognizer.isOperational()) {
-                
-                IntentFilter lowstorageFilter = new IntentFilter(Intent.ACTION_DEVICE_STORAGE_LOW);
-                boolean hasLowStorage = registerReceiver(null, lowstorageFilter) != null;
 
-                if (hasLowStorage) {
-                    Toast.makeText(this, R.string.low_storage_error, Toast.LENGTH_LONG).show();
-                }
-            }
             if(textRecognizer.isOperational()) {
 
                 Intent intent = new Intent(this, SearchWeb.class);
@@ -304,12 +277,7 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
                     mGraphicOverlay.setBitmap(bitmap);
                 }
 
-
-
                 Frame frame = new Frame.Builder().setBitmap(bitmap).build();
-
-                if(textRecognizer == null)
-                    Log.d("framenull", "frame is null");
 
                 try {
 
@@ -338,8 +306,7 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
                         snackbar.show();
                     }
                 } catch (Exception e) {
-                    Log.d("sparse", e.getMessage());
-                    //Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Text Recognizer did not work", Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -556,205 +523,7 @@ public class AddDrinkActivity extends AppCompatActivity implements View.OnClickL
 
             return false;
         }
-    };
-    private static boolean shouldDisableTextCheck() {
-        String deviceName = android.os.Build.DEVICE;
-        if(isNullOrEmpty(deviceName)){
-            return false;
-        }
-        return deviceWithDisabledTextCheck.contains(deviceName);
-    }
-    public static boolean isNullOrEmpty(String string) {
-        return string == null || string.length() == 0;
     }
 
-    static {
-        deviceWithDisabledTextCheck.add("j7elte");
-        deviceWithDisabledTextCheck.add("hero2lte");
-        deviceWithDisabledTextCheck.add("zeroflte");
-        deviceWithDisabledTextCheck.add("herolte");
-        deviceWithDisabledTextCheck.add("j7xelte");
-        deviceWithDisabledTextCheck.add("zerolte");
-        deviceWithDisabledTextCheck.add("on7xelte");
-        deviceWithDisabledTextCheck.add("a5xelte");
-        deviceWithDisabledTextCheck.add("a3xelte");
-        deviceWithDisabledTextCheck.add("j7e3g");
-        deviceWithDisabledTextCheck.add("a5y17lte");
-        deviceWithDisabledTextCheck.add("zerofltevzw");
-        deviceWithDisabledTextCheck.add("s5neolte");
-        deviceWithDisabledTextCheck.add("on5xelte");
-        deviceWithDisabledTextCheck.add("noblelte");
-        deviceWithDisabledTextCheck.add("zenlte");
-        deviceWithDisabledTextCheck.add("j7eltetmo");
-        deviceWithDisabledTextCheck.add("zerofltespr");
-        deviceWithDisabledTextCheck.add("nobleltevzw");
-        deviceWithDisabledTextCheck.add("zeroflteatt");
-        deviceWithDisabledTextCheck.add("a3y17lte");
-        deviceWithDisabledTextCheck.add("zerofltetmo");
-        deviceWithDisabledTextCheck.add("marinelteatt");
-        deviceWithDisabledTextCheck.add("j7eltemtr");
-        deviceWithDisabledTextCheck.add("j3popeltemtr");
-        deviceWithDisabledTextCheck.add("nobleltetmo");
-        deviceWithDisabledTextCheck.add("heroltebmc");
-        deviceWithDisabledTextCheck.add("a7y17lte");
-        deviceWithDisabledTextCheck.add("zerofltebmc");
-        deviceWithDisabledTextCheck.add("a7xelte");
-        deviceWithDisabledTextCheck.add("nobleltespr");
-        deviceWithDisabledTextCheck.add("s5neoltecan");
-        deviceWithDisabledTextCheck.add("noblelteatt");
-        deviceWithDisabledTextCheck.add("zeroltetmo");
-        deviceWithDisabledTextCheck.add("zeroltevzw");
-        deviceWithDisabledTextCheck.add("zerolteatt");
-        deviceWithDisabledTextCheck.add("j5y17lte");
-        deviceWithDisabledTextCheck.add("zenltevzw");
-        deviceWithDisabledTextCheck.add("zenltetmo");
-        deviceWithDisabledTextCheck.add("hero2ltebmc");
-        deviceWithDisabledTextCheck.add("j7y17lte");
-        deviceWithDisabledTextCheck.add("j3popeltetmo");
-        deviceWithDisabledTextCheck.add("zenlteatt");
-        deviceWithDisabledTextCheck.add("zeroltespr");
-        deviceWithDisabledTextCheck.add("a5y17ltecan");
-        deviceWithDisabledTextCheck.add("zeroltebmc");
-        deviceWithDisabledTextCheck.add("j7popeltemtr");
-        deviceWithDisabledTextCheck.add("zeroflteusc");
-        deviceWithDisabledTextCheck.add("zerofltemtr");
-        deviceWithDisabledTextCheck.add("zerofltetfnvzw");
-        deviceWithDisabledTextCheck.add("j3popelteatt");
-        deviceWithDisabledTextCheck.add("j7popeltetmo");
-        deviceWithDisabledTextCheck.add("zenltespr");
-        deviceWithDisabledTextCheck.add("gtaxlwifi");
-        deviceWithDisabledTextCheck.add("j3y17lte");
-        deviceWithDisabledTextCheck.add("nobleltebmc");
-        deviceWithDisabledTextCheck.add("zeroflteaio");
-        deviceWithDisabledTextCheck.add("j7velte");
-        deviceWithDisabledTextCheck.add("a8xelte");
-        deviceWithDisabledTextCheck.add("noblelteusc");
-        deviceWithDisabledTextCheck.add("zerofltechn");
-        deviceWithDisabledTextCheck.add("j7popelteatt");
-        deviceWithDisabledTextCheck.add("j7xeltecmcc");
-        deviceWithDisabledTextCheck.add("zeroltechn");
-        deviceWithDisabledTextCheck.add("gtaxllte");
-        deviceWithDisabledTextCheck.add("xcover4lte");
-        deviceWithDisabledTextCheck.add("j3popelteaio");
-        deviceWithDisabledTextCheck.add("noblelteskt");
-        deviceWithDisabledTextCheck.add("nobleltehk");
-        deviceWithDisabledTextCheck.add("on7elte");
-        deviceWithDisabledTextCheck.add("zeroflteskt");
-        deviceWithDisabledTextCheck.add("zerolteusc");
-        deviceWithDisabledTextCheck.add("nobleltelgt");
-        deviceWithDisabledTextCheck.add("gvlteatt");
-        deviceWithDisabledTextCheck.add("nobleltektt");
-        deviceWithDisabledTextCheck.add("zeroflteacg");
-        deviceWithDisabledTextCheck.add("a7xeltextc");
-        deviceWithDisabledTextCheck.add("zerofltektt");
-        deviceWithDisabledTextCheck.add("j7xlte");
-        deviceWithDisabledTextCheck.add("herolteskt");
-        deviceWithDisabledTextCheck.add("zerofltelra");
-        deviceWithDisabledTextCheck.add("zenltebmc");
-        deviceWithDisabledTextCheck.add("j7popelteaio");
-        deviceWithDisabledTextCheck.add("hero2lteskt");
-        deviceWithDisabledTextCheck.add("zerofltelgt");
-        deviceWithDisabledTextCheck.add("zerolteskt");
-        deviceWithDisabledTextCheck.add("j5y17ltedx");
-        deviceWithDisabledTextCheck.add("a5xeltextc");
-        deviceWithDisabledTextCheck.add("heroltektt");
-        deviceWithDisabledTextCheck.add("noblelteacg");
-        deviceWithDisabledTextCheck.add("j3popeltetfntmo");
-        deviceWithDisabledTextCheck.add("zerolteacg");
-        deviceWithDisabledTextCheck.add("heroltelgt");
-        deviceWithDisabledTextCheck.add("zeroltektt");
-        deviceWithDisabledTextCheck.add("hero2ltektt");
-        deviceWithDisabledTextCheck.add("zeroltelra");
-        deviceWithDisabledTextCheck.add("zenlteusc");
-        deviceWithDisabledTextCheck.add("hero2ltelgt");
-        deviceWithDisabledTextCheck.add("nobleltelra");
-        deviceWithDisabledTextCheck.add("zeroltelgt");
-        deviceWithDisabledTextCheck.add("j3popelteue");
-        deviceWithDisabledTextCheck.add("j7xeltektt");
-        deviceWithDisabledTextCheck.add("dream2lte");
-        deviceWithDisabledTextCheck.add("a3xeltekx");
-        deviceWithDisabledTextCheck.add("a8xelteskt");
-        deviceWithDisabledTextCheck.add("a7xeltektt");
-        deviceWithDisabledTextCheck.add("dreamlte");
-        deviceWithDisabledTextCheck.add("a5y17lteskt");
-        deviceWithDisabledTextCheck.add("j7popelteue");
-        deviceWithDisabledTextCheck.add("gtanotexllte");
-        deviceWithDisabledTextCheck.add("zenlteskt");
-        deviceWithDisabledTextCheck.add("matisse10wifikx");
-        deviceWithDisabledTextCheck.add("a7xelteskt");
-        deviceWithDisabledTextCheck.add("a5y17ltektt");
-        deviceWithDisabledTextCheck.add("a7xeltelgt");
-        deviceWithDisabledTextCheck.add("gtanotexlwifikx");
-        deviceWithDisabledTextCheck.add("a5xelteskt");
-        deviceWithDisabledTextCheck.add("a5y17ltelgt");
-        deviceWithDisabledTextCheck.add("gracelte");
-        deviceWithDisabledTextCheck.add("zenltektt");
-        deviceWithDisabledTextCheck.add("xcover4ltecan");
-        deviceWithDisabledTextCheck.add("a5xeltektt");
-        deviceWithDisabledTextCheck.add("on7xelteskt");
-        deviceWithDisabledTextCheck.add("gracerlteskt");
-        deviceWithDisabledTextCheck.add("on7xeltelgt");
-        deviceWithDisabledTextCheck.add("zerofltexx");
-        deviceWithDisabledTextCheck.add("zenltelgt");
-        deviceWithDisabledTextCheck.add("a5xeltelgt");
-        deviceWithDisabledTextCheck.add("on7xeltektt");
-        deviceWithDisabledTextCheck.add("gvwifiue");
-        deviceWithDisabledTextCheck.add("dreamlteks");
-        deviceWithDisabledTextCheck.add("gracerltektt");
-        deviceWithDisabledTextCheck.add("a7xeltecmcc");
-        deviceWithDisabledTextCheck.add("a5xeltecmcc");
-        deviceWithDisabledTextCheck.add("gvltevzw");
-        deviceWithDisabledTextCheck.add("gracerltelgt");
-        deviceWithDisabledTextCheck.add("j5y17ltektt");
-        deviceWithDisabledTextCheck.add("j7popelteskt");
-        deviceWithDisabledTextCheck.add("zenltechn");
-        deviceWithDisabledTextCheck.add("nobleltechn");
-        deviceWithDisabledTextCheck.add("j5y17ltelgt");
-        deviceWithDisabledTextCheck.add("a7y17lteskt");
-        deviceWithDisabledTextCheck.add("j5y17lteskt");
-        deviceWithDisabledTextCheck.add("j7y17ltektt");
-        deviceWithDisabledTextCheck.add("gracelteskt");
-        deviceWithDisabledTextCheck.add("dream2qltesq");
-        deviceWithDisabledTextCheck.add("gtaxlltekx");
-        deviceWithDisabledTextCheck.add("gvlte");
-        deviceWithDisabledTextCheck.add("dream2qltechn");
-        deviceWithDisabledTextCheck.add("hero2ltexx");
-        deviceWithDisabledTextCheck.add("graceqltechn");
-        deviceWithDisabledTextCheck.add("gtesveltevzw");
-        deviceWithDisabledTextCheck.add("heroltexx");
-        deviceWithDisabledTextCheck.add("j3y17ltelgt");
-        deviceWithDisabledTextCheck.add("gtanotexlltekx");
-        deviceWithDisabledTextCheck.add("graceltektt");
-        deviceWithDisabledTextCheck.add("nobleltedcm");
-        deviceWithDisabledTextCheck.add("graceltelgt");
-        deviceWithDisabledTextCheck.add("j7popeltetfntmo");
-        deviceWithDisabledTextCheck.add("zeroltexx");
-        deviceWithDisabledTextCheck.add("zenltekx");
-        deviceWithDisabledTextCheck.add("dream2qltecan");
-        deviceWithDisabledTextCheck.add("zerofltectc");
-        deviceWithDisabledTextCheck.add("j5y17ltextc");
-        deviceWithDisabledTextCheck.add("nobleltejv");
-        deviceWithDisabledTextCheck.add("graceltexx");
-        deviceWithDisabledTextCheck.add("zerofltedcm");
-        deviceWithDisabledTextCheck.add("graceqltetmo");
-        deviceWithDisabledTextCheck.add("shamu");
-        deviceWithDisabledTextCheck.add("dream2lteks");
-        deviceWithDisabledTextCheck.add("zeroltesbm");
-        deviceWithDisabledTextCheck.add("j700lte");
-        deviceWithDisabledTextCheck.add("gvltexsp");
-        deviceWithDisabledTextCheck.add("f5121");
-        deviceWithDisabledTextCheck.add("gts210vewifi");
-        deviceWithDisabledTextCheck.add("a9xltechn");
-        deviceWithDisabledTextCheck.add("so-02j");
-        deviceWithDisabledTextCheck.add("f5321");
-        deviceWithDisabledTextCheck.add("gts28vewifi");
-        deviceWithDisabledTextCheck.add("zerofltexx-user");
-        deviceWithDisabledTextCheck.add("gts210velte");
-        deviceWithDisabledTextCheck.add("asus_a001");
-        deviceWithDisabledTextCheck.add("cph1611");
-        deviceWithDisabledTextCheck.add("kate");
-        deviceWithDisabledTextCheck.add("pb2pro");
-        deviceWithDisabledTextCheck.add("f5122");
-    }
 
 }
