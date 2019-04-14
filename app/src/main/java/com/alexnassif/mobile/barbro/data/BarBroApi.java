@@ -12,5 +12,5 @@ public interface BarBroApi {
 
     @Headers("Authorization: Api-Key 1234567")
     @GET("drinks")
-    Call<List<BarBroApiResponse>> getDrinks();
+    Call<List<BarBroDrink>> getDrinks();
 }

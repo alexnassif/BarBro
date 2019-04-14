@@ -103,15 +103,15 @@ public class DrinkRepository {
         });
 
 
-        Call<List<BarBroApiResponse>> bbCall = mBarBroDrinkApi.getmBarBroDrinkApi().getDrinks();
-        bbCall.enqueue(new Callback<List<BarBroApiResponse>>() {
+        Call<List<BarBroDrink>> bbCall = mBarBroDrinkApi.getmBarBroDrinkApi().getDrinks();
+        bbCall.enqueue(new Callback<List<BarBroDrink>>() {
             @Override
-            public void onResponse(Call<List<BarBroApiResponse>> call, Response<List<BarBroApiResponse>> response) {
+            public void onResponse(Call<List<BarBroDrink>> call, Response<List<BarBroDrink>> response) {
 
                 if(response.isSuccessful()){
-                    //List<BarBroDrink> bbList = response.body()
-                    //response.body().toArray();
-                    Log.d("bblist", response.body().toString());
+                    List<BarBroDrink> bbList = response.body();
+
+                    Log.d("bblist", bbList.get(0).getDrinkName());
                 }
                 else{
                     Log.d("bblisterror", "not successful");
@@ -120,7 +120,7 @@ public class DrinkRepository {
             }
 
             @Override
-            public void onFailure(Call<List<BarBroApiResponse>> call, Throwable t) {
+            public void onFailure(Call<List<BarBroDrink>> call, Throwable t) {
                 Log.d("bblisterror1", t.getMessage());
             }
         });
