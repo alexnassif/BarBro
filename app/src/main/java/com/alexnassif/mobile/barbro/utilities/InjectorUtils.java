@@ -11,6 +11,7 @@ import com.alexnassif.mobile.barbro.ViewModel.FavoriteViewModelFactory;
 import com.alexnassif.mobile.barbro.ViewModel.MyDrinksViewModelFactory;
 import com.alexnassif.mobile.barbro.data.AppDatabase;
 import com.alexnassif.mobile.barbro.data.AppExecutors;
+import com.alexnassif.mobile.barbro.data.BarBroDrinkApiBuilder;
 import com.alexnassif.mobile.barbro.data.DrinkApiBuilder;
 
 public class InjectorUtils {
@@ -19,7 +20,8 @@ public class InjectorUtils {
         AppDatabase database = AppDatabase.getsInstance(context.getApplicationContext());
         AppExecutors executors = AppExecutors.getInstance();
         DrinkApiBuilder drinkApiBuilder = DrinkApiBuilder.getInstance();
-        return DrinkRepository.getInstance(database.favoritesDao(), database.myDrinksDao(), executors, drinkApiBuilder);
+        BarBroDrinkApiBuilder barBroDrinkApiBuilder = BarBroDrinkApiBuilder.getInstance();
+        return DrinkRepository.getInstance(database.favoritesDao(), database.myDrinksDao(), executors, drinkApiBuilder, barBroDrinkApiBuilder);
     }
 
     public static MyDrinksViewModelFactory provideMyDrinksViewModelFactory(Context context){

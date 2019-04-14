@@ -4,6 +4,9 @@ import android.util.Log;
 
 import com.alexnassif.mobile.barbro.Networking.DrinkApi;
 import com.alexnassif.mobile.barbro.data.AppExecutors;
+import com.alexnassif.mobile.barbro.data.BarBroApiResponse;
+import com.alexnassif.mobile.barbro.data.BarBroDrink;
+import com.alexnassif.mobile.barbro.data.BarBroDrinkApiBuilder;
 import com.alexnassif.mobile.barbro.data.Drink;
 import com.alexnassif.mobile.barbro.data.DrinkApiBuilder;
 import com.alexnassif.mobile.barbro.data.DrinkDetailJsonResponse;
@@ -31,20 +34,22 @@ public class DrinkRepository {
     private final MyDrinksDao mDrinksDao;
     private final AppExecutors mExecutors;
     private final DrinkApiBuilder mDrinkApi;
+    private final BarBroDrinkApiBuilder mBarBroDrinkApi;
     private boolean mInitialized = false;
 
-    public DrinkRepository(FavoritesDao mFavoritesDao, MyDrinksDao mDrinksDao, AppExecutors mExecutors, DrinkApiBuilder drinkApi) {
+    private DrinkRepository(FavoritesDao mFavoritesDao, MyDrinksDao mDrinksDao, AppExecutors mExecutors, DrinkApiBuilder drinkApi, BarBroDrinkApiBuilder barBroDrinkApi) {
         this.mFavoritesDao = mFavoritesDao;
         this.mDrinksDao = mDrinksDao;
         this.mExecutors = mExecutors;
         this.mDrinkApi = drinkApi;
+        this.mBarBroDrinkApi = barBroDrinkApi;
     }
 
-    public synchronized static DrinkRepository getInstance(FavoritesDao mFavoritesDao, MyDrinksDao mDrinksDao, AppExecutors mExecutors, DrinkApiBuilder drinkApi){
+    public synchronized static DrinkRepository getInstance(FavoritesDao mFavoritesDao, MyDrinksDao mDrinksDao, AppExecutors mExecutors, DrinkApiBuilder drinkApi, BarBroDrinkApiBuilder barBroDrinkApi){
 
         if(instance == null){
             synchronized (LOCK){
-                instance = new DrinkRepository(mFavoritesDao, mDrinksDao, mExecutors, drinkApi);
+                instance = new DrinkRepository(mFavoritesDao, mDrinksDao, mExecutors, drinkApi, barBroDrinkApi);
             }
         }
 
@@ -95,6 +100,29 @@ public class DrinkRepository {
                 Log.d("fromvmerror", t.getMessage());
             }
 
+        });
+
+
+        Call<List<BarBroApiResponse>> bbCall = mBarBroDrinkApi.getmBarBroDrinkApi().getDrinks();
+        bbCall.enqueue(new Callback<List<BarBroApiResponse>>() {
+            @Override
+            public void onResponse(Call<List<BarBroApiResponse>> call, Response<List<BarBroApiResponse>> response) {
+
+                if(response.isSuccessful()){
+                    //List<BarBroDrink> bbList = response.body()
+                    //response.body().toArray();
+                    Log.d("bblist", response.body().toString());
+                }
+                else{
+                    Log.d("bblisterror", "not successful");
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<BarBroApiResponse>> call, Throwable t) {
+                Log.d("bblisterror1", t.getMessage());
+            }
         });
 
         return drinks;
