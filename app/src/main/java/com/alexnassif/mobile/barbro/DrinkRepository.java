@@ -156,4 +156,32 @@ public class DrinkRepository {
         });
         return drink;
     }
+
+    public LiveData<List<BarBroDrink>> loadBarBroDrinks() {
+
+        final MutableLiveData<List<BarBroDrink>> drinks = new MutableLiveData<List<BarBroDrink>>();
+
+        Call<List<BarBroDrink>> bbCall = mBarBroDrinkApi.getmBarBroDrinkApi().getDrinks();
+        bbCall.enqueue(new Callback<List<BarBroDrink>>() {
+            @Override
+            public void onResponse(Call<List<BarBroDrink>> call, Response<List<BarBroDrink>> response) {
+
+                if(response.isSuccessful()){
+
+                    drinks.setValue(response.body());
+                }
+                else{
+                    Log.d("bblisterror", "not successful");
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<BarBroDrink>> call, Throwable t) {
+                Log.d("bblisterror1", t.getMessage());
+            }
+        });
+
+        return drinks;
+    }
 }
