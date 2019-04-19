@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity
                     .replace(R.id.content_frame, new MyDrinkFragment());
         } else if (id == R.id.nav_history) {
             fragmentTransaction
-                    .replace(R.id.content_frame, new HistoryFragment());
+                    .replace(R.id.content_frame, new BarBroDrinksFragment());
         }
 
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);

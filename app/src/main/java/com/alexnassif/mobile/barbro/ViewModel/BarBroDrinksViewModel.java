@@ -11,12 +11,12 @@ import androidx.lifecycle.ViewModel;
 public class BarBroDrinksViewModel extends ViewModel {
 
     private LiveData<List<BarBroDrink>> drinks;
-    private DrinkRepository repository;
+    private final DrinkRepository repository;
 
     public BarBroDrinksViewModel(DrinkRepository repository){
 
         this.repository = repository;
-        drinks = repository.loadBarBroDrinks();
+        drinks = this.repository.loadBarBroDrinks();
     }
 
     public LiveData<List<BarBroDrink>> getDrinks(){

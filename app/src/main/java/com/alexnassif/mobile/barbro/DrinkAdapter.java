@@ -1,24 +1,19 @@
 package com.alexnassif.mobile.barbro;
 
-import android.content.AsyncQueryHandler;
-import android.content.ContentValues;
+
 import android.content.Context;
-import android.database.Cursor;
-import android.net.Uri;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 
 import com.alexnassif.mobile.barbro.data.DrinkList;
 import com.bumptech.glide.Glide;
-import com.alexnassif.mobile.barbro.data.BarBroContract;
 
 import java.util.List;
 
@@ -74,8 +69,8 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
     }
 
     public class DrinkAdapterViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
-        public final TextView mDrinkTextView;
-        public final ImageView mDrinkImageView;
+        private TextView mDrinkTextView;
+        private ImageView mDrinkImageView;
         public DrinkAdapterViewHolder(View itemView) {
             super(itemView);
             mDrinkImageView = (ImageView) itemView.findViewById(R.id.drink_image);

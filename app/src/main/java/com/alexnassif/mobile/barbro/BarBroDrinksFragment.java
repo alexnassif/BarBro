@@ -3,11 +3,26 @@ package com.alexnassif.mobile.barbro;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.alexnassif.mobile.barbro.Adapters.BarBroDrinkAdapter;
+import com.alexnassif.mobile.barbro.ViewModel.BarBroDrinksViewModel;
+import com.alexnassif.mobile.barbro.ViewModel.BarBroDrinksViewModelFactory;
+import com.alexnassif.mobile.barbro.data.BarBroDrink;
+import com.alexnassif.mobile.barbro.utilities.InjectorUtils;
+
+import java.util.List;
 
 
 /**
@@ -15,35 +30,23 @@ import android.view.ViewGroup;
  * Use the {@link BarBroDrinksFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BarBroDrinksFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class BarBroDrinksFragment extends Fragment implements BarBroDrinkAdapter.BarBroDrinkOnClickHandler {
+    private RecyclerView mRecyclerView;
+    private BarBroDrinkAdapter mDrinkAdapter;
+    private View myView;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    //ViewModels
+    private BarBroDrinksViewModel model;
 
 
     public BarBroDrinksFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment BarBroDrinksFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static BarBroDrinksFragment newInstance(String param1, String param2) {
+
+    public static BarBroDrinksFragment newInstance() {
         BarBroDrinksFragment fragment = new BarBroDrinksFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -51,17 +54,47 @@ public class BarBroDrinksFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
+        BarBroDrinksViewModelFactory factory = InjectorUtils.provideBarBroDrinksVMFactory(getContext().getApplicationContext());
+        model = ViewModelProviders.of(this, factory).get(BarBroDrinksViewModel.class);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        myView = inflater.inflate(R.layout.fragment_bar_bro_drinks, container, false);
+        mRecyclerView = (RecyclerView) myView.findViewById(R.id.barbro_recyclerview);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_bar_bro_drinks, container, false);
+        return myView;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setHasFixedSize(true);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        model.getDrinks().observe(this, new Observer<List<BarBroDrink>>() {
+            @Override
+            public void onChanged(List<BarBroDrink> barBroDrinks) {
+                mDrinkAdapter = new BarBroDrinkAdapter(getContext(), BarBroDrinksFragment.this);
+                mRecyclerView.setAdapter(mDrinkAdapter);
+                mDrinkAdapter.swapList(barBroDrinks);
+            }
+        });
+    }
+
+    @Override
+    public void onClick(BarBroDrink drink) {
+
+    }
 }
