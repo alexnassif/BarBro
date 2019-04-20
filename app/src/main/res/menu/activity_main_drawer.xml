@@ -15,8 +15,8 @@
             android:id="@+id/nav_my_drinks"
             android:title="My Drinks"/>
         <item
-            android:id="@+id/nav_history"
-            android:title="History"/>
+            android:id="@+id/nav_new_drinks"
+            android:title="New Drinks"/>
     </group>
 
 </menu>

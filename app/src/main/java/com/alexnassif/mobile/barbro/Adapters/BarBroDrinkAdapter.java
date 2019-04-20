@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.alexnassif.mobile.barbro.R;
 import com.alexnassif.mobile.barbro.data.BarBroDrink;
+import com.alexnassif.mobile.barbro.data.DrinkList;
 
 import java.util.List;
 
@@ -78,7 +79,9 @@ public class BarBroDrinkAdapter extends RecyclerView.Adapter<BarBroDrinkAdapter.
 
         @Override
         public void onClick(View view) {
-
+            int adapterPosition = getAdapterPosition();
+            BarBroDrink item = drinks.get(adapterPosition);
+            mClickHandler.onClick(item);
         }
     }
 }

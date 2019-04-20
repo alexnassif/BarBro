@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_my_drinks) {
             fragmentTransaction
                     .replace(R.id.content_frame, new MyDrinkFragment());
-        } else if (id == R.id.nav_history) {
+        } else if (id == R.id.nav_new_drinks) {
             fragmentTransaction
                     .replace(R.id.content_frame, new BarBroDrinksFragment());
         }

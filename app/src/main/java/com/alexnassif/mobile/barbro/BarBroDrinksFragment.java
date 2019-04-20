@@ -1,6 +1,7 @@
 package com.alexnassif.mobile.barbro;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -95,6 +96,11 @@ public class BarBroDrinksFragment extends Fragment implements BarBroDrinkAdapter
 
     @Override
     public void onClick(BarBroDrink drink) {
+
+        Intent intent = new Intent(getContext(), BarBroDrinkDetailActivity.class);
+        intent.putExtra("drink", drink);
+        startActivity(intent);
+
 
     }
 }
