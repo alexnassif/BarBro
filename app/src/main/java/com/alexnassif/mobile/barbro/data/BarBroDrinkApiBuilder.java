@@ -1,8 +1,7 @@
 package com.alexnassif.mobile.barbro.data;
 
 
-import com.alexnassif.mobile.barbro.Networking.DrinkApi;
-import com.google.android.gms.common.api.Api;
+import com.alexnassif.mobile.barbro.Networking.BarBroApi;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

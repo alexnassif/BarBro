@@ -2,6 +2,7 @@ package com.alexnassif.mobile.barbro;
 
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,17 +14,27 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import com.alexnassif.mobile.barbro.Adapters.BarBroDrinkAdapter;
 import com.alexnassif.mobile.barbro.ViewModel.BarBroDrinksViewModel;
 import com.alexnassif.mobile.barbro.ViewModel.BarBroDrinksViewModelFactory;
+import com.alexnassif.mobile.barbro.ViewModel.DrinksViewModel;
+import com.alexnassif.mobile.barbro.ViewModel.DrinksViewModelFactory;
 import com.alexnassif.mobile.barbro.data.BarBroDrink;
+import com.alexnassif.mobile.barbro.data.DrinkList;
 import com.alexnassif.mobile.barbro.utilities.InjectorUtils;
+import com.thomashaertel.widget.MultiSpinner;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -35,9 +46,44 @@ public class BarBroDrinksFragment extends Fragment implements BarBroDrinkAdapter
     private RecyclerView mRecyclerView;
     private BarBroDrinkAdapter mDrinkAdapter;
     private View myView;
-
+    private MultiSpinner mLiquorSpinner;
+    private ArrayAdapter<CharSequence> adapter;
+    private String liqType;
     //ViewModels
     private BarBroDrinksViewModel model;
+    private Map<String, String> map;
+
+    private MultiSpinner.MultiSpinnerListener onSelectedListener = new MultiSpinner.MultiSpinnerListener() {
+        // Resources res = getResources();
+        //String[] sArray = res.getStringArray(R.array.liquor_array);
+        public void onItemsSelected(boolean[] selected) {
+            // Do something here with the selected items
+            liqType = "";
+            Resources res = getResources();
+            String[] sArray = res.getStringArray(R.array.liquor_array);
+            ArrayList<String> sList = new ArrayList<>();
+            StringBuilder builder = new StringBuilder();
+
+            if(checkForTastes(selected)) {
+                for (int i = 0; i < selected.length; i++) {
+                    if(selected[i])
+                        map.put(adapter.getItem(i).toString().toLowerCase(), String.valueOf(selected[i]));
+
+                }
+
+
+
+                model.setDrinks(map);
+                Log.d("liqtype", map.toString());
+
+
+            }
+            else{
+                Toast.makeText(getContext(), "Nothing Selected", Toast.LENGTH_LONG).show();
+                mLiquorSpinner.setText("Pick your Flavor");
+            }
+        }
+    };
 
 
     public BarBroDrinksFragment() {
@@ -58,6 +104,7 @@ public class BarBroDrinksFragment extends Fragment implements BarBroDrinkAdapter
 
         BarBroDrinksViewModelFactory factory = InjectorUtils.provideBarBroDrinksVMFactory(getContext().getApplicationContext());
         model = ViewModelProviders.of(this, factory).get(BarBroDrinksViewModel.class);
+        map = new HashMap<>();
     }
 
     @Override
@@ -66,6 +113,7 @@ public class BarBroDrinksFragment extends Fragment implements BarBroDrinkAdapter
 
         myView = inflater.inflate(R.layout.fragment_bar_bro_drinks, container, false);
         mRecyclerView = (RecyclerView) myView.findViewById(R.id.barbro_recyclerview);
+        mLiquorSpinner = (MultiSpinner) myView.findViewById(R.id.liquor_spinner);
         // Inflate the layout for this fragment
         return myView;
     }
@@ -83,15 +131,25 @@ public class BarBroDrinksFragment extends Fragment implements BarBroDrinkAdapter
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        mDrinkAdapter = new BarBroDrinkAdapter(getContext(), BarBroDrinksFragment.this);
+        mRecyclerView.setAdapter(mDrinkAdapter);
+        model.setDrinks(this.map);
         model.getDrinks().observe(this, new Observer<List<BarBroDrink>>() {
             @Override
             public void onChanged(List<BarBroDrink> barBroDrinks) {
-                mDrinkAdapter = new BarBroDrinkAdapter(getContext(), BarBroDrinksFragment.this);
-                mRecyclerView.setAdapter(mDrinkAdapter);
+
                 mDrinkAdapter.swapList(barBroDrinks);
             }
         });
+
+        adapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.liquor_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mLiquorSpinner.setAdapter(adapter, false, onSelectedListener);
+        boolean[] selectedItems = new boolean[adapter.getCount()];
+        //selectedItems[1] = true; // select second item
+        mLiquorSpinner.setSelected(selectedItems);
+        mLiquorSpinner.setText("Pick your Flavor");
     }
 
     @Override
@@ -102,5 +160,14 @@ public class BarBroDrinksFragment extends Fragment implements BarBroDrinkAdapter
         startActivity(intent);
 
 
+    }
+
+    private boolean checkForTastes(boolean[] tastes){
+
+        for(int i = 0; i < tastes.length; i++) {
+            if (tastes[i])
+                return true;
+        }
+        return false;
     }
 }

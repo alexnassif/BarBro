@@ -59,7 +59,7 @@ public class LiquorFragment extends Fragment implements DrinkAdapter.DrinkAdapte
     int mCurCheckPosition = 0;
     private boolean whichFragment = true;
     private DrinkDetailFragment drinkDetailFragment;
-    ArrayAdapter<CharSequence> adapter;
+    private ArrayAdapter<CharSequence> adapter;
     private boolean isMenu = false;
 
     private DrinksViewModel drinksModel;

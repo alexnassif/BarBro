@@ -17,6 +17,7 @@ import com.alexnassif.mobile.barbro.data.MyDrink;
 import com.alexnassif.mobile.barbro.data.MyDrinksDao;
 
 import java.util.List;
+import java.util.Map;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -102,29 +103,6 @@ public class DrinkRepository {
 
         });
 
-
-        Call<List<BarBroDrink>> bbCall = mBarBroDrinkApi.getmBarBroDrinkApi().getDrinks();
-        bbCall.enqueue(new Callback<List<BarBroDrink>>() {
-            @Override
-            public void onResponse(Call<List<BarBroDrink>> call, Response<List<BarBroDrink>> response) {
-
-                if(response.isSuccessful()){
-                    List<BarBroDrink> bbList = response.body();
-
-                    Log.d("bblist", bbList.get(0).getDrinkName());
-                }
-                else{
-                    Log.d("bblisterror", "not successful");
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<List<BarBroDrink>> call, Throwable t) {
-                Log.d("bblisterror1", t.getMessage());
-            }
-        });
-
         return drinks;
     }
 
@@ -157,11 +135,11 @@ public class DrinkRepository {
         return drink;
     }
 
-    public LiveData<List<BarBroDrink>> loadBarBroDrinks() {
+    public LiveData<List<BarBroDrink>> loadBarBroDrinks(Map <String, String> types) {
 
         final MutableLiveData<List<BarBroDrink>> drinks = new MutableLiveData<List<BarBroDrink>>();
 
-        Call<List<BarBroDrink>> bbCall = mBarBroDrinkApi.getmBarBroDrinkApi().getDrinks();
+        Call<List<BarBroDrink>> bbCall = mBarBroDrinkApi.getmBarBroDrinkApi().getDrinks(types);
         bbCall.enqueue(new Callback<List<BarBroDrink>>() {
             @Override
             public void onResponse(Call<List<BarBroDrink>> call, Response<List<BarBroDrink>> response) {
@@ -169,6 +147,7 @@ public class DrinkRepository {
                 if(response.isSuccessful()){
 
                     drinks.setValue(response.body());
+                    Log.d("barbrodrinks", response.body().get(1).getDrinkName());
                 }
                 else{
                     Log.d("bblisterror", "not successful");

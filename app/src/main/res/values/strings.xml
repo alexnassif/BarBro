@@ -27,13 +27,13 @@
         <item>Whisky</item>
         <item>Rum</item>
         <item>Brandy</item>
+        <item>Liqueur</item>
         <item>Sweet</item>
         <item>Fruity</item>
-        <item>Berry</item>
         <item>Sour</item>
-        <item>Herb</item>
-        <item>Spicy</item>
-        <item>Fresh</item>
+        <item>Popular</item>
+        <item>Party</item>
+        <item>Classic</item>
     </string-array>
     <string-array name="taste_array">
         <item>Sweet</item>
