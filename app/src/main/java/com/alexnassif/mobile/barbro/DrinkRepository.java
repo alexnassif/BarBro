@@ -16,6 +16,7 @@ import com.alexnassif.mobile.barbro.data.FavoritesDao;
 import com.alexnassif.mobile.barbro.data.MyDrink;
 import com.alexnassif.mobile.barbro.data.MyDrinksDao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -118,9 +119,7 @@ public class DrinkRepository {
                 /* finally we are setting the list to our MutableLiveData */
                 if (response.isSuccessful()) {
                     drink.setValue(response.body().getDrinks().get(0));
-                    Log.d("fromvmns", "successful");
                 } else {
-                    Log.d("fromvmns", "not successful");
                 }
 
 
@@ -128,14 +127,40 @@ public class DrinkRepository {
 
             @Override
             public void onFailure(Call<DrinkDetailJsonResponse> call, Throwable t) {
-                Log.d("fromvmerror", t.getMessage());
+
             }
 
         });
         return drink;
     }
 
-    public LiveData<List<BarBroDrink>> loadBarBroDrinks(Map <String, String> types) {
+    public MutableLiveData<List<BarBroDrink>> loadAllBarBroDrinks() {
+
+        final MutableLiveData<List<BarBroDrink>> drinks = new MutableLiveData<List<BarBroDrink>>();
+        Map<String, String> types = new HashMap<String, String>();
+        Call<List<BarBroDrink>> bbCall = mBarBroDrinkApi.getmBarBroDrinkApi().getDrinks(types);
+        bbCall.enqueue(new Callback<List<BarBroDrink>>() {
+            @Override
+            public void onResponse(Call<List<BarBroDrink>> call, Response<List<BarBroDrink>> response) {
+
+                if (response.isSuccessful()) {
+
+                    drinks.setValue(response.body());
+                } else {
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<BarBroDrink>> call, Throwable t) {
+            }
+        });
+
+        return drinks;
+
+    }
+
+    public MutableLiveData<List<BarBroDrink>> loadBarBroDrinks(Map <String, String> types) {
 
         final MutableLiveData<List<BarBroDrink>> drinks = new MutableLiveData<List<BarBroDrink>>();
 
@@ -147,10 +172,8 @@ public class DrinkRepository {
                 if(response.isSuccessful()){
 
                     drinks.setValue(response.body());
-                    Log.d("barbrodrinks", response.body().get(1).getDrinkName());
                 }
                 else{
-                    Log.d("bblisterror", "not successful");
                 }
 
             }

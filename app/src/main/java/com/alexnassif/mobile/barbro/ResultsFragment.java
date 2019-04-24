@@ -152,12 +152,12 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        mDrinkAdapter = new DrinkAdapter(getContext(), ResultsFragment.this);
+        mRecyclerView.setAdapter(mDrinkAdapter);
         model.getDrinks().observe(this, new Observer<List<DrinkList>>() {
             @Override
             public void onChanged(List<DrinkList> drinkLists) {
 
-                mDrinkAdapter = new DrinkAdapter(getContext(), ResultsFragment.this);
-                mRecyclerView.setAdapter(mDrinkAdapter);
                 mDrinkAdapter.swapCursor(drinkLists);
                 DrinkList[] array = new DrinkList[drinkLists.size()];
                 array = drinkLists.toArray(array);

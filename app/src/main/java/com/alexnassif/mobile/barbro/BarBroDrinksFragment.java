@@ -2,19 +2,16 @@ package com.alexnassif.mobile.barbro;
 
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,14 +21,10 @@ import android.widget.Toast;
 import com.alexnassif.mobile.barbro.Adapters.BarBroDrinkAdapter;
 import com.alexnassif.mobile.barbro.ViewModel.BarBroDrinksViewModel;
 import com.alexnassif.mobile.barbro.ViewModel.BarBroDrinksViewModelFactory;
-import com.alexnassif.mobile.barbro.ViewModel.DrinksViewModel;
-import com.alexnassif.mobile.barbro.ViewModel.DrinksViewModelFactory;
 import com.alexnassif.mobile.barbro.data.BarBroDrink;
-import com.alexnassif.mobile.barbro.data.DrinkList;
 import com.alexnassif.mobile.barbro.utilities.InjectorUtils;
 import com.thomashaertel.widget.MultiSpinner;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +41,6 @@ public class BarBroDrinksFragment extends Fragment implements BarBroDrinkAdapter
     private View myView;
     private MultiSpinner mLiquorSpinner;
     private ArrayAdapter<CharSequence> adapter;
-    private String liqType;
     //ViewModels
     private BarBroDrinksViewModel model;
     private Map<String, String> map;
@@ -58,11 +50,7 @@ public class BarBroDrinksFragment extends Fragment implements BarBroDrinkAdapter
         //String[] sArray = res.getStringArray(R.array.liquor_array);
         public void onItemsSelected(boolean[] selected) {
             // Do something here with the selected items
-            liqType = "";
-            Resources res = getResources();
-            String[] sArray = res.getStringArray(R.array.liquor_array);
-            ArrayList<String> sList = new ArrayList<>();
-            StringBuilder builder = new StringBuilder();
+            map.clear();
 
             if(checkForTastes(selected)) {
                 for (int i = 0; i < selected.length; i++) {
@@ -71,17 +59,13 @@ public class BarBroDrinksFragment extends Fragment implements BarBroDrinkAdapter
 
                 }
 
-
-
-                model.setDrinks(map);
-                Log.d("liqtype", map.toString());
-
-
             }
             else{
                 Toast.makeText(getContext(), "Nothing Selected", Toast.LENGTH_LONG).show();
                 mLiquorSpinner.setText("Pick your Flavor");
             }
+
+            model.setDrinks(map);
         }
     };
 
@@ -105,6 +89,7 @@ public class BarBroDrinksFragment extends Fragment implements BarBroDrinkAdapter
         BarBroDrinksViewModelFactory factory = InjectorUtils.provideBarBroDrinksVMFactory(getContext().getApplicationContext());
         model = ViewModelProviders.of(this, factory).get(BarBroDrinksViewModel.class);
         map = new HashMap<>();
+
     }
 
     @Override
@@ -133,11 +118,10 @@ public class BarBroDrinksFragment extends Fragment implements BarBroDrinkAdapter
         super.onActivityCreated(savedInstanceState);
         mDrinkAdapter = new BarBroDrinkAdapter(getContext(), BarBroDrinksFragment.this);
         mRecyclerView.setAdapter(mDrinkAdapter);
-        model.setDrinks(this.map);
-        model.getDrinks().observe(this, new Observer<List<BarBroDrink>>() {
+
+        model.getDrinkLV().observe(getViewLifecycleOwner(), new Observer<List<BarBroDrink>>() {
             @Override
             public void onChanged(List<BarBroDrink> barBroDrinks) {
-
                 mDrinkAdapter.swapList(barBroDrinks);
             }
         });
@@ -150,6 +134,8 @@ public class BarBroDrinksFragment extends Fragment implements BarBroDrinkAdapter
         //selectedItems[1] = true; // select second item
         mLiquorSpinner.setSelected(selectedItems);
         mLiquorSpinner.setText("Pick your Flavor");
+
+        getActivity().setTitle("New Drinks");
     }
 
     @Override

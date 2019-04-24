@@ -9,6 +9,7 @@ import com.alexnassif.mobile.barbro.data.Drink;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -83,24 +84,26 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        Fragment fragment;
         int id = item.getItemId();
 
         if (id == R.id.nav_results_layout) {
+            fragment = new ResultsFragment();
             fragmentTransaction
-                    .replace(R.id.content_frame, new ResultsFragment());
+                    .replace(R.id.content_frame, fragment);
         } else if (id == R.id.nav_favorite_type) {
+            fragment = new FavoriteFragment();
             fragmentTransaction
-                    .replace(R.id.content_frame, new FavoriteFragment());
+                    .replace(R.id.content_frame, fragment);
 
-        } else if (id == R.id.nav_liquor_type) {
-            fragmentTransaction
-                    .replace(R.id.content_frame, new LiquorFragment());
         } else if (id == R.id.nav_my_drinks) {
+            fragment = new MyDrinkFragment();
             fragmentTransaction
-                    .replace(R.id.content_frame, new MyDrinkFragment());
+                    .replace(R.id.content_frame, fragment);
         } else if (id == R.id.nav_new_drinks) {
+            fragment = new BarBroDrinksFragment();
             fragmentTransaction
-                    .replace(R.id.content_frame, new BarBroDrinksFragment());
+                    .replace(R.id.content_frame, fragment);
         }
 
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);

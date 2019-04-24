@@ -5,7 +5,8 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BarBroDrinksFragment">
+    tools:context=".BarBroDrinksFragment"
+    android:background="#ffffff">
 
     <com.thomashaertel.widget.MultiSpinner
         android:id="@+id/liquor_spinner"
