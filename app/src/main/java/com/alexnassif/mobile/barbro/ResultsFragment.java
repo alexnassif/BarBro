@@ -106,14 +106,7 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
         minimize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(cardlayoutview.getVisibility() == View.GONE) {
-                    cardlayoutview.setVisibility(View.VISIBLE);
-                    minimize.setImageResource(android.R.drawable.arrow_up_float);
-                }
-                else {
-                    cardlayoutview.setVisibility(View.GONE);
-                    minimize.setImageResource(android.R.drawable.arrow_down_float);
-                }
+                randomViewModel.loadRandomDrink();
             }
         });
         View detailsFrame = getActivity().findViewById(R.id.drink_detail_fragment);

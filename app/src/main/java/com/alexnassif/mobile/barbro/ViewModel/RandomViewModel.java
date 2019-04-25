@@ -28,7 +28,7 @@ public class RandomViewModel extends ViewModel {
         return drink;
     }
 
-    private void loadRandomDrink() {
+    public void loadRandomDrink() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(DrinkApi.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())

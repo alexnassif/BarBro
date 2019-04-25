@@ -1,5 +1,7 @@
 package com.alexnassif.mobile.barbro.ViewModel;
 
+import android.util.Log;
+
 import com.alexnassif.mobile.barbro.DrinkRepository;
 import com.alexnassif.mobile.barbro.data.BarBroDrink;
 
