@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,9 +39,11 @@ public class DrinkDetailFragment extends Fragment {
         setHasOptionsMenu(true);
 
         DrinkDetailViewModel model = ViewModelProviders.of(getActivity()).get(DrinkDetailViewModel.class);
-        model.getDrink().observe(this, new Observer<Drink>() {
+        model.getDrinkLV().observe(this, new Observer<Drink>() {
             @Override
             public void onChanged(Drink drinkId) {
+
+                Log.d("drinktitle", drinkId.getStrDrink());
                 mDrinkTitle.setText(drinkId.getStrDrink());
                 mIngredients.setText(drinkId.drinkIngredients());
                 mRecipe.setText(drinkId.getStrInstructions());

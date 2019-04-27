@@ -10,6 +10,7 @@ import com.alexnassif.mobile.barbro.ViewModel.DrinksViewModelFactory;
 import com.alexnassif.mobile.barbro.ViewModel.FavoriteDetailViewModelFactory;
 import com.alexnassif.mobile.barbro.ViewModel.FavoriteViewModelFactory;
 import com.alexnassif.mobile.barbro.ViewModel.MyDrinksViewModelFactory;
+import com.alexnassif.mobile.barbro.ViewModel.RandomViewModelFactory;
 import com.alexnassif.mobile.barbro.data.AppDatabase;
 import com.alexnassif.mobile.barbro.data.AppExecutors;
 import com.alexnassif.mobile.barbro.data.BarBroDrinkApiBuilder;
@@ -55,4 +56,8 @@ public class InjectorUtils {
         return new BarBroDrinksViewModelFactory(repository);
     }
 
+    public static RandomViewModelFactory provideRandomDrinkFactory(Context context) {
+        DrinkRepository repository = provideRepository(context.getApplicationContext());
+        return new RandomViewModelFactory(repository);
+    }
 }

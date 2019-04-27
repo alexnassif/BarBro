@@ -62,7 +62,7 @@ public class DrinkDetailActivity extends AppCompatActivity {
         DrinkDetailViewModelFactory detailFactory = InjectorUtils.provideDrinkDetailViewModelFactory(this.getApplicationContext());
         drinkDetailViewModel = ViewModelProviders.of(this, detailFactory).get(DrinkDetailViewModel.class);
         drinkDetailViewModel.setDrink(drink);
-        drinkDetailViewModel.getDrink().observe(this, new Observer<Drink>() {
+        drinkDetailViewModel.getDrinkLV().observe(this, new Observer<Drink>() {
             @Override
             public void onChanged(Drink drink) {
                 mDrink = drink;

@@ -32,6 +32,7 @@ import com.alexnassif.mobile.barbro.ViewModel.DrinksViewModel;
 import com.alexnassif.mobile.barbro.ViewModel.DrinksViewModelFactory;
 import com.alexnassif.mobile.barbro.ViewModel.FavoritesViewModel;
 import com.alexnassif.mobile.barbro.ViewModel.RandomViewModel;
+import com.alexnassif.mobile.barbro.ViewModel.RandomViewModelFactory;
 import com.alexnassif.mobile.barbro.data.AppDatabase;
 import com.alexnassif.mobile.barbro.data.AppExecutors;
 import com.alexnassif.mobile.barbro.data.Drink;
@@ -89,7 +90,8 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
         model = ViewModelProviders.of(this, factory).get(DrinksViewModel.class);
         DrinkDetailViewModelFactory detailFactory = InjectorUtils.provideDrinkDetailViewModelFactory(getContext().getApplicationContext());
         drinkModel = ViewModelProviders.of(getActivity(), detailFactory).get(DrinkDetailViewModel.class);
-        randomViewModel = ViewModelProviders.of(this).get(RandomViewModel.class);
+        RandomViewModelFactory randomFactory = InjectorUtils.provideRandomDrinkFactory(getContext().getApplicationContext());
+        randomViewModel = ViewModelProviders.of(this, randomFactory).get(RandomViewModel.class);
 
         setHasOptionsMenu(true);
     }

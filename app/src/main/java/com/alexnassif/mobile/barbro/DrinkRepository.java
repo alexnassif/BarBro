@@ -16,6 +16,7 @@ import com.alexnassif.mobile.barbro.data.FavoritesDao;
 import com.alexnassif.mobile.barbro.data.MyDrink;
 import com.alexnassif.mobile.barbro.data.MyDrinksDao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -119,6 +120,7 @@ public class DrinkRepository {
                 /* finally we are setting the list to our MutableLiveData */
                 if (response.isSuccessful()) {
                     drink.setValue(response.body().getDrinks().get(0));
+                    Log.d("drinkvm", response.body().getDrinks().get(0).getStrDrink());
                 } else {
                 }
 
@@ -131,6 +133,39 @@ public class DrinkRepository {
             }
 
         });
+        return drink;
+    }
+
+    public MutableLiveData<List<Drink>> loadRandomDrink(){
+        final MutableLiveData<List<Drink>> drink = new MutableLiveData<List<Drink>>();
+
+        Call<DrinkDetailJsonResponse> call = mDrinkApi.getmDrinkApi().getRandomDrink();
+
+
+        call.enqueue(new Callback<DrinkDetailJsonResponse>() {
+            @Override
+            public void onResponse(Call<DrinkDetailJsonResponse> call, Response<DrinkDetailJsonResponse> response) {
+
+                /* finally we are setting the list to our MutableLiveData */
+                if(response.isSuccessful()){
+                    drink.postValue(response.body().getDrinks());
+                    Log.d("randomviewvalue", response.body().getDrinks().get(0).getStrDrink());
+                }
+                else{
+                    Log.d("fromvmns", "not successful");
+                }
+
+
+
+            }
+
+            @Override
+            public void onFailure(Call<DrinkDetailJsonResponse> call, Throwable t) {
+                Log.d("fromvmerror", t.getMessage());
+            }
+
+        });
+
         return drink;
     }
 
@@ -160,7 +195,7 @@ public class DrinkRepository {
 
     }
 
-    public MutableLiveData<List<BarBroDrink>> loadBarBroDrinks(Map <String, String> types) {
+    public LiveData<List<BarBroDrink>> loadBarBroDrinks(Map <String, String> types) {
 
         final MutableLiveData<List<BarBroDrink>> drinks = new MutableLiveData<List<BarBroDrink>>();
 
@@ -185,5 +220,36 @@ public class DrinkRepository {
         });
 
         return drinks;
+    }
+
+    public void loadRandomDrinkList(final MutableLiveData<List<Drink>> drink) {
+
+        Call<DrinkDetailJsonResponse> call = mDrinkApi.getmDrinkApi().getRandomDrink();
+
+
+        call.enqueue(new Callback<DrinkDetailJsonResponse>() {
+            @Override
+            public void onResponse(Call<DrinkDetailJsonResponse> call, Response<DrinkDetailJsonResponse> response) {
+
+                /* finally we are setting the list to our MutableLiveData */
+                if(response.isSuccessful()){
+                    drink.postValue(response.body().getDrinks());
+                    Log.d("randomviewvalue", response.body().getDrinks().get(0).getStrDrink());
+                }
+                else{
+                    Log.d("fromvmns", "not successful");
+                }
+
+
+
+            }
+
+            @Override
+            public void onFailure(Call<DrinkDetailJsonResponse> call, Throwable t) {
+                Log.d("fromvmerror", t.getMessage());
+            }
+
+        });
+
     }
 }

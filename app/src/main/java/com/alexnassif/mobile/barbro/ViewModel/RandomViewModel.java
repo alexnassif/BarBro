@@ -2,14 +2,17 @@ package com.alexnassif.mobile.barbro.ViewModel;
 
 import android.util.Log;
 
+import com.alexnassif.mobile.barbro.DrinkRepository;
 import com.alexnassif.mobile.barbro.Networking.DrinkApi;
 import com.alexnassif.mobile.barbro.data.Drink;
 import com.alexnassif.mobile.barbro.data.DrinkDetailJsonResponse;
 
 import java.util.List;
 
+import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,46 +22,22 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RandomViewModel extends ViewModel {
     private MutableLiveData<List<Drink>> drink;
+    private LiveData<String> drinkRV;
+    private DrinkRepository repository;
+
+    public RandomViewModel(DrinkRepository repository) {
+        this.repository = repository;
+        drink = this.repository.loadRandomDrink();
+    }
 
     public LiveData<List<Drink>> getDrinks() {
-        if(drink == null){
-            drink = new MutableLiveData<List<Drink>>();
-            loadRandomDrink();
-        }
+
         return drink;
+
     }
 
     public void loadRandomDrink() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(DrinkApi.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        repository.loadRandomDrinkList(this.drink);
 
-        DrinkApi api = retrofit.create(DrinkApi.class);
-        Call<DrinkDetailJsonResponse> call = api.getRandomDrink();
-
-
-        call.enqueue(new Callback<DrinkDetailJsonResponse>() {
-            @Override
-            public void onResponse(Call<DrinkDetailJsonResponse> call, Response<DrinkDetailJsonResponse> response) {
-
-                /* finally we are setting the list to our MutableLiveData */
-                if(response.isSuccessful()){
-                    drink.setValue(response.body().getDrinks());
-                }
-                else{
-                    Log.d("fromvmns", "not successful");
-                }
-
-
-
-            }
-
-            @Override
-            public void onFailure(Call<DrinkDetailJsonResponse> call, Throwable t) {
-                Log.d("fromvmerror", t.getMessage());
-            }
-
-        });
     }
 }
