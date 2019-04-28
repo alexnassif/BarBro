@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = {DrinkList.class, MyDrink.class, History.class}, version = 2, exportSchema = false)
+@Database(entities = {DrinkList.class, MyDrink.class}, version = 3, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     private static final String LOG_TAG = AppDatabase.class.getSimpleName();
     private static final Object LOCK = new Object();
@@ -25,6 +25,15 @@ public abstract class AppDatabase extends RoomDatabase {
             database.execSQL("CREATE TABLE IF NOT EXISTS favorites (id INTEGER, strDrink TEXT, strDrinkThumb TEXT, idDrink TEXT, PRIMARY KEY(id))");
         }
     };
+    static final Migration MIGRATION_2_3 = new Migration(2, 3) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            // Since we didn't alter the table, there's nothing else to do here.
+
+            database.execSQL("DROP TABLE IF EXISTS history");
+
+        }
+    };
     public static AppDatabase getsInstance(Context context){
         if(sInstance == null){
             synchronized (LOCK){
@@ -32,6 +41,7 @@ public abstract class AppDatabase extends RoomDatabase {
                 sInstance = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class,
                         AppDatabase.DATABASE_NAME)
                         .addMigrations(MIGRATION_1_2)
+                        .addMigrations(MIGRATION_2_3)
                         .build();
             }
         }
