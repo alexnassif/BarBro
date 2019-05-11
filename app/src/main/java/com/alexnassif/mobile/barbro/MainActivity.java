@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_results_layout) {
-            fragment = new ResultsFragment();
+            fragment = ResultsFragment.newInstance();
             fragmentTransaction
                     .replace(R.id.content_frame, fragment);
         } else if (id == R.id.nav_favorite_type) {

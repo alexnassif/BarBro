@@ -47,11 +47,6 @@ public class FavoriteFragment extends Fragment implements DrinkAdapter.DrinkAdap
 
         private boolean mDualPane;
         int mCurCheckPosition = 0;
-        private ImageView mImageView;
-        private TextView mDrinkTitle;
-        private TextView mIngredients;
-        private TextView mRecipe;
-        private View layoutview;
         private DrinkDetailFragment drinkDetailFragment;
 
         //ViewModels
@@ -108,7 +103,7 @@ public class FavoriteFragment extends Fragment implements DrinkAdapter.DrinkAdap
             if (mDualPane) {
 
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
-                drinkDetailFragment = drinkDetailFragment.newInstance();
+                drinkDetailFragment = drinkDetailFragment.newInstance(mCurCheckPosition);
                 ft.replace(R.id.drink_detail_fragment, drinkDetailFragment);
                 //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 ft.commit();
@@ -171,14 +166,7 @@ public class FavoriteFragment extends Fragment implements DrinkAdapter.DrinkAdap
             myView = inflater.inflate(R.layout.favorite_layout, container, false);
             mRecyclerView = (RecyclerView) myView.findViewById(R.id.fave_recyclerview_drinks);
             acDrinkTextView = (AutoCompleteTextView) myView.findViewById(R.id.fave_search_drinks);
-            if (!mDualPane) {
 
-                layoutview = myView.findViewById(R.id.fave_novideo_drink_detail);
-                mDrinkTitle = (TextView) layoutview.findViewById(R.id.drink_name_novideo);
-                mIngredients = (TextView) layoutview.findViewById(R.id.drink_ingredients_novideo);
-                mImageView = (ImageView) layoutview.findViewById(R.id.drink_pic_novideo);
-                mRecipe = (TextView) layoutview.findViewById(R.id.drink_recipe_novideo);
-            }
             return myView;
         }
 
@@ -186,30 +174,19 @@ public class FavoriteFragment extends Fragment implements DrinkAdapter.DrinkAdap
 
         @Override
         public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-            if(!mDualPane){
-                mMenu = menu;
-                mMenuInflater = inflater;
+            if(mDualPane){
+                inflater.inflate(R.menu.fave, menu);
             }
             super.onCreateOptionsMenu(menu, inflater);
         }
 
         @Override
         public boolean onOptionsItemSelected(final MenuItem item) {
-            int id = item.getItemId();
 
-
-            if(id == R.id.fave_item){
-                AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        mDb.favoritesDao().insertFavorite(faveItem);
-                    }
-                });
-            }
 
             return true;
         }
-        public void drinkDetail(int drinkId){
+        private void drinkDetail(int drinkId){
             mCurCheckPosition = drinkId;
             drinkModel.setDrink(drinkId);
             if(!mDualPane){
@@ -226,8 +203,6 @@ public class FavoriteFragment extends Fragment implements DrinkAdapter.DrinkAdap
         public void onClick(DrinkList drinkId) {
 
             this.faveItem = drinkId;
-            //HistoryUtils.addToHistory(getContext(), drink);
-
             drinkDetail(Integer.parseInt(drinkId.getIdDrink()));
         }
 }

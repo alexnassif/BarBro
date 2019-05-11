@@ -46,11 +46,6 @@ import java.util.List;
 
 public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapterOnClickHandler {
 
-    private static final String FAVE_FLAG = "favorites";
-    private boolean mFAVE_FLAG = false;
-
-    //private RecyclerView mRecyclerView_Randoms;
-
     private RecyclerView mRecyclerView;
     private DrinkAdapter mDrinkAdapter;
     private View myView;
@@ -71,20 +66,15 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
     private RandomViewModel randomViewModel;
 
 
-    public static ResultsFragment newInstance(boolean fave) {
+    public static ResultsFragment newInstance() {
         ResultsFragment fragment = new ResultsFragment();
-        Bundle args = new Bundle();
-        args.putBoolean(FAVE_FLAG, fave);
-        fragment.setArguments(args);
+
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mFAVE_FLAG = getArguments().getBoolean(FAVE_FLAG);
-        }
 
         DrinksViewModelFactory factory = InjectorUtils.provideDrinksViewModelFactory(getContext().getApplicationContext());
         model = ViewModelProviders.of(this, factory).get(DrinksViewModel.class);
@@ -114,13 +104,9 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
         View detailsFrame = getActivity().findViewById(R.id.drink_detail_fragment);
         mDualPane = detailsFrame != null && detailsFrame.getVisibility() == View.VISIBLE;
         getActivity().setRequestedOrientation( ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        if(!mFAVE_FLAG) {
 
-            getActivity().setTitle("All Drinks");
-        }
-        else{
 
-            getActivity().setTitle("Favorites");}
+        getActivity().setTitle("All Drinks");
 
 
         if (savedInstanceState != null) {
@@ -134,7 +120,7 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
         if (mDualPane) {
 
             FragmentTransaction ft = getFragmentManager().beginTransaction();
-            drinkDetailFragment = drinkDetailFragment.newInstance();
+            drinkDetailFragment = drinkDetailFragment.newInstance(mCurCheckPosition);
             ft.replace(R.id.drink_detail_fragment, drinkDetailFragment);
             //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ft.commit();
@@ -234,7 +220,7 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
 
         return true;
     }
-    public void drinkDetail(int drinkId){
+    private void drinkDetail(int drinkId){
         mCurCheckPosition = drinkId;
         drinkModel.setDrink(drinkId);
         if(!mDualPane){
@@ -250,8 +236,6 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
 
     @Override
     public void onClick(DrinkList drinkId) {
-
-        //HistoryUtils.addToHistory(getContext(), drink);
 
         drinkDetail(Integer.parseInt(drinkId.getIdDrink()));
     }
