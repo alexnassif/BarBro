@@ -73,7 +73,8 @@ public class DrinkDetailActivity extends AppCompatActivity {
             }
         });
 
-        FavoriteDetailViewModelFactory faveDetailFactory = InjectorUtils.provideFavoriteDetailViewModelFactory(this.getApplicationContext(), drink);
+        
+        /*FavoriteDetailViewModelFactory faveDetailFactory = InjectorUtils.provideFavoriteDetailViewModelFactory(this.getApplicationContext(), drink);
         drinkModel = ViewModelProviders.of(this, faveDetailFactory).get(FavoritesDetailViewModel.class);
         drinkModel.getFave().observe(this, new Observer<DrinkList>() {
             @Override
@@ -88,7 +89,7 @@ public class DrinkDetailActivity extends AppCompatActivity {
                 }
 
             }
-        });
+        });*/
 
 
     }

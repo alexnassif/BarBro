@@ -4,11 +4,25 @@ package com.alexnassif.mobile.barbro;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.alexnassif.mobile.barbro.ViewModel.DrinkDetailViewModel;
+import com.alexnassif.mobile.barbro.ViewModel.FavoriteDetailViewModelFactory;
+import com.alexnassif.mobile.barbro.ViewModel.FavoritesDetailViewModel;
+import com.alexnassif.mobile.barbro.data.AppDatabase;
+import com.alexnassif.mobile.barbro.data.Drink;
+import com.alexnassif.mobile.barbro.data.DrinkList;
+import com.alexnassif.mobile.barbro.utilities.InjectorUtils;
+import com.bumptech.glide.Glide;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,34 +30,27 @@ import android.widget.TextView;
  * create an instance of this fragment.
  */
 public class FavoriteDetailFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-
+    private static final String drinkId = "drink";
+    private View myView;
+    private ImageView mImageView;
+    private TextView mDrinkTitle;
+    private TextView mIngredients;
+    private TextView mRecipe;
+    private MenuItem favoriteMenuItem;
+    private FavoritesDetailViewModel drinkModel;
+    private boolean faveFlag = false;
+    private AppDatabase mDb;
+    private DrinkList mCurrentDrink;
+    private Drink mDrink;
+    private int drink;
     public FavoriteDetailFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FavoriteDetailFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static FavoriteDetailFragment newInstance(String param1, String param2) {
+    public static FavoriteDetailFragment newInstance(int drink) {
         FavoriteDetailFragment fragment = new FavoriteDetailFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt(drinkId, drink);
         fragment.setArguments(args);
         return fragment;
     }
@@ -51,18 +58,57 @@ public class FavoriteDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            drink = getArguments().getInt(drinkId);
         }
+
+        FavoritesDetailViewModel model = ViewModelProviders.of(getActivity()).get(FavoritesDetailViewModel.class);
+        model.getDrinkLV().observe(this, new Observer<Drink>() {
+            @Override
+            public void onChanged(Drink drinkId) {
+                mDrink = drinkId;
+                drink = drinkId.getIdDrink();
+                Log.d("drinktitle", drinkId.getStrDrink());
+                mDrinkTitle.setText(drinkId.getStrDrink());
+                mIngredients.setText(drinkId.drinkIngredients());
+                mRecipe.setText(drinkId.getStrInstructions());
+                Glide.with(mImageView.getContext()).load(drinkId.getStrDrinkThumb()).into(mImageView);
+            }
+        });
+
+        /*FavoriteDetailViewModelFactory faveDetailFactory = InjectorUtils.provideFavoriteDetailViewModelFactory(getContext().getApplicationContext());
+
+        drinkModel = ViewModelProviders.of(this, faveDetailFactory).get(FavoritesDetailViewModel.class);
+        drinkModel.setDrinkId(drink);
+        drinkModel.getFave().observe(this, new Observer<DrinkList>() {
+            @Override
+            public void onChanged(DrinkList drinkList) {
+
+                if(drinkList != null){
+
+                    mCurrentDrink = drinkList;
+                    faveFlag = true;
+                    // getActivity().invalidateOptionsMenu();
+
+                }
+
+            }
+        });*/
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        TextView textView = new TextView(getActivity());
-        textView.setText(R.string.hello_blank_fragment);
-        return textView;
+        // Inflate the layout for this fragment
+        myView = inflater.inflate(R.layout.drink_detail_novideo, container, false);
+        mDrinkTitle = (TextView) myView.findViewById(R.id.drink_name_novideo);
+        mIngredients = (TextView) myView.findViewById(R.id.drink_ingredients_novideo);
+        mImageView = (ImageView) myView.findViewById(R.id.drink_pic_novideo);
+        mRecipe = (TextView) myView.findViewById(R.id.drink_recipe_novideo);
+        return myView;
     }
+
 
 }

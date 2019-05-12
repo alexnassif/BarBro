@@ -76,8 +76,10 @@ public class DrinkDetailFragment extends Fragment {
             }
         });
 
-       FavoriteDetailViewModelFactory faveDetailFactory = InjectorUtils.provideFavoriteDetailViewModelFactory(getContext().getApplicationContext(), drink);
+       /*FavoriteDetailViewModelFactory faveDetailFactory = InjectorUtils.provideFavoriteDetailViewModelFactory(getContext().getApplicationContext());
+
         drinkModel = ViewModelProviders.of(this, faveDetailFactory).get(FavoritesDetailViewModel.class);
+        drinkModel.setDrinkId(drink);
         drinkModel.getFave().observe(this, new Observer<DrinkList>() {
             @Override
             public void onChanged(DrinkList drinkList) {
@@ -91,7 +93,7 @@ public class DrinkDetailFragment extends Fragment {
                 }
 
             }
-        });
+        });*/
     }
 
     @Override

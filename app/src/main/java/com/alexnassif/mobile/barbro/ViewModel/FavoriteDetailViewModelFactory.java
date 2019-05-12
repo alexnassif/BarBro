@@ -11,14 +11,13 @@ public class FavoriteDetailViewModelFactory extends ViewModelProvider.NewInstanc
     private final DrinkRepository mRepository;
     private int drinkId;
 
-    public FavoriteDetailViewModelFactory(DrinkRepository repository, int drinkId){
+    public FavoriteDetailViewModelFactory(DrinkRepository repository){
         this.mRepository = repository;
-        this.drinkId = drinkId;
     }
 
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        return (T) new FavoritesDetailViewModel(mRepository, this.drinkId);
+        return (T) new FavoritesDetailViewModel(mRepository);
     }
 }

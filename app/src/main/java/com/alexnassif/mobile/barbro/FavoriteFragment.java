@@ -18,7 +18,9 @@ import android.widget.Toast;
 
 import com.alexnassif.mobile.barbro.ViewModel.DrinkDetailViewModel;
 import com.alexnassif.mobile.barbro.ViewModel.DrinkDetailViewModelFactory;
+import com.alexnassif.mobile.barbro.ViewModel.FavoriteDetailViewModelFactory;
 import com.alexnassif.mobile.barbro.ViewModel.FavoriteViewModelFactory;
+import com.alexnassif.mobile.barbro.ViewModel.FavoritesDetailViewModel;
 import com.alexnassif.mobile.barbro.ViewModel.FavoritesViewModel;
 import com.alexnassif.mobile.barbro.data.AppDatabase;
 import com.alexnassif.mobile.barbro.data.AppExecutors;
@@ -47,11 +49,11 @@ public class FavoriteFragment extends Fragment implements DrinkAdapter.DrinkAdap
 
         private boolean mDualPane;
         int mCurCheckPosition = 0;
-        private DrinkDetailFragment drinkDetailFragment;
+        private FavoriteDetailFragment drinkDetailFragment;
 
         //ViewModels
         private FavoritesViewModel model;
-        private DrinkDetailViewModel drinkModel;
+        private FavoritesDetailViewModel drinkModel;
 
         private Menu mMenu;
         private MenuInflater mMenuInflater;
@@ -70,8 +72,8 @@ public class FavoriteFragment extends Fragment implements DrinkAdapter.DrinkAdap
             super.onCreate(savedInstanceState);
             FavoriteViewModelFactory faveFactory = InjectorUtils.provideFavoriteViewModelFactory(getContext().getApplicationContext());
             model = ViewModelProviders.of(this, faveFactory).get(FavoritesViewModel.class);
-            DrinkDetailViewModelFactory drinkDetailFactory = InjectorUtils.provideDrinkDetailViewModelFactory(getContext().getApplicationContext());
-            drinkModel = ViewModelProviders.of(getActivity(), drinkDetailFactory).get(DrinkDetailViewModel.class);
+            FavoriteDetailViewModelFactory drinkDetailFactory = InjectorUtils.provideFavoriteDetailViewModelFactory(getContext().getApplicationContext());
+            drinkModel = ViewModelProviders.of(getActivity(), drinkDetailFactory).get(FavoritesDetailViewModel.class);
             mDb = AppDatabase.getsInstance(getContext());
             setHasOptionsMenu(true);
         }
@@ -96,7 +98,7 @@ public class FavoriteFragment extends Fragment implements DrinkAdapter.DrinkAdap
                 // Restore last state for checked position.
                 mCurCheckPosition = savedInstanceState.getInt("curChoice", 1);
                 if(mDualPane) {
-                    drinkDetailFragment = (DrinkDetailFragment) getFragmentManager().getFragment(savedInstanceState, "myFragmentName");
+                    drinkDetailFragment = (FavoriteDetailFragment) getFragmentManager().getFragment(savedInstanceState, "myFragmentName");
                 }
             }
 

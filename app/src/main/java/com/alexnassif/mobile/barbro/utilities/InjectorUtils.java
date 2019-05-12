@@ -46,9 +46,9 @@ public class InjectorUtils {
         return new FavoriteViewModelFactory(repository);
     }
 
-    public static FavoriteDetailViewModelFactory provideFavoriteDetailViewModelFactory(Context context, int drinkId){
+    public static FavoriteDetailViewModelFactory provideFavoriteDetailViewModelFactory(Context context){
         DrinkRepository repository = provideRepository(context.getApplicationContext());
-        return new FavoriteDetailViewModelFactory(repository, drinkId);
+        return new FavoriteDetailViewModelFactory(repository);
     }
 
     public static BarBroDrinksViewModelFactory provideBarBroDrinksVMFactory(Context context){
