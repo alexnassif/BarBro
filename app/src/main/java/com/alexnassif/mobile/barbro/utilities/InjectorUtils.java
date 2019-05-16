@@ -5,6 +5,7 @@ import android.content.Context;
 import com.alexnassif.mobile.barbro.DrinkRepository;
 import com.alexnassif.mobile.barbro.Networking.DrinkApi;
 import com.alexnassif.mobile.barbro.ViewModel.BarBroDrinksViewModelFactory;
+import com.alexnassif.mobile.barbro.ViewModel.CheckFavoriteViewModelFactory;
 import com.alexnassif.mobile.barbro.ViewModel.DrinkDetailViewModelFactory;
 import com.alexnassif.mobile.barbro.ViewModel.DrinksViewModelFactory;
 import com.alexnassif.mobile.barbro.ViewModel.FavoriteDetailViewModelFactory;
@@ -59,5 +60,10 @@ public class InjectorUtils {
     public static RandomViewModelFactory provideRandomDrinkFactory(Context context) {
         DrinkRepository repository = provideRepository(context.getApplicationContext());
         return new RandomViewModelFactory(repository);
+    }
+
+    public static CheckFavoriteViewModelFactory provideCheckFavoriteViewModelFactory(Context context) {
+        DrinkRepository repository = provideRepository(context.getApplicationContext());
+        return new CheckFavoriteViewModelFactory(repository);
     }
 }

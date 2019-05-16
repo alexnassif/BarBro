@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alexnassif.mobile.barbro.ViewModel.CheckFavoriteViewModel;
+import com.alexnassif.mobile.barbro.ViewModel.CheckFavoriteViewModelFactory;
 import com.alexnassif.mobile.barbro.ViewModel.DrinkDetailViewModel;
 import com.alexnassif.mobile.barbro.ViewModel.FavoriteDetailViewModelFactory;
 import com.alexnassif.mobile.barbro.ViewModel.FavoritesDetailViewModel;
@@ -34,7 +36,8 @@ public class DrinkDetailFragment extends Fragment {
     private TextView mIngredients;
     private TextView mRecipe;
     private MenuItem favoriteMenuItem;
-    private FavoritesDetailViewModel drinkModel;
+    private CheckFavoriteViewModel drinkModel;
+    private DrinkDetailViewModel model;
     private boolean faveFlag = false;
     private AppDatabase mDb;
     private DrinkList mCurrentDrink;
@@ -61,8 +64,8 @@ public class DrinkDetailFragment extends Fragment {
         if (getArguments() != null) {
             drink = getArguments().getInt(drinkId);
         }
-
-        DrinkDetailViewModel model = ViewModelProviders.of(getActivity()).get(DrinkDetailViewModel.class);
+        mDb = AppDatabase.getsInstance(getContext());
+        model = ViewModelProviders.of(getActivity()).get(DrinkDetailViewModel.class);
         model.getDrinkLV().observe(this, new Observer<Drink>() {
             @Override
             public void onChanged(Drink drinkId) {
@@ -76,11 +79,11 @@ public class DrinkDetailFragment extends Fragment {
             }
         });
 
-       /*FavoriteDetailViewModelFactory faveDetailFactory = InjectorUtils.provideFavoriteDetailViewModelFactory(getContext().getApplicationContext());
 
-        drinkModel = ViewModelProviders.of(this, faveDetailFactory).get(FavoritesDetailViewModel.class);
-        drinkModel.setDrinkId(drink);
-        drinkModel.getFave().observe(this, new Observer<DrinkList>() {
+
+        drinkModel = ViewModelProviders.of(getActivity()).get(CheckFavoriteViewModel.class);
+
+        drinkModel.checkDrinkFave().observe(this, new Observer<DrinkList>() {
             @Override
             public void onChanged(DrinkList drinkList) {
 
@@ -88,12 +91,12 @@ public class DrinkDetailFragment extends Fragment {
 
                     mCurrentDrink = drinkList;
                     faveFlag = true;
-                   // getActivity().invalidateOptionsMenu();
 
-                }
-
+                }else
+                    faveFlag = false;
+                getActivity().invalidateOptionsMenu();
             }
-        });*/
+        });
     }
 
     @Override
@@ -145,7 +148,7 @@ public class DrinkDetailFragment extends Fragment {
                     public void run() {
                         mDb.favoritesDao().deleteFavorite(mCurrentDrink);
                         faveFlag = false;
-                        //getActivity().invalidateOptionsMenu();
+                        getActivity().invalidateOptionsMenu();
                     }
                 });
             }else{

@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +27,9 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.alexnassif.mobile.barbro.ViewModel.CheckFavoriteViewModel;
+import com.alexnassif.mobile.barbro.ViewModel.CheckFavoriteViewModelFactory;
 import com.alexnassif.mobile.barbro.ViewModel.DrinkDetailViewModel;
 import com.alexnassif.mobile.barbro.ViewModel.DrinkDetailViewModelFactory;
 import com.alexnassif.mobile.barbro.ViewModel.DrinksViewModel;
@@ -64,6 +68,7 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
     private DrinksViewModel model;
     private DrinkDetailViewModel drinkModel;
     private RandomViewModel randomViewModel;
+    private CheckFavoriteViewModel faveViewModel;
 
 
     public static ResultsFragment newInstance() {
@@ -82,6 +87,8 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
         drinkModel = ViewModelProviders.of(getActivity(), detailFactory).get(DrinkDetailViewModel.class);
         RandomViewModelFactory randomFactory = InjectorUtils.provideRandomDrinkFactory(getContext().getApplicationContext());
         randomViewModel = ViewModelProviders.of(this, randomFactory).get(RandomViewModel.class);
+        CheckFavoriteViewModelFactory checkFaveFactory = InjectorUtils.provideCheckFavoriteViewModelFactory(getContext().getApplicationContext());
+        faveViewModel = ViewModelProviders.of(getActivity(), checkFaveFactory).get(CheckFavoriteViewModel.class);
 
         setHasOptionsMenu(true);
     }
@@ -215,14 +222,13 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
-        int id = item.getItemId();
 
-
-        return true;
+        return super.onOptionsItemSelected(item);
     }
     private void drinkDetail(int drinkId){
         mCurCheckPosition = drinkId;
         drinkModel.setDrink(drinkId);
+        faveViewModel.setDrink(drinkId);
         if(!mDualPane){
 
             Intent drinkdetailIntent = new Intent(getContext(), DrinkDetailActivity.class);

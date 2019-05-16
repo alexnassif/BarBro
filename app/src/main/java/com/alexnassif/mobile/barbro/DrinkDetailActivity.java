@@ -6,6 +6,7 @@ import android.content.pm.ActivityInfo;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -16,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alexnassif.mobile.barbro.ViewModel.CheckFavoriteViewModel;
+import com.alexnassif.mobile.barbro.ViewModel.CheckFavoriteViewModelFactory;
 import com.alexnassif.mobile.barbro.ViewModel.DrinkDetailViewModel;
 import com.alexnassif.mobile.barbro.ViewModel.DrinkDetailViewModelFactory;
 import com.alexnassif.mobile.barbro.ViewModel.FavoriteDetailViewModelFactory;
@@ -37,7 +40,7 @@ public class DrinkDetailActivity extends AppCompatActivity {
     private TextView mRecipeView;
     private ImageView mImageView;
     private DrinkDetailViewModel drinkDetailViewModel;
-    private FavoritesDetailViewModel drinkModel;
+    private CheckFavoriteViewModel drinkModel;
     private MenuItem favoriteMenuItem;
     private boolean faveFlag = false;
     private AppDatabase mDb;
@@ -73,10 +76,11 @@ public class DrinkDetailActivity extends AppCompatActivity {
             }
         });
 
-        
-        /*FavoriteDetailViewModelFactory faveDetailFactory = InjectorUtils.provideFavoriteDetailViewModelFactory(this.getApplicationContext(), drink);
-        drinkModel = ViewModelProviders.of(this, faveDetailFactory).get(FavoritesDetailViewModel.class);
-        drinkModel.getFave().observe(this, new Observer<DrinkList>() {
+
+        CheckFavoriteViewModelFactory checkFaveFactory = InjectorUtils.provideCheckFavoriteViewModelFactory(this.getApplicationContext());
+        drinkModel = ViewModelProviders.of(this, checkFaveFactory).get(CheckFavoriteViewModel.class);
+        drinkModel.setDrink(drink);
+        drinkModel.checkDrinkFave().observe(this, new Observer<DrinkList>() {
             @Override
             public void onChanged(DrinkList drinkList) {
 
@@ -89,7 +93,7 @@ public class DrinkDetailActivity extends AppCompatActivity {
                 }
 
             }
-        });*/
+        });
 
 
     }

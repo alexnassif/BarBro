@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alexnassif.mobile.barbro.ViewModel.CheckFavoriteViewModel;
+import com.alexnassif.mobile.barbro.ViewModel.CheckFavoriteViewModelFactory;
 import com.alexnassif.mobile.barbro.ViewModel.DrinkDetailViewModel;
 import com.alexnassif.mobile.barbro.ViewModel.DrinkDetailViewModelFactory;
 import com.alexnassif.mobile.barbro.ViewModel.FavoriteDetailViewModelFactory;
@@ -36,6 +38,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,11 +52,12 @@ public class FavoriteFragment extends Fragment implements DrinkAdapter.DrinkAdap
 
         private boolean mDualPane;
         int mCurCheckPosition = 0;
-        private FavoriteDetailFragment drinkDetailFragment;
+        private DrinkDetailFragment drinkDetailFragment;
 
         //ViewModels
         private FavoritesViewModel model;
-        private FavoritesDetailViewModel drinkModel;
+        private DrinkDetailViewModel drinkModel;
+        private CheckFavoriteViewModel checkFaveModel;
 
         private Menu mMenu;
         private MenuInflater mMenuInflater;
@@ -72,8 +76,10 @@ public class FavoriteFragment extends Fragment implements DrinkAdapter.DrinkAdap
             super.onCreate(savedInstanceState);
             FavoriteViewModelFactory faveFactory = InjectorUtils.provideFavoriteViewModelFactory(getContext().getApplicationContext());
             model = ViewModelProviders.of(this, faveFactory).get(FavoritesViewModel.class);
-            FavoriteDetailViewModelFactory drinkDetailFactory = InjectorUtils.provideFavoriteDetailViewModelFactory(getContext().getApplicationContext());
-            drinkModel = ViewModelProviders.of(getActivity(), drinkDetailFactory).get(FavoritesDetailViewModel.class);
+            DrinkDetailViewModelFactory drinkDetailFactory = InjectorUtils.provideDrinkDetailViewModelFactory(getContext().getApplicationContext());
+            drinkModel = ViewModelProviders.of(getActivity(), drinkDetailFactory).get(DrinkDetailViewModel.class);
+            CheckFavoriteViewModelFactory checkFaveFactory = InjectorUtils.provideCheckFavoriteViewModelFactory(getContext().getApplicationContext());
+            checkFaveModel = ViewModelProviders.of(getActivity(), checkFaveFactory).get(CheckFavoriteViewModel.class);
             mDb = AppDatabase.getsInstance(getContext());
             setHasOptionsMenu(true);
         }
@@ -98,7 +104,7 @@ public class FavoriteFragment extends Fragment implements DrinkAdapter.DrinkAdap
                 // Restore last state for checked position.
                 mCurCheckPosition = savedInstanceState.getInt("curChoice", 1);
                 if(mDualPane) {
-                    drinkDetailFragment = (FavoriteDetailFragment) getFragmentManager().getFragment(savedInstanceState, "myFragmentName");
+                    drinkDetailFragment = (DrinkDetailFragment) getFragmentManager().getFragment(savedInstanceState, "myFragmentName");
                 }
             }
 
@@ -176,9 +182,7 @@ public class FavoriteFragment extends Fragment implements DrinkAdapter.DrinkAdap
 
         @Override
         public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-            if(mDualPane){
-                inflater.inflate(R.menu.fave, menu);
-            }
+
             super.onCreateOptionsMenu(menu, inflater);
         }
 
@@ -186,11 +190,12 @@ public class FavoriteFragment extends Fragment implements DrinkAdapter.DrinkAdap
         public boolean onOptionsItemSelected(final MenuItem item) {
 
 
-            return true;
+            return super.onOptionsItemSelected(item);
         }
         private void drinkDetail(int drinkId){
             mCurCheckPosition = drinkId;
             drinkModel.setDrink(drinkId);
+            checkFaveModel.setDrink(drinkId);
             if(!mDualPane){
 
                 Intent drinkdetailIntent = new Intent(getContext(), DrinkDetailActivity.class);
