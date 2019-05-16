@@ -2,9 +2,7 @@ package com.alexnassif.mobile.barbro;
 
 import android.util.Log;
 
-import com.alexnassif.mobile.barbro.Networking.DrinkApi;
 import com.alexnassif.mobile.barbro.data.AppExecutors;
-import com.alexnassif.mobile.barbro.data.BarBroApiResponse;
 import com.alexnassif.mobile.barbro.data.BarBroDrink;
 import com.alexnassif.mobile.barbro.data.BarBroDrinkApiBuilder;
 import com.alexnassif.mobile.barbro.data.Drink;
@@ -12,11 +10,10 @@ import com.alexnassif.mobile.barbro.data.DrinkApiBuilder;
 import com.alexnassif.mobile.barbro.data.DrinkDetailJsonResponse;
 import com.alexnassif.mobile.barbro.data.DrinkList;
 import com.alexnassif.mobile.barbro.data.DrinkListJsonResponse;
-import com.alexnassif.mobile.barbro.data.FavoritesDao;
+import com.alexnassif.mobile.barbro.Networking.FavoritesDao;
 import com.alexnassif.mobile.barbro.data.MyDrink;
-import com.alexnassif.mobile.barbro.data.MyDrinksDao;
+import com.alexnassif.mobile.barbro.Networking.MyDrinksDao;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +23,6 @@ import androidx.lifecycle.MutableLiveData;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DrinkRepository {
 

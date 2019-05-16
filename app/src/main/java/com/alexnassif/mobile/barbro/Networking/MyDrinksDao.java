@@ -1,4 +1,6 @@
-package com.alexnassif.mobile.barbro.data;
+package com.alexnassif.mobile.barbro.Networking;
+
+import com.alexnassif.mobile.barbro.data.MyDrink;
 
 import java.util.List;
 

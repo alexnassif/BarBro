@@ -3,6 +3,9 @@ package com.alexnassif.mobile.barbro.data;
 import android.content.Context;
 import android.util.Log;
 
+import com.alexnassif.mobile.barbro.Networking.FavoritesDao;
+import com.alexnassif.mobile.barbro.Networking.MyDrinksDao;
+
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
