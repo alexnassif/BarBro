@@ -26,8 +26,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="Random"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="16dp" />
+                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                android:textSize="16dp"
+                android:textStyle="bold" />
 
             <ImageButton
                 android:id="@+id/minimize_button"
@@ -35,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:background="@color/cardview_light_background"
-                app:srcCompat="@android:drawable/arrow_up_float" />
+                app:srcCompat="@mipmap/ic_refresh" />
         </FrameLayout>
 
         <include layout="@layout/drink_cardview_item"

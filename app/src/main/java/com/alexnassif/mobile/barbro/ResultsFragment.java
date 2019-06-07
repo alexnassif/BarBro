@@ -59,7 +59,6 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
     private boolean mDualPane;
     int mCurCheckPosition = 0;
     private ImageButton minimize;
-    private View cardlayoutview;
 
     private TextView mDrinkTextView;
     private ImageView mDrinkImageView;
@@ -207,7 +206,6 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
         minimize = (ImageButton) myView.findViewById(R.id.minimize_button);
         mDrinkTextView = (TextView) myView.findViewById(R.id.cardview_drinkname);
         mDrinkImageView = (ImageView) myView.findViewById(R.id.cardview_image);
-        cardlayoutview = myView.findViewById(R.id.card_layout);
 
         return myView;
     }

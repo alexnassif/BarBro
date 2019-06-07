@@ -129,7 +129,7 @@ public class FavoriteFragment extends Fragment implements DrinkAdapter.DrinkAdap
                 public void onChanged(List<DrinkList> drinkLists) {
 
                     if(drinkLists.size() == 0)
-                        Toast.makeText(getContext(), "not faves", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "You haven't added any favorite drinks yet.", Toast.LENGTH_LONG).show();
 
                     mDrinkAdapter = new DrinkAdapter(getContext(), FavoriteFragment.this);
                     mRecyclerView.setAdapter(mDrinkAdapter);
