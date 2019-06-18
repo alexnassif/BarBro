@@ -1,5 +1,6 @@
 package com.alexnassif.mobile.barbro.Networking;
 
+import com.alexnassif.mobile.barbro.BuildConfig;
 import com.alexnassif.mobile.barbro.data.BarBroDrink;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public interface BarBroApi {
 
     String BASE_URL = "http://www.barbroapp.com/";
 
-    @Headers("Authorization: Api-Key 1234567")
+    @Headers("Authorization: Api-Key " + BuildConfig.BARBRO_API_KEY)
     @GET("drinks")
     Call<List<BarBroDrink>> getDrinks(@QueryMap Map<String, String> filters);
 

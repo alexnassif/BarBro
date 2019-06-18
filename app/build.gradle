@@ -18,7 +18,7 @@ android {
         }
     }
     buildTypes.each {
-        it.buildConfigField 'String', 'DRINK_API_KEY', MyDrinkApiKey
+        it.buildConfigField 'String', 'BARBRO_API_KEY', BarBroApiKey
     }
 }
 
