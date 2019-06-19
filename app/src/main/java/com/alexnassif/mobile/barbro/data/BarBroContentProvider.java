@@ -12,8 +12,6 @@ import android.net.Uri;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.firebase.crash.FirebaseCrash;
-
 import java.io.IOException;
 
 /**
@@ -145,7 +143,7 @@ public class BarBroContentProvider extends ContentProvider {
                         + BarBroContract.HistoryEntry.TABLE_NAME + "._id=" + id, null);*/
                 break;}
             default: {
-                FirebaseCrash.report(new Exception("query uri doesn't match " + uri));
+
                 throw new UnsupportedOperationException("Uri doesn't match " + uri);
             }
 
@@ -190,7 +188,7 @@ public class BarBroContentProvider extends ContentProvider {
                     throw new SQLException("Failed to insert row into " + uri);
                 break;}
             default: {
-                FirebaseCrash.report(new Exception("insert uri is unknown " + uri));
+
                 throw new UnsupportedOperationException("Unknown uri " + uri);
             }
 
@@ -214,7 +212,7 @@ public class BarBroContentProvider extends ContentProvider {
                 retInt = db.delete(BarBroContract.HistoryEntry.TABLE_NAME, null, null);
                 break;
             default: {
-                FirebaseCrash.report(new Exception("delete uri is unknown " + uri));
+
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
             }
 
@@ -249,7 +247,7 @@ public class BarBroContentProvider extends ContentProvider {
                 break;
             }
             default: {
-                FirebaseCrash.report(new Exception("update uri is unknown " + uri));
+
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
             }
 
