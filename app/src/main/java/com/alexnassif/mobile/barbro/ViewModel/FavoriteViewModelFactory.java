@@ -1,11 +1,10 @@
 package com.alexnassif.mobile.barbro.ViewModel;
 
-import com.alexnassif.mobile.barbro.DrinkRepository;
+import com.alexnassif.mobile.barbro.data.DrinkRepository;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 
 public class FavoriteViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 

@@ -1,4 +1,4 @@
-package com.alexnassif.mobile.barbro;
+package com.alexnassif.mobile.barbro.Adapters;
 
 
 import android.content.Context;
@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 
+import com.alexnassif.mobile.barbro.R;
 import com.alexnassif.mobile.barbro.data.DrinkList;
 import com.bumptech.glide.Glide;
 
@@ -63,7 +64,7 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkAdapter
         return mDrinkData.size();
     }
 
-    void swapCursor(List<DrinkList> drinkData) {
+    public void swapCursor(List<DrinkList> drinkData) {
         mDrinkData = drinkData;
         notifyDataSetChanged();
     }

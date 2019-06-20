@@ -1,17 +1,8 @@
-package com.alexnassif.mobile.barbro;
+package com.alexnassif.mobile.barbro.data;
 
 import android.util.Log;
 
-import com.alexnassif.mobile.barbro.data.AppExecutors;
-import com.alexnassif.mobile.barbro.data.BarBroDrink;
-import com.alexnassif.mobile.barbro.data.BarBroDrinkApiBuilder;
-import com.alexnassif.mobile.barbro.data.Drink;
-import com.alexnassif.mobile.barbro.data.DrinkApiBuilder;
-import com.alexnassif.mobile.barbro.data.DrinkDetailJsonResponse;
-import com.alexnassif.mobile.barbro.data.DrinkList;
-import com.alexnassif.mobile.barbro.data.DrinkListJsonResponse;
 import com.alexnassif.mobile.barbro.Networking.FavoritesDao;
-import com.alexnassif.mobile.barbro.data.MyDrink;
 import com.alexnassif.mobile.barbro.Networking.MyDrinksDao;
 
 import java.util.HashMap;

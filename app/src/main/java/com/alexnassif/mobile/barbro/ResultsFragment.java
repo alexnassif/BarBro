@@ -9,12 +9,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,20 +26,17 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alexnassif.mobile.barbro.Adapters.DrinkAdapter;
 import com.alexnassif.mobile.barbro.ViewModel.CheckFavoriteViewModel;
 import com.alexnassif.mobile.barbro.ViewModel.CheckFavoriteViewModelFactory;
 import com.alexnassif.mobile.barbro.ViewModel.DrinkDetailViewModel;
 import com.alexnassif.mobile.barbro.ViewModel.DrinkDetailViewModelFactory;
 import com.alexnassif.mobile.barbro.ViewModel.DrinksViewModel;
 import com.alexnassif.mobile.barbro.ViewModel.DrinksViewModelFactory;
-import com.alexnassif.mobile.barbro.ViewModel.FavoritesViewModel;
 import com.alexnassif.mobile.barbro.ViewModel.RandomViewModel;
 import com.alexnassif.mobile.barbro.ViewModel.RandomViewModelFactory;
-import com.alexnassif.mobile.barbro.data.AppDatabase;
-import com.alexnassif.mobile.barbro.data.AppExecutors;
 import com.alexnassif.mobile.barbro.data.Drink;
 import com.alexnassif.mobile.barbro.data.DrinkList;
-import com.alexnassif.mobile.barbro.data.HistoryUtils;
 import com.alexnassif.mobile.barbro.utilities.InjectorUtils;
 import com.bumptech.glide.Glide;
 

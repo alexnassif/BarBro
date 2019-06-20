@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.alexnassif.mobile.barbro;
+package com.alexnassif.mobile.barbro.utilities;
 
 
 import android.util.SparseArray;
 
-import com.alexnassif.mobile.barbro.utilities.GraphicOverlay;
 import com.google.android.gms.vision.text.TextBlock;
 
 /**

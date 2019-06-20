@@ -15,7 +15,7 @@ import retrofit2.http.QueryMap;
 
 public interface BarBroApi {
 
-    String BASE_URL = "http://www.barbroapp.com/";
+    String BASE_URL = "https://www.barbroapp.com/";
 
     @Headers("Authorization: Api-Key " + BuildConfig.BARBRO_API_KEY)
     @GET("drinks")

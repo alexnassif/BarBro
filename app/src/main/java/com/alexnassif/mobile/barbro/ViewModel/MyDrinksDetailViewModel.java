@@ -1,7 +1,6 @@
 package com.alexnassif.mobile.barbro.ViewModel;
 
-import com.alexnassif.mobile.barbro.DrinkRepository;
-import com.alexnassif.mobile.barbro.data.Drink;
+import com.alexnassif.mobile.barbro.data.DrinkRepository;
 import com.alexnassif.mobile.barbro.data.MyDrink;
 
 import androidx.lifecycle.LiveData;

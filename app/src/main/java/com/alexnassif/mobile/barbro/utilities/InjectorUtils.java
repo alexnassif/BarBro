@@ -2,8 +2,7 @@ package com.alexnassif.mobile.barbro.utilities;
 
 import android.content.Context;
 
-import com.alexnassif.mobile.barbro.DrinkRepository;
-import com.alexnassif.mobile.barbro.Networking.DrinkApi;
+import com.alexnassif.mobile.barbro.data.DrinkRepository;
 import com.alexnassif.mobile.barbro.ViewModel.BarBroDrinksViewModelFactory;
 import com.alexnassif.mobile.barbro.ViewModel.CheckFavoriteViewModelFactory;
 import com.alexnassif.mobile.barbro.ViewModel.DrinkDetailViewModelFactory;

@@ -3,7 +3,6 @@ package com.alexnassif.mobile.barbro;
 import android.content.AsyncQueryHandler;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
@@ -11,9 +10,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.CursorLoader;
-import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,18 +18,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alexnassif.mobile.barbro.Adapters.DrinkAdapter;
 import com.alexnassif.mobile.barbro.ViewModel.DrinksViewModel;
 import com.alexnassif.mobile.barbro.data.BarBroContract;
-import com.alexnassif.mobile.barbro.data.Drink;
 import com.alexnassif.mobile.barbro.data.DrinkList;
-import com.alexnassif.mobile.barbro.data.HistoryUtils;
 
 import java.util.List;
 

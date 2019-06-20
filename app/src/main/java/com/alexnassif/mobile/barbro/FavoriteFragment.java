@@ -12,24 +12,18 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alexnassif.mobile.barbro.Adapters.DrinkAdapter;
 import com.alexnassif.mobile.barbro.ViewModel.CheckFavoriteViewModel;
 import com.alexnassif.mobile.barbro.ViewModel.CheckFavoriteViewModelFactory;
 import com.alexnassif.mobile.barbro.ViewModel.DrinkDetailViewModel;
 import com.alexnassif.mobile.barbro.ViewModel.DrinkDetailViewModelFactory;
-import com.alexnassif.mobile.barbro.ViewModel.FavoriteDetailViewModelFactory;
 import com.alexnassif.mobile.barbro.ViewModel.FavoriteViewModelFactory;
-import com.alexnassif.mobile.barbro.ViewModel.FavoritesDetailViewModel;
 import com.alexnassif.mobile.barbro.ViewModel.FavoritesViewModel;
 import com.alexnassif.mobile.barbro.data.AppDatabase;
-import com.alexnassif.mobile.barbro.data.AppExecutors;
-import com.alexnassif.mobile.barbro.data.Drink;
 import com.alexnassif.mobile.barbro.data.DrinkList;
 import com.alexnassif.mobile.barbro.utilities.InjectorUtils;
-import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -38,7 +32,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
