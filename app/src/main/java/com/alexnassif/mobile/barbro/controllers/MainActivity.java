@@ -1,11 +1,11 @@
-package com.alexnassif.mobile.barbro;
+package com.alexnassif.mobile.barbro.controllers;
 
 
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.alexnassif.mobile.barbro.data.AppDatabase;
-import com.alexnassif.mobile.barbro.data.Drink;
+import com.alexnassif.mobile.barbro.BuildConfig;
+import com.alexnassif.mobile.barbro.R;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.util.Log;
 import android.view.View;
 import com.google.android.material.navigation.NavigationView;
 import androidx.core.view.GravityCompat;
@@ -25,9 +24,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
 import com.google.android.gms.ads.MobileAds;
-
-
-import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity

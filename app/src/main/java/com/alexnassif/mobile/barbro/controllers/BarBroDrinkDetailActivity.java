@@ -1,4 +1,4 @@
-package com.alexnassif.mobile.barbro;
+package com.alexnassif.mobile.barbro.controllers;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alexnassif.mobile.barbro.R;
 import com.alexnassif.mobile.barbro.data.BarBroDrink;
 
 import java.util.List;

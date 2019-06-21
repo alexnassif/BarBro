@@ -1,4 +1,4 @@
-package com.alexnassif.mobile.barbro;
+package com.alexnassif.mobile.barbro.controllers;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alexnassif.mobile.barbro.Adapters.DrinkAdapter;
+import com.alexnassif.mobile.barbro.R;
 import com.alexnassif.mobile.barbro.ViewModel.CheckFavoriteViewModel;
 import com.alexnassif.mobile.barbro.ViewModel.CheckFavoriteViewModelFactory;
 import com.alexnassif.mobile.barbro.ViewModel.DrinkDetailViewModel;

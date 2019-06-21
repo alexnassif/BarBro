@@ -1,4 +1,4 @@
-package com.alexnassif.mobile.barbro;
+package com.alexnassif.mobile.barbro.controllers;
 
 
 import android.content.Intent;
@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.alexnassif.mobile.barbro.Adapters.BarBroDrinkAdapter;
+import com.alexnassif.mobile.barbro.R;
 import com.alexnassif.mobile.barbro.ViewModel.BarBroDrinksViewModel;
 import com.alexnassif.mobile.barbro.ViewModel.BarBroDrinksViewModelFactory;
 import com.alexnassif.mobile.barbro.data.BarBroDrink;

@@ -1,12 +1,10 @@
-package com.alexnassif.mobile.barbro;
+package com.alexnassif.mobile.barbro.controllers;
 
-import android.content.AsyncQueryHandler;
-import android.content.ContentValues;
+
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 
 import androidx.core.content.FileProvider;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Bitmap;
@@ -20,9 +18,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.alexnassif.mobile.barbro.R;
 import com.alexnassif.mobile.barbro.data.AppDatabase;
 import com.alexnassif.mobile.barbro.data.AppExecutors;
-import com.alexnassif.mobile.barbro.data.BarBroContract;
 import com.alexnassif.mobile.barbro.data.MyDrink;
 import com.bumptech.glide.Glide;
 
@@ -121,24 +119,6 @@ public class EditDrinkActivity extends AppCompatActivity implements View.OnClick
                         finish();
                     }
                 });
-                /*AsyncQueryHandler putDrink = new AsyncQueryHandler(getContentResolver()) {
-                };
-                String stringId = Integer.toString(drinkId);
-                Uri uri = BarBroContract.MyDrinkEntry.CONTENT_URI;
-                uri = uri.buildUpon().appendPath(stringId).build();
-                ContentValues newValue = new ContentValues();
-                newValue.put(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_NAME, mNewDrink.getText().toString().trim());
-                newValue.put(BarBroContract.MyDrinkEntry.COLUMN_MYINGREDIENTS, mNewIngredients.getText().toString().trim());
-                if (mNewPhotoPath != null) {
-                    if(mCurrentPhotoPath != null) {
-                        File file = new File(mCurrentPhotoPath);
-                        if (file.exists())
-                            file.delete();
-                    }
-                    newValue.put(BarBroContract.MyDrinkEntry.COLUMN_MYDRINK_PIC, mNewPhotoPath);
-                }
-                putDrink.startUpdate(-1, null, uri, newValue, null, null);
-                finish();*/
 
             }
 

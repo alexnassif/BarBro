@@ -3,6 +3,8 @@ package com.alexnassif.mobile.barbro;
 /**
  * Created by mobile on 6/1/17.
  */
+import com.alexnassif.mobile.barbro.controllers.MainActivity;
+
 import androidx.test.espresso.contrib.DrawerActions;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.rule.ActivityTestRule;

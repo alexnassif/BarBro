@@ -1,4 +1,4 @@
-package com.alexnassif.mobile.barbro;
+package com.alexnassif.mobile.barbro.utilities;
 
 import android.graphics.Canvas;
 import android.graphics.Color;

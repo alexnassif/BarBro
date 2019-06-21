@@ -177,9 +177,6 @@ public class BarBroDbHelper extends SQLiteOpenHelper {
      }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        /*db.execSQL("DROP TABLE IF EXISTS " + BarBroContract.BarBroEntry.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + BarBroContract.MyDrinkEntry.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + BarBroContract.HistoryEntry.TABLE_NAME);
-        onCreate(db);*/
+
     }
 }

@@ -1,4 +1,4 @@
-package com.alexnassif.mobile.barbro;
+package com.alexnassif.mobile.barbro.controllers;
 
 
 import android.content.Intent;
@@ -6,7 +6,6 @@ import android.content.pm.ActivityInfo;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -15,15 +14,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.alexnassif.mobile.barbro.R;
 import com.alexnassif.mobile.barbro.ViewModel.CheckFavoriteViewModel;
 import com.alexnassif.mobile.barbro.ViewModel.CheckFavoriteViewModelFactory;
 import com.alexnassif.mobile.barbro.ViewModel.DrinkDetailViewModel;
 import com.alexnassif.mobile.barbro.ViewModel.DrinkDetailViewModelFactory;
-import com.alexnassif.mobile.barbro.ViewModel.FavoriteDetailViewModelFactory;
-import com.alexnassif.mobile.barbro.ViewModel.FavoritesDetailViewModel;
-import com.alexnassif.mobile.barbro.ViewModel.FavoritesViewModel;
 import com.alexnassif.mobile.barbro.data.AppDatabase;
 import com.alexnassif.mobile.barbro.data.AppExecutors;
 import com.alexnassif.mobile.barbro.data.Drink;

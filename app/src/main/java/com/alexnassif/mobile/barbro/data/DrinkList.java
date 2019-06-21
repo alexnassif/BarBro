@@ -8,8 +8,6 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "favorites")
 public class DrinkList {
 
-    //@PrimaryKey(autoGenerate = true)
-    //private int id;
     private String strDrink;
     private String strDrinkThumb;
 
@@ -23,13 +21,6 @@ public class DrinkList {
         this.idDrink = idDrink;
     }
 
-    /*public int getId() {
-        return id;
-    }*/
-
-    /*public void setId(int id) {
-        this.id = id;
-    }*/
     public String getStrDrink() {
         return strDrink;
     }

@@ -1,4 +1,4 @@
-package com.alexnassif.mobile.barbro;
+package com.alexnassif.mobile.barbro.controllers;
 
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
@@ -15,16 +15,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alexnassif.mobile.barbro.R;
 import com.alexnassif.mobile.barbro.ViewModel.CheckFavoriteViewModel;
-import com.alexnassif.mobile.barbro.ViewModel.CheckFavoriteViewModelFactory;
 import com.alexnassif.mobile.barbro.ViewModel.DrinkDetailViewModel;
-import com.alexnassif.mobile.barbro.ViewModel.FavoriteDetailViewModelFactory;
-import com.alexnassif.mobile.barbro.ViewModel.FavoritesDetailViewModel;
 import com.alexnassif.mobile.barbro.data.AppDatabase;
 import com.alexnassif.mobile.barbro.data.AppExecutors;
 import com.alexnassif.mobile.barbro.data.Drink;
 import com.alexnassif.mobile.barbro.data.DrinkList;
-import com.alexnassif.mobile.barbro.utilities.InjectorUtils;
 import com.bumptech.glide.Glide;
 
 public class DrinkDetailFragment extends Fragment {

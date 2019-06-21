@@ -18,10 +18,10 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".BarBroDrinkDetailActivity"
-            android:parentActivityName=".MainActivity"></activity>
+        <activity android:name=".controllers.BarBroDrinkDetailActivity"
+            android:parentActivityName=".controllers.MainActivity"></activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".controllers.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden">
@@ -32,8 +32,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DrinkDetailActivity"
-            android:parentActivityName=".MainActivity" />
+            android:name=".controllers.DrinkDetailActivity"
+            android:parentActivityName=".controllers.MainActivity" />
 
         <provider
             android:name=".data.BarBroContentProvider"
@@ -50,20 +50,20 @@
         </provider>
 
         <activity
-            android:name=".AddDrinkActivity"
-            android:parentActivityName=".MainActivity" />
+            android:name=".controllers.AddDrinkActivity"
+            android:parentActivityName=".controllers.MainActivity" />
         <activity
-            android:name=".VideoActivity"
-            android:parentActivityName=".MainActivity" />
+            android:name=".controllers.VideoActivity"
+            android:parentActivityName=".controllers.MainActivity" />
         <activity
-            android:name=".MyDrinkDetailActivity"
-            android:parentActivityName=".MainActivity" />
+            android:name=".controllers.MyDrinkDetailActivity"
+            android:parentActivityName=".controllers.MainActivity" />
         <activity
-            android:name=".EditDrinkActivity"
-            android:parentActivityName=".MyDrinkDetailActivity" />
+            android:name=".controllers.EditDrinkActivity"
+            android:parentActivityName=".controllers.MyDrinkDetailActivity" />
         <activity
-            android:name=".SearchWeb"
-            android:parentActivityName=".AddDrinkActivity" />
+            android:name=".controllers.SearchWeb"
+            android:parentActivityName=".controllers.AddDrinkActivity" />
 
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"

@@ -1,8 +1,8 @@
-package com.alexnassif.mobile.barbro;
+package com.alexnassif.mobile.barbro.Adapters;
 
 
 import android.content.Context;
-import android.database.Cursor;
+
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 
+import com.alexnassif.mobile.barbro.R;
 import com.alexnassif.mobile.barbro.data.Drink;
 import com.bumptech.glide.Glide;
-import com.alexnassif.mobile.barbro.data.BarBroContract;
 
 import java.util.List;
 

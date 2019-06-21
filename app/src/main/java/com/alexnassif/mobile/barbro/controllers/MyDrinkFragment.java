@@ -1,4 +1,4 @@
-package com.alexnassif.mobile.barbro;
+package com.alexnassif.mobile.barbro.controllers;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 
 import com.alexnassif.mobile.barbro.Adapters.MyDrinkAdapter;
+import com.alexnassif.mobile.barbro.R;
 import com.alexnassif.mobile.barbro.ViewModel.MyDrinksViewModel;
 import com.alexnassif.mobile.barbro.ViewModel.MyDrinksViewModelFactory;
 import com.alexnassif.mobile.barbro.data.AppDatabase;

@@ -29,7 +29,7 @@ public class OcrDetector {
     private GraphicOverlay<OcrGraphic> mGraphicOverlay;
     private SparseArray<TextBlock> results;
 
-    OcrDetector(GraphicOverlay<OcrGraphic> ocrGraphicOverlay, SparseArray<TextBlock> r) {
+    public OcrDetector(GraphicOverlay<OcrGraphic> ocrGraphicOverlay, SparseArray<TextBlock> r) {
         mGraphicOverlay = ocrGraphicOverlay;
         results = r;
         detect();

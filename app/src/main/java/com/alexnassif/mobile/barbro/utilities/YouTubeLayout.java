@@ -1,4 +1,4 @@
-package com.alexnassif.mobile.barbro;
+package com.alexnassif.mobile.barbro.utilities;
 
 import android.content.Context;
 import androidx.core.view.MotionEventCompat;
@@ -8,6 +8,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.alexnassif.mobile.barbro.R;
 
 
 public class YouTubeLayout extends ViewGroup {
