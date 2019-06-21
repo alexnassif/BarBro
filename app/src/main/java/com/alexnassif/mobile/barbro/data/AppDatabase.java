@@ -22,7 +22,6 @@ public abstract class AppDatabase extends RoomDatabase {
     static final Migration MIGRATION_1_2 = new Migration(1, 2) {
         @Override
         public void migrate(SupportSQLiteDatabase database) {
-            // Since we didn't alter the table, there's nothing else to do here.
 
             database.execSQL("DROP TABLE drinks");
             database.execSQL("CREATE TABLE IF NOT EXISTS favorites (id INTEGER, strDrink TEXT, strDrinkThumb TEXT, idDrink TEXT, PRIMARY KEY(id))");
