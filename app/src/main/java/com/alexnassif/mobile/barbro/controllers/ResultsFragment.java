@@ -66,12 +66,6 @@ public class ResultsFragment extends Fragment implements DrinkAdapter.DrinkAdapt
     private CheckFavoriteViewModel faveViewModel;
 
 
-    public static ResultsFragment newInstance() {
-        ResultsFragment fragment = new ResultsFragment();
-
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
